@@ -19,10 +19,10 @@ class JdbcProductDaoITest {
         assertNotNull(products);
         assertEquals(5, products.size());
         for (Product product : products) {
-            assertNotNull(product.getId());
             assertNotNull(product.getName());
-            assertNotNull(product.getPrice());
             assertNotNull(product.getCreationDate());
+            assertTrue(product.getId()>0);
+            assertTrue(product.getPrice()>=0);
         }
     }
 
