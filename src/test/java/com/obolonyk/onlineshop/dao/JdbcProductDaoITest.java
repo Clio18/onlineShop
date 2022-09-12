@@ -25,5 +25,4 @@ class JdbcProductDaoITest {
             assertTrue(product.getPrice()>=0);
         }
     }
-
 }

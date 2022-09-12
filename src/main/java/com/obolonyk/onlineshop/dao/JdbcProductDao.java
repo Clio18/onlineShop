@@ -8,6 +8,7 @@ import java.util.List;
 
 public class JdbcProductDao {
     private static final String SELECT_ALL = "SELECT id, name, price, creation_date FROM products;";
+    private static final String SELECT_BY_ID = "SELECT id, name, price, creation_date FROM products WHERE id = ?";
 
     public List<Product> getAll() throws SQLException {
         List<Product> products = new ArrayList<>();

@@ -13,14 +13,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ProductServlet extends HttpServlet {
+public class ProductsServlet extends HttpServlet {
+    private ProductService productService;
+
+    public void setProductService(ProductService productService) {
+        this.productService = productService;
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Map<String, Object> paramMap = new HashMap<>();
-        JdbcProductDao jdbcProductDao = new JdbcProductDao();
-        ProductService productService = new ProductService();
-        productService.setJdbcProductDao(jdbcProductDao);
         List<Product> products = productService.getAllProducts();
         paramMap.put("products", products);
         PageGenerator pageGenerator = PageGenerator.instance();
