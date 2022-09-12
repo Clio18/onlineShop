@@ -37,6 +37,10 @@ public class ProductService {
         jdbcProductDao.remove(id);
     }
 
+    public void update(Product product) {
+        jdbcProductDao.update(product);
+    }
+
     public void setJdbcProductDao(JdbcProductDao jdbcProductDao) {
         this.jdbcProductDao = jdbcProductDao;
     }

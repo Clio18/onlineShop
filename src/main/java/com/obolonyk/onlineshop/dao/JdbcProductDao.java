@@ -12,6 +12,8 @@ public class JdbcProductDao {
     private static final String SELECT_BY_ID = "SELECT id, name, price, creation_date FROM products WHERE id = ?;";
     private static final String INSERT = "INSERT INTO products (name, price, creation_date) VALUES (?, ?, ?);";
     private static final String DELETE = "DELETE FROM Products WHERE id = ?;";
+    private static final String UPDATE = "UPDATE products SET name = ?, price = ?, creation_date = ? where id = ?;";
+
 
     public List<Product> getAll() throws SQLException {
         List<Product> products = new ArrayList<>();
@@ -42,8 +44,7 @@ public class JdbcProductDao {
 
     public void save(Product product) {
         try(Connection connection = getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(INSERT);
-        ){
+            PreparedStatement preparedStatement = connection.prepareStatement(INSERT);){
             preparedStatement.setString(1, product.getName());
             preparedStatement.setDouble(2, product.getPrice());
             LocalDateTime localDateTime = product.getCreationDate();
@@ -61,6 +62,20 @@ public class JdbcProductDao {
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
         }catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void update(Product product) {
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE)) {
+            preparedStatement.setString(1, product.getName());
+            preparedStatement.setDouble(2, product.getPrice());
+            LocalDateTime localDateTime = LocalDateTime.now();
+            preparedStatement.setTimestamp(3, Timestamp.valueOf(localDateTime));
+            preparedStatement.setLong(4, product.getId());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
