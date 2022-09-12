@@ -33,6 +33,10 @@ public class ProductService {
         jdbcProductDao.save(product);
     }
 
+    public void remove(int id) {
+        jdbcProductDao.remove(id);
+    }
+
     public void setJdbcProductDao(JdbcProductDao jdbcProductDao) {
         this.jdbcProductDao = jdbcProductDao;
     }

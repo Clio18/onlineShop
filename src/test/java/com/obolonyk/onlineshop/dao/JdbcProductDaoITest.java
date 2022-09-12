@@ -40,7 +40,7 @@ class JdbcProductDaoITest {
 
     @Test
     @DisplayName("save Test And Check Quantity Of Products Before And After ")
-    void getByIdTestAndCheckQuantityOfProductsBeforeAndAfter() throws SQLException {
+    void saveTestAndCheckQuantityOfProductsBeforeAndAfter() throws SQLException {
         JdbcProductDao jdbcProductDao = new JdbcProductDao();
         List<Product> before = jdbcProductDao.getAll();
         Product product = Product.builder()
@@ -51,5 +51,17 @@ class JdbcProductDaoITest {
         jdbcProductDao.save(product);
         List<Product> after = jdbcProductDao.getAll();
         assertEquals(before.size()+1, after.size());
+    }
+
+    @Test
+    @DisplayName("remove Test And Check Quantity Of Products Before And After ")
+    void removeTestAndCheckQuantityOfProductsBeforeAndAfter() throws SQLException {
+        JdbcProductDao jdbcProductDao = new JdbcProductDao();
+        List<Product> before = jdbcProductDao.getAll();
+        Product product = before.get(before.size()-1);
+        int id = (int) product.getId();
+        jdbcProductDao.remove(id);
+        List<Product> after = jdbcProductDao.getAll();
+        assertEquals(before.size()-1, after.size());
     }
 }

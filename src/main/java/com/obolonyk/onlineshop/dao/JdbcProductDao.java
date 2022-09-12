@@ -11,6 +11,7 @@ public class JdbcProductDao {
     private static final String SELECT_ALL = "SELECT id, name, price, creation_date FROM products;";
     private static final String SELECT_BY_ID = "SELECT id, name, price, creation_date FROM products WHERE id = ?;";
     private static final String INSERT = "INSERT INTO products (name, price, creation_date) VALUES (?, ?, ?);";
+    private static final String DELETE = "DELETE FROM Products WHERE id = ?;";
 
     public List<Product> getAll() throws SQLException {
         List<Product> products = new ArrayList<>();
@@ -50,6 +51,16 @@ public class JdbcProductDao {
             preparedStatement.setTimestamp(3, timestamp);
             preparedStatement.executeUpdate();
         } catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void remove(int id) {
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(DELETE)) {
+            preparedStatement.setInt(1, id);
+            preparedStatement.executeUpdate();
+        }catch (SQLException e){
             throw new RuntimeException(e);
         }
     }
