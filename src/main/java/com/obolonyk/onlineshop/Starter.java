@@ -2,6 +2,7 @@ package com.obolonyk.onlineshop;
 
 import com.obolonyk.onlineshop.dao.JdbcProductDao;
 import com.obolonyk.onlineshop.services.ProductService;
+import com.obolonyk.onlineshop.servlets.AddProductServlet;
 import com.obolonyk.onlineshop.servlets.ProductsServlet;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
@@ -20,9 +21,12 @@ public class Starter {
         ProductsServlet productsServlet = new ProductsServlet();
         productsServlet.setProductService(productService);
 
-        ServletHolder servletHolder = new ServletHolder(productsServlet);
+        AddProductServlet addProductServlet = new AddProductServlet();
+        addProductServlet.setProductService(productService);
+
         ServletContextHandler servletContextHandler = new ServletContextHandler();
-        servletContextHandler.addServlet(servletHolder, "/products");
+        servletContextHandler.addServlet(new ServletHolder(productsServlet), "/products");
+        servletContextHandler.addServlet(new ServletHolder(addProductServlet), "/products/add");
 
         //config server
         Server server = new Server(8085);

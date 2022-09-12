@@ -19,6 +19,20 @@ public class ProductService {
         return productList;
     }
 
+    public Product getProductById(int id) {
+        Product product;
+        try {
+            product = jdbcProductDao.getById(id);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return product;
+    }
+
+    public void save(Product product) {
+        jdbcProductDao.save(product);
+    }
+
     public void setJdbcProductDao(JdbcProductDao jdbcProductDao) {
         this.jdbcProductDao = jdbcProductDao;
     }
