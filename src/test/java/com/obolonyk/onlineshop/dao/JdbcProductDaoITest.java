@@ -50,18 +50,39 @@ class JdbcProductDaoITest {
                 .build();
         jdbcProductDao.save(product);
         List<Product> after = jdbcProductDao.getAll();
-        assertEquals(before.size()+1, after.size());
+        assertEquals(before.size() + 1, after.size());
     }
 
     @Test
-    @DisplayName("remove Test And Check Quantity Of Products Before And After ")
+    @DisplayName("remove Test And Check Quantity Of Products Before And After")
     void removeTestAndCheckQuantityOfProductsBeforeAndAfter() throws SQLException {
         JdbcProductDao jdbcProductDao = new JdbcProductDao();
         List<Product> before = jdbcProductDao.getAll();
-        Product product = before.get(before.size()-1);
+        Product product = before.get(before.size() - 1);
         int id = (int) product.getId();
         jdbcProductDao.remove(id);
         List<Product> after = jdbcProductDao.getAll();
-        assertEquals(before.size()-1, after.size());
+        assertEquals(before.size() - 1, after.size());
+    }
+
+    @Test
+    @DisplayName("update Test And Check Fields And Equals And All Size Before And After")
+    void updateTestAndCheckFieldsAndEqualsAndAllSizeBeforeAndAfter() throws SQLException {
+        JdbcProductDao jdbcProductDao = new JdbcProductDao();
+        Product productBefore = jdbcProductDao.getById(1);
+        List<Product> allBefore = jdbcProductDao.getAll();
+        Product newProduct = Product.builder()
+                .id(1)
+                .name("Mario")
+                .price(10.00)
+                .build();
+        jdbcProductDao.update(newProduct);
+        Product productAfter = jdbcProductDao.getById(1);
+        List<Product> allAfter = jdbcProductDao.getAll();
+        assertNotEquals(productBefore, productAfter);
+        assertEquals(newProduct.getName(), productAfter.getName());
+        assertEquals(newProduct.getPrice(), productAfter.getPrice());
+        assertEquals(newProduct.getId(), productAfter.getId());
+        assertEquals(allAfter.size(), allBefore.size());
     }
 }

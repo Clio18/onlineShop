@@ -5,6 +5,7 @@ import com.obolonyk.onlineshop.entity.Product;
 import com.obolonyk.onlineshop.services.ProductService;
 import com.obolonyk.onlineshop.utils.PageGenerator;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,6 +16,11 @@ import java.util.Map;
 
 public class ProductsServlet extends HttpServlet {
     private ProductService productService;
+    private List<String> sessionList;
+
+    public ProductsServlet(List<String> sessionList) {
+        this.sessionList = sessionList;
+    }
 
     public void setProductService(ProductService productService) {
         this.productService = productService;
@@ -22,11 +28,27 @@ public class ProductsServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        Map<String, Object> paramMap = new HashMap<>();
-        List<Product> products = productService.getAllProducts();
-        paramMap.put("products", products);
-        PageGenerator pageGenerator = PageGenerator.instance();
-        String page = pageGenerator.getPage("products.html", paramMap);
-        resp.getWriter().write(page);
+        Cookie[] cookies = req.getCookies();
+        boolean isValid = false;
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("user-token")) {
+                    if (sessionList.contains(cookie.getValue())) {
+                        isValid = true;
+                    }
+                    break;
+                }
+            }
+        }
+        if (isValid) {
+            Map<String, Object> paramMap = new HashMap<>();
+            List<Product> products = productService.getAllProducts();
+            paramMap.put("products", products);
+            PageGenerator pageGenerator = PageGenerator.instance();
+            String page = pageGenerator.getPage("products.html", paramMap);
+            resp.getWriter().write(page);
+        } else {
+            resp.sendRedirect("/login");
+        }
     }
 }
