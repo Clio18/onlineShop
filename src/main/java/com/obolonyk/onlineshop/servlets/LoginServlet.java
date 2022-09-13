@@ -1,7 +1,6 @@
 package com.obolonyk.onlineshop.servlets;
 
 import com.obolonyk.onlineshop.utils.PageGenerator;
-import lombok.AllArgsConstructor;
 import lombok.Setter;
 
 import javax.servlet.http.Cookie;
@@ -15,16 +14,17 @@ import java.util.UUID;
 @Setter
 public class LoginServlet extends HttpServlet {
     private List<String> sessionList;
+    private PageGenerator pageGenerator = PageGenerator.instance();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        PageGenerator pageGenerator = PageGenerator.instance();
         String page = pageGenerator.getPage("templates/login.html", null);
         resp.getWriter().write(page);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        //TODO: it should be in SecurityService 
         String uuid = UUID.randomUUID().toString();
         sessionList.add(uuid);
         Cookie cookie = new Cookie("user-token", uuid);

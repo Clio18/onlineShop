@@ -19,6 +19,7 @@ import java.util.Map;
 public class ProductsServlet extends HttpServlet {
     private ProductService productService;
     private List<String> sessionList;
+    private PageGenerator pageGenerator = PageGenerator.instance();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -38,7 +39,6 @@ public class ProductsServlet extends HttpServlet {
             Map<String, Object> paramMap = new HashMap<>();
             List<Product> products = productService.getAllProducts();
             paramMap.put("products", products);
-            PageGenerator pageGenerator = PageGenerator.instance();
             String page = pageGenerator.getPage("templates/products.html", paramMap);
             resp.getWriter().write(page);
         } else {

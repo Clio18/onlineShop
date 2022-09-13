@@ -15,7 +15,7 @@ public class JdbcProductDao {
     private static final String SELECT_BY_ID = "SELECT id, name, price, creation_date, description FROM products WHERE id = ?;";
     private static final String INSERT = "INSERT INTO products (name, price, creation_date, description) VALUES (?, ?, ?, ?);";
     private static final String DELETE = "DELETE FROM Products WHERE id = ?;";
-    private static final String UPDATE = "UPDATE products SET name = ?, price = ?, creation_date = ?, description = ? where id = ?;";
+    private static final String UPDATE = "UPDATE products SET name = ?, price = ?, description = ? where id = ?;";
     private static final String SEARCH = "SELECT id, name, price, creation_date, description FROM products WHERE name ilike ? OR description ilike ?;";
 
     private DataSource dataSource;
@@ -40,6 +40,8 @@ public class JdbcProductDao {
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             ProductRowMapper productRowMapper = new ProductRowMapper();
+            //TODO: if !rs.next() -> Product not found exc
+            //TODO: SQLExc -> Cannot get Product from db
             while (resultSet.next()) {
                 product = productRowMapper.mapRow(resultSet);
             }
@@ -77,10 +79,8 @@ public class JdbcProductDao {
              PreparedStatement preparedStatement = connection.prepareStatement(UPDATE)) {
             preparedStatement.setString(1, product.getName());
             preparedStatement.setDouble(2, product.getPrice());
-            LocalDateTime localDateTime = LocalDateTime.now();
-            preparedStatement.setTimestamp(3, Timestamp.valueOf(localDateTime));
-            preparedStatement.setString(4, product.getDescription());
-            preparedStatement.setLong(5, product.getId());
+            preparedStatement.setString(3, product.getDescription());
+            preparedStatement.setLong(4, product.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);

@@ -15,6 +15,8 @@ import java.util.List;
 public class Starter {
     public static void main(String[] args) throws Exception {
         List<String> sessionList = new ArrayList<>();
+        //TODO: db initialization flyway
+        //TODO: add logs
         //config dao
         DataSource dataSource = DataSourceCreator.getDataSource();
         JdbcProductDao jdbcProductDao = new JdbcProductDao(dataSource);

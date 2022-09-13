@@ -4,6 +4,7 @@ import com.obolonyk.onlineshop.dao.JdbcProductDao;
 import com.obolonyk.onlineshop.entity.Product;
 
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class ProductService {
@@ -30,6 +31,8 @@ public class ProductService {
     }
 
     public void save(Product product) {
+        LocalDateTime date = LocalDateTime.now();
+        product.setCreationDate(date);
         jdbcProductDao.save(product);
     }
 
@@ -38,6 +41,8 @@ public class ProductService {
     }
 
     public void update(Product product) {
+        LocalDateTime date = LocalDateTime.now();
+        product.setCreationDate(date);
         jdbcProductDao.update(product);
     }
 

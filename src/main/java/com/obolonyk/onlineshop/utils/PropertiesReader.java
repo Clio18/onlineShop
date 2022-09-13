@@ -14,6 +14,7 @@ public class PropertiesReader {
     static Properties getProperties() {
         if (cachedProps.isEmpty()) {
             Properties properties = readProperties();
+            //TODO: can be empty
             return properties;
         } else {
             return cachedProps.get(PATH_TO_PROPS);

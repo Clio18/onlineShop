@@ -17,13 +17,13 @@ import java.util.Map;
 @Setter
 public class SearchProductsServlet extends HttpServlet {
     private ProductService productService;
+    private PageGenerator pageGenerator = PageGenerator.instance();
 
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String parameter = req.getParameter("search");
         List<Product> bySearch = productService.getBySearch(parameter);
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("products", bySearch);
-        PageGenerator pageGenerator = PageGenerator.instance();
         String page = pageGenerator.getPage("templates/products.html", paramMap);
         resp.getWriter().write(page);
     }
