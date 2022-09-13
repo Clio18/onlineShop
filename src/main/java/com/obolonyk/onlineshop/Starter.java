@@ -37,6 +37,9 @@ public class Starter {
         UpdateProductServlet updateProductServlet = new UpdateProductServlet();
         updateProductServlet.setProductService(productService);
 
+        SearchProductsServlet searchProductsServlet = new SearchProductsServlet();
+        searchProductsServlet.setProductService(productService);
+
         LoginServlet loginServlet = new LoginServlet();
         loginServlet.setSessionList(sessionList);
 
@@ -45,6 +48,7 @@ public class Starter {
         servletContextHandler.addServlet(new ServletHolder(addProductServlet), "/products/add");
         servletContextHandler.addServlet(new ServletHolder(removeProductServlet), "/products/delete");
         servletContextHandler.addServlet(new ServletHolder(updateProductServlet), "/products/update");
+        servletContextHandler.addServlet(new ServletHolder(searchProductsServlet), "/products/search");
         servletContextHandler.addServlet(new ServletHolder(loginServlet), "/login");
 
         //config server

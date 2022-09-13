@@ -92,4 +92,21 @@ class JdbcProductDaoITest {
         assertEquals(newProduct.getId(), productAfter.getId());
         assertEquals(allAfter.size(), allBefore.size());
     }
+
+    @Test
+    @DisplayName("getBySearch Test And Return The List And NotNull And NotNull Fields")
+    void getBySearchTestAndReturnTheListAndCheckSizeAndNotNullAndNotNullFields() throws SQLException {
+        DataSource dataSource = DataSourceCreator.getDataSource();
+        JdbcProductDao jdbcProductDao = new JdbcProductDao(dataSource);
+        String pattern = "yo";
+        List<Product> products = jdbcProductDao.getBySearch(pattern);
+        assertNotNull(products);
+        for (Product product : products) {
+            assertNotNull(product.getName());
+            assertNotNull(product.getCreationDate());
+            assertTrue(product.getId() > 0);
+            assertTrue(product.getPrice() >= 0);
+        }
+        assertEquals(1, products.size());
+    }
 }

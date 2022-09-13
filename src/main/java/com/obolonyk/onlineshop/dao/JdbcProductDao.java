@@ -11,11 +11,12 @@ import java.util.List;
 
 @AllArgsConstructor
 public class JdbcProductDao {
-    private static final String SELECT_ALL = "SELECT id, name, price, creation_date FROM products;";
-    private static final String SELECT_BY_ID = "SELECT id, name, price, creation_date FROM products WHERE id = ?;";
-    private static final String INSERT = "INSERT INTO products (name, price, creation_date) VALUES (?, ?, ?);";
+    private static final String SELECT_ALL = "SELECT id, name, price, creation_date, description FROM products;";
+    private static final String SELECT_BY_ID = "SELECT id, name, price, creation_date, description FROM products WHERE id = ?;";
+    private static final String INSERT = "INSERT INTO products (name, price, creation_date, description) VALUES (?, ?, ?, ?);";
     private static final String DELETE = "DELETE FROM Products WHERE id = ?;";
-    private static final String UPDATE = "UPDATE products SET name = ?, price = ?, creation_date = ? where id = ?;";
+    private static final String UPDATE = "UPDATE products SET name = ?, price = ?, creation_date = ?, description = ? where id = ?;";
+    private static final String SEARCH = "SELECT id, name, price, creation_date, description FROM products WHERE name ilike ? OR description ilike ?;";
 
     private DataSource dataSource;
 
@@ -54,6 +55,7 @@ public class JdbcProductDao {
             LocalDateTime localDateTime = product.getCreationDate();
             Timestamp timestamp = Timestamp.valueOf(localDateTime);
             preparedStatement.setTimestamp(3, timestamp);
+            preparedStatement.setString(4, product.getDescription());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -77,11 +79,27 @@ public class JdbcProductDao {
             preparedStatement.setDouble(2, product.getPrice());
             LocalDateTime localDateTime = LocalDateTime.now();
             preparedStatement.setTimestamp(3, Timestamp.valueOf(localDateTime));
-            preparedStatement.setLong(4, product.getId());
+            preparedStatement.setString(4, product.getDescription());
+            preparedStatement.setLong(5, product.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public List<Product> getBySearch(String pattern) throws SQLException {
+        List<Product> products = new ArrayList<>();
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SEARCH)) {
+            preparedStatement.setString(1, "%"+pattern+"%");
+            preparedStatement.setString(2, "%"+pattern+"%");
+            ResultSet resultSet = preparedStatement.executeQuery();
+            ProductRowMapper productRowMapper = new ProductRowMapper();
+            while (resultSet.next()) {
+                products.add(productRowMapper.mapRow(resultSet));
+            }
+        }
+        return products;
     }
 
 }

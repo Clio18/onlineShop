@@ -13,6 +13,7 @@ public class ProductRowMapper {
                 .name(resultSet.getString("name"))
                 .price(resultSet.getDouble("price"))
                 .creationDate(resultSet.getObject("creation_date", LocalDateTime.class))
+                .description(resultSet.getString("description"))
                 .build();
     }
 }

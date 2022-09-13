@@ -31,12 +31,14 @@ public class UpdateProductServlet extends HttpServlet {
         try {
             int id = Integer.parseInt(req.getParameter("id"));
             String name = req.getParameter("name");
+            String description = req.getParameter("description");
             double price = Double.parseDouble(req.getParameter("price"));
             LocalDateTime date = LocalDateTime.now();
             Product product = Product.builder()
                     .id(id)
                     .creationDate(date)
                     .price(price)
+                    .description(description)
                     .name(name)
                     .build();
             productService.update(product);

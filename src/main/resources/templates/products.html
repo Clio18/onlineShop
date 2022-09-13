@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <title>Products</title>
     <link
             href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css"
@@ -19,42 +19,65 @@
         crossorigin="anonymous"
 ></script>
 <div style="width: 800px">
-<table class="table table-striped">
-    <tr>
-        <th>ID</th>
-        <th>NAME</th>
-        <th>PRICE</th>
-        <th>CREATED ON</th>
-        <th>ACTION</th>
-    </tr>
-    <#foreach product in products>
-    <tr>
-        <td>${product.id}</td>
-        <td>${product.name}</td>
-        <td>${product.price}</td>
-        <td>${product.creationDate}</td>
-        <td>
-            <div class="btn-group" role="group" aria-label="Basic example">
-                <div style="margin-right: 20px">
-                    <form action="/products/update" method="get">
-                        <input type="hidden" name="id" value="${product.id}">
-                        <button type="submit" class="btn btn btn-warning">Update</button>
-                    </form>
+    <div style="margin-bottom: 5px">
+        <div>
+            <form action="/products/search" method="post">
+                <div style="margin-bottom: 5px">
+                    <label for="exampleInputProduct1" class="form-label">Search</label>
+                    <input type="text" class="form-control" id="exampleInputProduct1"
+                           name="search" aria-describedby="productHelp" required>
+                    <div id="productHelp" class="form-text">Enter some text...</div>
                 </div>
-                <div>
-                    <form action="/products/delete" method="post">
-                        <input type="hidden" name="id" value="${product.id}">
-                        <button type="submit" class="btn btn-danger">Delete</button>
-                    </form>
+                <div class="btn-group" style="margin-bottom: 20px">
+                    <div>
+                    <button type="submit" class="btn btn btn-primary" >
+                       Search
+                    </button>
+                    </div>
+                    <div style="margin-left: 10px">
+                        <a type="button" href="/products" class="btn btn-success" style="width: 80px">Back</a>
+                    </div>
                 </div>
-            </div>
-        </td>
-    </tr>
-    </#foreach>
-</table>
-</div>
-<div>
-    <a class="btn btn-success" href="/products/add">Add new product</a>
-</div>
+            </form>
+        </div>
+        <table class="table table-striped">
+            <tr>
+                <th>ID</th>
+                <th>NAME</th>
+                <th>PRICE</th>
+                <th>CREATED ON</th>
+                <th>DESCRIPTION</th>
+                <th>ACTION</th>
+            </tr>
+            <#foreach product in products>
+            <tr>
+                <td>${product.id}</td>
+                <td>${product.name}</td>
+                <td>${product.price}</td>
+                <td>${product.creationDate}</td>
+                <td>${product.description}</td>
+                <td>
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                        <div style="margin-right: 20px">
+                            <form action="/products/update" method="get">
+                                <input type="hidden" name="id" value="${product.id}">
+                                <button type="submit" class="btn btn btn-warning">Update</button>
+                            </form>
+                        </div>
+                        <div>
+                            <form action="/products/delete" method="post">
+                                <input type="hidden" name="id" value="${product.id}">
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </#foreach>
+        </table>
+    </div>
+    <div>
+        <a class="btn btn-success" href="/products/add">Add new product</a>
+    </div>
 </body>
 </html>

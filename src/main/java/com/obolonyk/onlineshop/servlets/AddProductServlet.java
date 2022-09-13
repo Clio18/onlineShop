@@ -24,18 +24,21 @@ public class AddProductServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
-       try{ String name = req.getParameter("name");
-        double price = Double.parseDouble(req.getParameter("price"));
-        LocalDateTime date = LocalDateTime.now();
-        Product product = Product.builder()
-                .name(name)
-                .price(price)
-                .creationDate(date)
-                .build();
-        productService.save(product);
-        resp.sendRedirect("/products");
-       } catch (Exception e){
-           throw new RuntimeException(e);
-       }
+        try {
+            String name = req.getParameter("name");
+            String description = req.getParameter("description");
+            double price = Double.parseDouble(req.getParameter("price"));
+            LocalDateTime date = LocalDateTime.now();
+            Product product = Product.builder()
+                    .name(name)
+                    .price(price)
+                    .creationDate(date)
+                    .description(description)
+                    .build();
+            productService.save(product);
+            resp.sendRedirect("/products");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

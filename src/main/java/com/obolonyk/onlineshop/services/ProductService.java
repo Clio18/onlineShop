@@ -41,6 +41,16 @@ public class ProductService {
         jdbcProductDao.update(product);
     }
 
+    public List<Product> getBySearch(String pattern) {
+        List<Product> productList;
+        try {
+            productList = jdbcProductDao.getBySearch(pattern);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return productList;
+    }
+
     public void setJdbcProductDao(JdbcProductDao jdbcProductDao) {
         this.jdbcProductDao = jdbcProductDao;
     }

@@ -35,9 +35,21 @@
             </div>
         </div>
 
+       <div class="container">
+           <div class="col-md-6">
+               <label for="exampleInputProduct2" class="form-label">Product description</label>
+               <input type="text" class="form-control" id="exampleInputProduct2"
+                      name="description"  value="${product.description}" aria-describedby="productHelp2" required>
+               <div id="productHelp2" class="form-text">Enter product description</div>
+           </div>
+       </div>
+
         <div class="col-12">
             <button type="submit" class="btn btn-warning">Submit</button>
         </div>
+       <div style="margin-top: 20px" class="col-12">
+           <a type="button" href="/products" class="btn btn-success" style="width: 80px">Back</a>
+       </div>
     </form>
 </div>
 <#if errorMessage??>
