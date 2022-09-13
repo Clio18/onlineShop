@@ -1,6 +1,8 @@
 package com.obolonyk.onlineshop.servlets;
 
 import com.obolonyk.onlineshop.utils.PageGenerator;
+import lombok.AllArgsConstructor;
+import lombok.Setter;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
@@ -10,16 +12,14 @@ import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
+@Setter
 public class LoginServlet extends HttpServlet {
     private List<String> sessionList;
 
-    public LoginServlet(List<String> sessionList) {
-        this.sessionList = sessionList;
-    }
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         PageGenerator pageGenerator = PageGenerator.instance();
-        String page = pageGenerator.getPage("login.html", null);
+        String page = pageGenerator.getPage("templates/login.html", null);
         resp.getWriter().write(page);
     }
 

@@ -1,18 +1,15 @@
 package com.obolonyk.onlineshop.servlets;
 
 import com.obolonyk.onlineshop.services.ProductService;
+import lombok.Setter;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
+@Setter
 public class RemoveProductServlet extends HttpServlet {
     private ProductService productService;
-
-    public void setProductService(ProductService productService) {
-        this.productService = productService;
-    }
 
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
         try {

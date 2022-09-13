@@ -1,9 +1,11 @@
 package com.obolonyk.onlineshop.dao;
 
 import com.obolonyk.onlineshop.entity.Product;
+import com.obolonyk.onlineshop.utils.DataSourceCreator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import javax.sql.DataSource;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -15,7 +17,8 @@ class JdbcProductDaoITest {
     @Test
     @DisplayName("getAll Test And Return The List And NotNull And NotNull Fields")
     void getAllTestAndReturnTheListAndCheckSizeAndNotNullAndNotNullFields() throws SQLException {
-        JdbcProductDao jdbcProductDao = new JdbcProductDao();
+        DataSource dataSource = DataSourceCreator.getDataSource();
+        JdbcProductDao jdbcProductDao = new JdbcProductDao(dataSource);
         List<Product> products = jdbcProductDao.getAll();
         assertNotNull(products);
         for (Product product : products) {
@@ -29,8 +32,9 @@ class JdbcProductDaoITest {
     @Test
     @DisplayName("getById Test And Return The Product")
     void getByIdTestAndReturnTheProductAndCheckNotNullAndNotNullFields() throws SQLException {
-        JdbcProductDao jdbcProductDao = new JdbcProductDao();
-        Product product = jdbcProductDao.getById(1);
+        DataSource dataSource = DataSourceCreator.getDataSource();
+        JdbcProductDao jdbcProductDao = new JdbcProductDao(dataSource);
+        Product product = jdbcProductDao.getById(2);
         assertNotNull(product);
         assertNotNull(product.getName());
         assertNotNull(product.getCreationDate());
@@ -41,7 +45,8 @@ class JdbcProductDaoITest {
     @Test
     @DisplayName("save Test And Check Quantity Of Products Before And After ")
     void saveTestAndCheckQuantityOfProductsBeforeAndAfter() throws SQLException {
-        JdbcProductDao jdbcProductDao = new JdbcProductDao();
+        DataSource dataSource = DataSourceCreator.getDataSource();
+        JdbcProductDao jdbcProductDao = new JdbcProductDao(dataSource);
         List<Product> before = jdbcProductDao.getAll();
         Product product = Product.builder()
                 .name("Superman 2")
@@ -56,7 +61,8 @@ class JdbcProductDaoITest {
     @Test
     @DisplayName("remove Test And Check Quantity Of Products Before And After")
     void removeTestAndCheckQuantityOfProductsBeforeAndAfter() throws SQLException {
-        JdbcProductDao jdbcProductDao = new JdbcProductDao();
+        DataSource dataSource = DataSourceCreator.getDataSource();
+        JdbcProductDao jdbcProductDao = new JdbcProductDao(dataSource);
         List<Product> before = jdbcProductDao.getAll();
         Product product = before.get(before.size() - 1);
         int id = (int) product.getId();
@@ -68,7 +74,8 @@ class JdbcProductDaoITest {
     @Test
     @DisplayName("update Test And Check Fields And Equals And All Size Before And After")
     void updateTestAndCheckFieldsAndEqualsAndAllSizeBeforeAndAfter() throws SQLException {
-        JdbcProductDao jdbcProductDao = new JdbcProductDao();
+        DataSource dataSource = DataSourceCreator.getDataSource();
+        JdbcProductDao jdbcProductDao = new JdbcProductDao(dataSource);
         Product productBefore = jdbcProductDao.getById(1);
         List<Product> allBefore = jdbcProductDao.getAll();
         Product newProduct = Product.builder()

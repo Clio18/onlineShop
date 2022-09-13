@@ -1,11 +1,10 @@
 package com.obolonyk.onlineshop.servlets;
 
-import com.obolonyk.onlineshop.dao.ProductRowMapper;
 import com.obolonyk.onlineshop.entity.Product;
 import com.obolonyk.onlineshop.services.ProductService;
 import com.obolonyk.onlineshop.utils.PageGenerator;
+import lombok.Setter;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,12 +13,9 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
+@Setter
 public class UpdateProductServlet extends HttpServlet {
     private ProductService productService;
-
-    public void setProductService(ProductService productService) {
-        this.productService = productService;
-    }
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         int id = Integer.parseInt(req.getParameter("id"));
@@ -27,7 +23,7 @@ public class UpdateProductServlet extends HttpServlet {
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("product", product);
         PageGenerator pageGenerator = PageGenerator.instance();
-        String page = pageGenerator.getPage("updateProduct.html", paramMap);
+        String page = pageGenerator.getPage("templates/updateProduct.html", paramMap);
         resp.getWriter().write(page);
     }
 

@@ -1,9 +1,10 @@
 package com.obolonyk.onlineshop.servlets;
 
-import com.obolonyk.onlineshop.dao.JdbcProductDao;
 import com.obolonyk.onlineshop.entity.Product;
 import com.obolonyk.onlineshop.services.ProductService;
 import com.obolonyk.onlineshop.utils.PageGenerator;
+import lombok.AllArgsConstructor;
+import lombok.Setter;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
@@ -14,17 +15,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Setter
 public class ProductsServlet extends HttpServlet {
     private ProductService productService;
     private List<String> sessionList;
-
-    public ProductsServlet(List<String> sessionList) {
-        this.sessionList = sessionList;
-    }
-
-    public void setProductService(ProductService productService) {
-        this.productService = productService;
-    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -45,7 +39,7 @@ public class ProductsServlet extends HttpServlet {
             List<Product> products = productService.getAllProducts();
             paramMap.put("products", products);
             PageGenerator pageGenerator = PageGenerator.instance();
-            String page = pageGenerator.getPage("products.html", paramMap);
+            String page = pageGenerator.getPage("templates/products.html", paramMap);
             resp.getWriter().write(page);
         } else {
             resp.sendRedirect("/login");
