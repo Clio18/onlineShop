@@ -7,6 +7,7 @@ import com.obolonyk.onlineshop.utils.DataSourceCreator;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import org.flywaydb.core.Flyway;
 
 import javax.sql.DataSource;
 import java.util.ArrayList;
@@ -14,11 +15,13 @@ import java.util.List;
 
 public class Starter {
     public static void main(String[] args) throws Exception {
+        DataSource dataSource = DataSourceCreator.getDataSource();
+        //flyway
+        Flyway flyway = Flyway.configure().dataSource(dataSource).load();
+        flyway.migrate();
         List<String> sessionList = new ArrayList<>();
-        //TODO: db initialization flyway
         //TODO: add logs
         //config dao
-        DataSource dataSource = DataSourceCreator.getDataSource();
         JdbcProductDao jdbcProductDao = new JdbcProductDao(dataSource);
 
         //config services
