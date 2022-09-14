@@ -1,6 +1,5 @@
-package com.obolonyk.onlineshop.dao;
+package com.obolonyk.onlineshop.dao.jdbc;
 
-import com.obolonyk.onlineshop.entity.Product;
 import com.obolonyk.onlineshop.entity.User;
 import com.obolonyk.onlineshop.utils.DataSourceCreator;
 import org.flywaydb.core.Flyway;
@@ -14,7 +13,6 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 class JdbcUserDaoITest {
-
     private DataSource dataSource;
     private JdbcUserDao jdbcUserDao;
     private Flyway flyway;

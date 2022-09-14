@@ -1,6 +1,6 @@
 package com.obolonyk.onlineshop.services;
 
-import com.obolonyk.onlineshop.dao.JdbcProductDao;
+import com.obolonyk.onlineshop.dao.ProductDao;
 import com.obolonyk.onlineshop.entity.Product;
 import lombok.Setter;
 
@@ -9,7 +9,7 @@ import java.util.List;
 
 @Setter
 public class ProductService {
-    private JdbcProductDao jdbcProductDao;
+    private ProductDao jdbcProductDao;
 
     public List<Product> getAllProducts() {
         return jdbcProductDao.getAll();

@@ -1,7 +1,7 @@
 package com.obolonyk.onlineshop;
 
-import com.obolonyk.onlineshop.dao.JdbcProductDao;
-import com.obolonyk.onlineshop.dao.JdbcUserDao;
+import com.obolonyk.onlineshop.dao.jdbc.JdbcProductDao;
+import com.obolonyk.onlineshop.dao.jdbc.JdbcUserDao;
 import com.obolonyk.onlineshop.services.ProductService;
 import com.obolonyk.onlineshop.services.SecurityService;
 import com.obolonyk.onlineshop.services.UserService;

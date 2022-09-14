@@ -1,5 +1,7 @@
-package com.obolonyk.onlineshop.dao;
+package com.obolonyk.onlineshop.dao.jdbc;
 
+import com.obolonyk.onlineshop.dao.ProductDao;
+import com.obolonyk.onlineshop.dao.rowmapper.ProductRowMapper;
 import com.obolonyk.onlineshop.entity.Product;
 import lombok.AllArgsConstructor;
 
@@ -10,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
-public class JdbcProductDao {
+public class JdbcProductDao implements ProductDao {
     private static final String SELECT_ALL = "SELECT id, name, price, creation_date, description FROM products;";
     private static final String SELECT_BY_ID = "SELECT id, name, price, creation_date, description FROM products WHERE id = ?;";
     private static final String SAVE = "INSERT INTO products (name, price, creation_date, description) VALUES (?, ?, ?, ?);";
@@ -20,6 +22,7 @@ public class JdbcProductDao {
 
     private DataSource dataSource;
 
+    @Override
     public List<Product> getAll() {
         List<Product> products = new ArrayList<>();
         try {
@@ -36,6 +39,7 @@ public class JdbcProductDao {
         }
     }
 
+    @Override
     public Product getById(int id) {
         Product product = Product.builder().build();
         try {
@@ -54,6 +58,7 @@ public class JdbcProductDao {
         return product;
     }
 
+    @Override
     public void save(Product product) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SAVE);) {
@@ -69,6 +74,7 @@ public class JdbcProductDao {
         }
     }
 
+    @Override
     public void remove(int id) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(DELETE)) {
@@ -79,6 +85,7 @@ public class JdbcProductDao {
         }
     }
 
+    @Override
     public void update(Product product) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(UPDATE)) {
@@ -92,6 +99,7 @@ public class JdbcProductDao {
         }
     }
 
+    @Override
     public List<Product> getBySearch(String pattern) {
         List<Product> products = new ArrayList<>();
         try {

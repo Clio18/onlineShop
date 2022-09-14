@@ -1,5 +1,7 @@
-package com.obolonyk.onlineshop.dao;
+package com.obolonyk.onlineshop.dao.jdbc;
 
+import com.obolonyk.onlineshop.dao.UserDao;
+import com.obolonyk.onlineshop.dao.rowmapper.UserRowMapper;
 import com.obolonyk.onlineshop.entity.User;
 import lombok.AllArgsConstructor;
 
@@ -8,12 +10,13 @@ import java.sql.*;
 import java.util.Optional;
 
 @AllArgsConstructor
-public class JdbcUserDao {
+public class JdbcUserDao implements UserDao {
     private static final String SELECT_BY_LOGIN = "SELECT id, name, last_name, login, email, password, salt FROM users WHERE login = ?;";
     private static final String SAVE = "INSERT INTO users (name, last_name, login, email, password, salt) VALUES (?, ?, ?, ?, ?, ?);";
 
     private DataSource dataSource;
 
+    @Override
     public Optional<User> getByLogin(String login) {
         try (Connection connection = dataSource.getConnection()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_LOGIN)) {
@@ -30,6 +33,7 @@ public class JdbcUserDao {
         }
     }
 
+    @Override
     public void save(User user) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SAVE)) {

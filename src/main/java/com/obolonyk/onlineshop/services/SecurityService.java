@@ -43,7 +43,7 @@ public class SecurityService {
             String password = user.getPassword();
             String encryptedPassword = PasswordGenerator.generateEncrypted(password, salt);
 
-            User userForDB = User.builder()
+            return User.builder()
                     .name(user.getName())
                     .lastName(user.getLastName())
                     .email(user.getEmail())
@@ -51,7 +51,6 @@ public class SecurityService {
                     .password(encryptedPassword)
                     .salt(salt)
                     .build();
-            return userForDB;
         }
         return user;
     }

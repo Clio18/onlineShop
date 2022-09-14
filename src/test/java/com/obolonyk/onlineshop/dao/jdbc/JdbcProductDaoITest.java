@@ -1,4 +1,4 @@
-package com.obolonyk.onlineshop.dao;
+package com.obolonyk.onlineshop.dao.jdbc;
 
 import com.obolonyk.onlineshop.entity.Product;
 import com.obolonyk.onlineshop.utils.DataSourceCreator;
