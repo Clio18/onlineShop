@@ -15,8 +15,8 @@ import static org.mockito.Mockito.when;
 class ProductRowMapperTest {
 
     @Test
-    @DisplayName("rowMapper Test And Check NotNull And Equals")
-    void rowMapperTestAndCheckNotNullAndEquals() throws SQLException {
+    @DisplayName("product rowMapper Test And Check NotNull And Equals")
+    void productRowMapperTestAndCheckNotNullAndEquals() throws SQLException {
         ResultSet mockRs = mock(ResultSet.class);
         when(mockRs.getLong("id")).thenReturn(1L);
         when(mockRs.getString("name")).thenReturn("Teddy Bear");

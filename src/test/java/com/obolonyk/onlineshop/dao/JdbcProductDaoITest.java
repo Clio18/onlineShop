@@ -2,11 +2,12 @@ package com.obolonyk.onlineshop.dao;
 
 import com.obolonyk.onlineshop.entity.Product;
 import com.obolonyk.onlineshop.utils.DataSourceCreator;
+import org.flywaydb.core.Flyway;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import javax.sql.DataSource;
-import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -14,11 +15,21 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class JdbcProductDaoITest {
 
+    private DataSource dataSource;
+    private JdbcProductDao jdbcProductDao;
+    private Flyway flyway;
+
+    @BeforeEach
+    void init() {
+        dataSource = DataSourceCreator.getDataSource();
+        flyway = Flyway.configure().dataSource(dataSource).load();
+        flyway.migrate();
+        jdbcProductDao = new JdbcProductDao(dataSource);
+    }
+
     @Test
     @DisplayName("getAll Test And Return The List And NotNull And NotNull Fields")
     void getAllTestAndReturnTheListAndCheckSizeAndNotNullAndNotNullFields() {
-        DataSource dataSource = DataSourceCreator.getDataSource();
-        JdbcProductDao jdbcProductDao = new JdbcProductDao(dataSource);
         List<Product> products = jdbcProductDao.getAll();
         assertNotNull(products);
         for (Product product : products) {
@@ -32,8 +43,6 @@ class JdbcProductDaoITest {
     @Test
     @DisplayName("getById Test And Return The Product")
     void getByIdTestAndReturnTheProductAndCheckNotNullAndNotNullFields() {
-        DataSource dataSource = DataSourceCreator.getDataSource();
-        JdbcProductDao jdbcProductDao = new JdbcProductDao(dataSource);
         Product product = jdbcProductDao.getById(2);
         assertNotNull(product);
         assertNotNull(product.getName());
@@ -44,9 +53,7 @@ class JdbcProductDaoITest {
 
     @Test
     @DisplayName("save Test And Check Quantity Of Products Before And After ")
-    void saveTestAndCheckQuantityOfProductsBeforeAndAfter(){
-        DataSource dataSource = DataSourceCreator.getDataSource();
-        JdbcProductDao jdbcProductDao = new JdbcProductDao(dataSource);
+    void saveTestAndCheckQuantityOfProductsBeforeAndAfter() {
         List<Product> before = jdbcProductDao.getAll();
         Product product = Product.builder()
                 .name("Superman 2")
@@ -61,12 +68,8 @@ class JdbcProductDaoITest {
     @Test
     @DisplayName("remove Test And Check Quantity Of Products Before And After")
     void removeTestAndCheckQuantityOfProductsBeforeAndAfter() {
-        DataSource dataSource = DataSourceCreator.getDataSource();
-        JdbcProductDao jdbcProductDao = new JdbcProductDao(dataSource);
         List<Product> before = jdbcProductDao.getAll();
-        Product product = before.get(before.size() - 1);
-        int id = (int) product.getId();
-        jdbcProductDao.remove(id);
+        jdbcProductDao.remove(1);
         List<Product> after = jdbcProductDao.getAll();
         assertEquals(before.size() - 1, after.size());
     }
@@ -74,17 +77,15 @@ class JdbcProductDaoITest {
     @Test
     @DisplayName("update Test And Check Fields And Equals And All Size Before And After")
     void updateTestAndCheckFieldsAndEqualsAndAllSizeBeforeAndAfter() {
-        DataSource dataSource = DataSourceCreator.getDataSource();
-        JdbcProductDao jdbcProductDao = new JdbcProductDao(dataSource);
-        Product productBefore = jdbcProductDao.getById(1);
+        Product productBefore = jdbcProductDao.getById(3);
         List<Product> allBefore = jdbcProductDao.getAll();
         Product newProduct = Product.builder()
-                .id(1)
+                .id(3)
                 .name("Mario")
                 .price(10.00)
                 .build();
         jdbcProductDao.update(newProduct);
-        Product productAfter = jdbcProductDao.getById(1);
+        Product productAfter = jdbcProductDao.getById(3);
         List<Product> allAfter = jdbcProductDao.getAll();
         assertNotEquals(productBefore, productAfter);
         assertEquals(newProduct.getName(), productAfter.getName());
@@ -96,9 +97,7 @@ class JdbcProductDaoITest {
     @Test
     @DisplayName("getBySearch Test And Return The List And NotNull And NotNull Fields")
     void getBySearchTestAndReturnTheListAndCheckSizeAndNotNullAndNotNullFields() {
-        DataSource dataSource = DataSourceCreator.getDataSource();
-        JdbcProductDao jdbcProductDao = new JdbcProductDao(dataSource);
-        String pattern = "yo";
+        String pattern = "DD";
         List<Product> products = jdbcProductDao.getBySearch(pattern);
         assertNotNull(products);
         for (Product product : products) {
