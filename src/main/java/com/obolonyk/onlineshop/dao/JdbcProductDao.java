@@ -20,31 +20,39 @@ public class JdbcProductDao {
 
     private DataSource dataSource;
 
-    public List<Product> getAll() throws SQLException {
+
+    public List<Product> getAll() {
         List<Product> products = new ArrayList<>();
-        try (Connection connection = dataSource.getConnection();
-             Statement statement = connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery(SELECT_ALL);
-            ProductRowMapper productRowMapper = new ProductRowMapper();
-            while (resultSet.next()) {
-                products.add(productRowMapper.mapRow(resultSet));
+        try {
+            try (Connection connection = dataSource.getConnection();
+                 Statement statement = connection.createStatement()) {
+                ResultSet resultSet = statement.executeQuery(SELECT_ALL);
+                ProductRowMapper productRowMapper = new ProductRowMapper();
+                while (resultSet.next()) {
+                    products.add(productRowMapper.mapRow(resultSet));
+                }
             }
+            return products;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
-        return products;
     }
 
-    public Product getById(int id) throws SQLException {
+    public Product getById(int id) {
         Product product = Product.builder().build();
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_ID)) {
-            preparedStatement.setInt(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            ProductRowMapper productRowMapper = new ProductRowMapper();
-            //TODO: if !rs.next() -> Product not found exc
-            //TODO: SQLExc -> Cannot get Product from db
-            while (resultSet.next()) {
+        try {
+            try (Connection connection = dataSource.getConnection();
+                 PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_ID)) {
+                preparedStatement.setLong(1, id);
+                ResultSet resultSet = preparedStatement.executeQuery();
+                if (!resultSet.next()) {
+                    throw new RuntimeException();
+                }
+                ProductRowMapper productRowMapper = new ProductRowMapper();
                 product = productRowMapper.mapRow(resultSet);
             }
+        } catch (SQLException e) {
+            new RuntimeException(e);
         }
         return product;
     }
@@ -87,19 +95,23 @@ public class JdbcProductDao {
         }
     }
 
-    public List<Product> getBySearch(String pattern) throws SQLException {
+    public List<Product> getBySearch(String pattern) {
         List<Product> products = new ArrayList<>();
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SEARCH)) {
-            preparedStatement.setString(1, "%"+pattern+"%");
-            preparedStatement.setString(2, "%"+pattern+"%");
-            ResultSet resultSet = preparedStatement.executeQuery();
-            ProductRowMapper productRowMapper = new ProductRowMapper();
-            while (resultSet.next()) {
-                products.add(productRowMapper.mapRow(resultSet));
+        try {
+            try (Connection connection = dataSource.getConnection();
+                 PreparedStatement preparedStatement = connection.prepareStatement(SEARCH)) {
+                preparedStatement.setString(1, "%" + pattern + "%");
+                preparedStatement.setString(2, "%" + pattern + "%");
+                ResultSet resultSet = preparedStatement.executeQuery();
+                ProductRowMapper productRowMapper = new ProductRowMapper();
+                while (resultSet.next()) {
+                    products.add(productRowMapper.mapRow(resultSet));
+                }
             }
+            return products;
+        } catch (SQLException e) {
+            throw new RuntimeException();
         }
-        return products;
     }
 
 }

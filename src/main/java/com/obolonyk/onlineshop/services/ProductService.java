@@ -2,8 +2,6 @@ package com.obolonyk.onlineshop.services;
 
 import com.obolonyk.onlineshop.dao.JdbcProductDao;
 import com.obolonyk.onlineshop.entity.Product;
-
-import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -12,21 +10,13 @@ public class ProductService {
 
     public List<Product> getAllProducts() {
         List<Product> productList;
-        try {
-            productList = jdbcProductDao.getAll();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        productList = jdbcProductDao.getAll();
         return productList;
     }
 
     public Product getProductById(int id) {
         Product product;
-        try {
-            product = jdbcProductDao.getById(id);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        product = jdbcProductDao.getById(id);
         return product;
     }
 
@@ -48,11 +38,7 @@ public class ProductService {
 
     public List<Product> getBySearch(String pattern) {
         List<Product> productList;
-        try {
-            productList = jdbcProductDao.getBySearch(pattern);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        productList = jdbcProductDao.getBySearch(pattern);
         return productList;
     }
 

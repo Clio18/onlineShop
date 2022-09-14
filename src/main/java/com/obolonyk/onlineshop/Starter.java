@@ -2,36 +2,43 @@ package com.obolonyk.onlineshop;
 
 import com.obolonyk.onlineshop.dao.JdbcProductDao;
 import com.obolonyk.onlineshop.services.ProductService;
-import com.obolonyk.onlineshop.servlets.*;
+import com.obolonyk.onlineshop.services.SecurityService;
+import com.obolonyk.onlineshop.web.security.SecurityFilter;
+import com.obolonyk.onlineshop.web.servlets.*;
 import com.obolonyk.onlineshop.utils.DataSourceCreator;
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.flywaydb.core.Flyway;
 
+import javax.servlet.DispatcherType;
 import javax.sql.DataSource;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 
 public class Starter {
     public static void main(String[] args) throws Exception {
         DataSource dataSource = DataSourceCreator.getDataSource();
+        List<String> sessionList = new ArrayList<>();
+
         //flyway
         Flyway flyway = Flyway.configure().dataSource(dataSource).load();
         flyway.migrate();
-        List<String> sessionList = new ArrayList<>();
-        //TODO: add logs
+
         //config dao
         JdbcProductDao jdbcProductDao = new JdbcProductDao(dataSource);
 
         //config services
         ProductService productService = new ProductService();
         productService.setJdbcProductDao(jdbcProductDao);
+        SecurityService securityService = new SecurityService();
+        securityService.setSessionList(sessionList);
 
         //config servlets
         ProductsServlet productsServlet = new ProductsServlet();
         productsServlet.setProductService(productService);
-        productsServlet.setSessionList(sessionList);
 
         AddProductServlet addProductServlet = new AddProductServlet();
         addProductServlet.setProductService(productService);
@@ -46,8 +53,13 @@ public class Starter {
         searchProductsServlet.setProductService(productService);
 
         LoginServlet loginServlet = new LoginServlet();
-        loginServlet.setSessionList(sessionList);
+        loginServlet.setSecurityService(securityService);
 
+        //config filters
+        SecurityFilter securityFilter = new SecurityFilter();
+        securityFilter.setSecurityService(securityService);
+
+        //config context
         ServletContextHandler servletContextHandler = new ServletContextHandler();
         servletContextHandler.addServlet(new ServletHolder(productsServlet), "/products");
         servletContextHandler.addServlet(new ServletHolder(addProductServlet), "/products/add");
@@ -55,6 +67,8 @@ public class Starter {
         servletContextHandler.addServlet(new ServletHolder(updateProductServlet), "/products/update");
         servletContextHandler.addServlet(new ServletHolder(searchProductsServlet), "/products/search");
         servletContextHandler.addServlet(new ServletHolder(loginServlet), "/login");
+
+        servletContextHandler.addFilter(new FilterHolder(securityFilter), "/products", EnumSet.of(DispatcherType.REQUEST));
 
         //config server
         Server server = new Server(8085);
