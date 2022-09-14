@@ -2,22 +2,21 @@ package com.obolonyk.onlineshop.services;
 
 import com.obolonyk.onlineshop.dao.JdbcProductDao;
 import com.obolonyk.onlineshop.entity.Product;
+import lombok.Setter;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Setter
 public class ProductService {
     private JdbcProductDao jdbcProductDao;
 
     public List<Product> getAllProducts() {
-        List<Product> productList;
-        productList = jdbcProductDao.getAll();
-        return productList;
+        return jdbcProductDao.getAll();
     }
 
     public Product getProductById(int id) {
-        Product product;
-        product = jdbcProductDao.getById(id);
-        return product;
+        return jdbcProductDao.getById(id);
     }
 
     public void save(Product product) {
@@ -37,12 +36,6 @@ public class ProductService {
     }
 
     public List<Product> getBySearch(String pattern) {
-        List<Product> productList;
-        productList = jdbcProductDao.getBySearch(pattern);
-        return productList;
-    }
-
-    public void setJdbcProductDao(JdbcProductDao jdbcProductDao) {
-        this.jdbcProductDao = jdbcProductDao;
+        return jdbcProductDao.getBySearch(pattern);
     }
 }

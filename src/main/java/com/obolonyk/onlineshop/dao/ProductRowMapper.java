@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 
 public class ProductRowMapper {
-    public Product mapRow(ResultSet resultSet) throws SQLException {
+    public static Product mapRow(ResultSet resultSet) throws SQLException {
         return Product.builder()
                 .id(resultSet.getLong("id"))
                 .name(resultSet.getString("name"))

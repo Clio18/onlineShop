@@ -13,13 +13,12 @@ import java.util.List;
 public class JdbcProductDao {
     private static final String SELECT_ALL = "SELECT id, name, price, creation_date, description FROM products;";
     private static final String SELECT_BY_ID = "SELECT id, name, price, creation_date, description FROM products WHERE id = ?;";
-    private static final String INSERT = "INSERT INTO products (name, price, creation_date, description) VALUES (?, ?, ?, ?);";
+    private static final String SAVE = "INSERT INTO products (name, price, creation_date, description) VALUES (?, ?, ?, ?);";
     private static final String DELETE = "DELETE FROM Products WHERE id = ?;";
     private static final String UPDATE = "UPDATE products SET name = ?, price = ?, description = ? where id = ?;";
     private static final String SEARCH = "SELECT id, name, price, creation_date, description FROM products WHERE name ilike ? OR description ilike ?;";
 
     private DataSource dataSource;
-
 
     public List<Product> getAll() {
         List<Product> products = new ArrayList<>();
@@ -27,9 +26,8 @@ public class JdbcProductDao {
             try (Connection connection = dataSource.getConnection();
                  Statement statement = connection.createStatement()) {
                 ResultSet resultSet = statement.executeQuery(SELECT_ALL);
-                ProductRowMapper productRowMapper = new ProductRowMapper();
                 while (resultSet.next()) {
-                    products.add(productRowMapper.mapRow(resultSet));
+                    products.add(ProductRowMapper.mapRow(resultSet));
                 }
             }
             return products;
@@ -48,8 +46,7 @@ public class JdbcProductDao {
                 if (!resultSet.next()) {
                     throw new RuntimeException();
                 }
-                ProductRowMapper productRowMapper = new ProductRowMapper();
-                product = productRowMapper.mapRow(resultSet);
+                product = ProductRowMapper.mapRow(resultSet);
             }
         } catch (SQLException e) {
             new RuntimeException(e);
@@ -59,7 +56,7 @@ public class JdbcProductDao {
 
     public void save(Product product) {
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(INSERT);) {
+             PreparedStatement preparedStatement = connection.prepareStatement(SAVE);) {
             preparedStatement.setString(1, product.getName());
             preparedStatement.setDouble(2, product.getPrice());
             LocalDateTime localDateTime = product.getCreationDate();
@@ -103,9 +100,8 @@ public class JdbcProductDao {
                 preparedStatement.setString(1, "%" + pattern + "%");
                 preparedStatement.setString(2, "%" + pattern + "%");
                 ResultSet resultSet = preparedStatement.executeQuery();
-                ProductRowMapper productRowMapper = new ProductRowMapper();
                 while (resultSet.next()) {
-                    products.add(productRowMapper.mapRow(resultSet));
+                    products.add(ProductRowMapper.mapRow(resultSet));
                 }
             }
             return products;

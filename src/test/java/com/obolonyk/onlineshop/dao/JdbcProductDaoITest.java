@@ -16,7 +16,7 @@ class JdbcProductDaoITest {
 
     @Test
     @DisplayName("getAll Test And Return The List And NotNull And NotNull Fields")
-    void getAllTestAndReturnTheListAndCheckSizeAndNotNullAndNotNullFields() throws SQLException {
+    void getAllTestAndReturnTheListAndCheckSizeAndNotNullAndNotNullFields() {
         DataSource dataSource = DataSourceCreator.getDataSource();
         JdbcProductDao jdbcProductDao = new JdbcProductDao(dataSource);
         List<Product> products = jdbcProductDao.getAll();
@@ -31,7 +31,7 @@ class JdbcProductDaoITest {
 
     @Test
     @DisplayName("getById Test And Return The Product")
-    void getByIdTestAndReturnTheProductAndCheckNotNullAndNotNullFields() throws SQLException {
+    void getByIdTestAndReturnTheProductAndCheckNotNullAndNotNullFields() {
         DataSource dataSource = DataSourceCreator.getDataSource();
         JdbcProductDao jdbcProductDao = new JdbcProductDao(dataSource);
         Product product = jdbcProductDao.getById(2);
@@ -44,7 +44,7 @@ class JdbcProductDaoITest {
 
     @Test
     @DisplayName("save Test And Check Quantity Of Products Before And After ")
-    void saveTestAndCheckQuantityOfProductsBeforeAndAfter() throws SQLException {
+    void saveTestAndCheckQuantityOfProductsBeforeAndAfter(){
         DataSource dataSource = DataSourceCreator.getDataSource();
         JdbcProductDao jdbcProductDao = new JdbcProductDao(dataSource);
         List<Product> before = jdbcProductDao.getAll();
@@ -60,7 +60,7 @@ class JdbcProductDaoITest {
 
     @Test
     @DisplayName("remove Test And Check Quantity Of Products Before And After")
-    void removeTestAndCheckQuantityOfProductsBeforeAndAfter() throws SQLException {
+    void removeTestAndCheckQuantityOfProductsBeforeAndAfter() {
         DataSource dataSource = DataSourceCreator.getDataSource();
         JdbcProductDao jdbcProductDao = new JdbcProductDao(dataSource);
         List<Product> before = jdbcProductDao.getAll();
@@ -73,7 +73,7 @@ class JdbcProductDaoITest {
 
     @Test
     @DisplayName("update Test And Check Fields And Equals And All Size Before And After")
-    void updateTestAndCheckFieldsAndEqualsAndAllSizeBeforeAndAfter() throws SQLException {
+    void updateTestAndCheckFieldsAndEqualsAndAllSizeBeforeAndAfter() {
         DataSource dataSource = DataSourceCreator.getDataSource();
         JdbcProductDao jdbcProductDao = new JdbcProductDao(dataSource);
         Product productBefore = jdbcProductDao.getById(1);
@@ -95,7 +95,7 @@ class JdbcProductDaoITest {
 
     @Test
     @DisplayName("getBySearch Test And Return The List And NotNull And NotNull Fields")
-    void getBySearchTestAndReturnTheListAndCheckSizeAndNotNullAndNotNullFields() throws SQLException {
+    void getBySearchTestAndReturnTheListAndCheckSizeAndNotNullAndNotNullFields() {
         DataSource dataSource = DataSourceCreator.getDataSource();
         JdbcProductDao jdbcProductDao = new JdbcProductDao(dataSource);
         String pattern = "yo";
