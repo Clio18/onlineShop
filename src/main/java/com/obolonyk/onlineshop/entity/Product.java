@@ -1,5 +1,6 @@
 package com.obolonyk.onlineshop.entity;
 
+
 import lombok.Builder;
 import lombok.Data;
 
