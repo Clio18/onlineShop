@@ -18,7 +18,7 @@ public class SecurityFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         Cookie[] cookies = request.getCookies();
-        if (!securityService.isAuth(cookies)) {
+        if (!securityService.isAlreadyAuth(cookies)) {
             response.sendRedirect("/login");
             return;
         }

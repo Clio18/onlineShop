@@ -11,6 +11,7 @@ import java.util.UUID;
 
 @Setter
 public class SecurityService {
+    private static final String USER_TOKEN = "user-token";
     private List<String> sessionList;
     private UserService userService;
 
@@ -20,11 +21,11 @@ public class SecurityService {
         return uuid;
     }
 
-    public boolean isAuth(Cookie[] cookies) {
+    public boolean isAlreadyAuth(Cookie[] cookies) {
         boolean isValid = false;
         if (cookies != null) {
             for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("user-token")) {
+                if (cookie.getName().equals(USER_TOKEN)) {
                     if (sessionList.contains(cookie.getValue())) {
                         isValid = true;
                     }
@@ -68,8 +69,8 @@ public class SecurityService {
 
     public Cookie logOut() {
         if (!sessionList.isEmpty()) {
-            sessionList.remove("user-token");
+            sessionList.remove(USER_TOKEN);
         }
-        return new Cookie("user-token", null);
+        return new Cookie(USER_TOKEN, null);
     }
 }
