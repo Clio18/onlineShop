@@ -65,4 +65,11 @@ public class SecurityService {
         }
         return false;
     }
+
+    public Cookie logOut() {
+        if (!sessionList.isEmpty()) {
+            sessionList.remove("user-token");
+        }
+        return new Cookie("user-token", null);
+    }
 }

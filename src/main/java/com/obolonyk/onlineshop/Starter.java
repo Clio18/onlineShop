@@ -69,6 +69,9 @@ public class Starter {
         registrationServlet.setUserService(userService);
         registrationServlet.setSecurityService(securityService);
 
+        LogOutServlet logOutServlet = new LogOutServlet();
+        logOutServlet.setSecurityService(securityService);
+
         //config filters
         SecurityFilter securityFilter = new SecurityFilter();
         securityFilter.setSecurityService(securityService);
@@ -82,6 +85,7 @@ public class Starter {
         servletContextHandler.addServlet(new ServletHolder(searchProductsServlet), "/products/search");
         servletContextHandler.addServlet(new ServletHolder(loginServlet), "/login");
         servletContextHandler.addServlet(new ServletHolder(registrationServlet), "/registration");
+        servletContextHandler.addServlet(new ServletHolder(logOutServlet), "/logout");
 
         servletContextHandler.addFilter(new FilterHolder(securityFilter), "/products/*", EnumSet.of(DispatcherType.REQUEST));
 

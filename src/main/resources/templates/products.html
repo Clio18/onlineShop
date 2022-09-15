@@ -21,14 +21,22 @@
 <div style="width: 800px">
     <div style="margin-bottom: 5px">
         <div>
+            <div style="margin-bottom: 20px">
+                <form action="/logout" method="post">
+                    <div>
+                        <button type="submit" class="btn btn-danger" >
+                            Logout
+                        </button>
+                    </div>
+                </form>
+            </div>
             <form action="/products/search" method="post">
                 <div style="margin-bottom: 5px">
-                    <label for="exampleInputProduct1" class="form-label">Search</label>
                     <input type="text" class="form-control" id="exampleInputProduct1"
                            name="search" aria-describedby="productHelp" required>
                     <div id="productHelp" class="form-text">Enter some text...</div>
                 </div>
-                <div class="btn-group" style="margin-bottom: 20px">
+                <div class="btn-group" style="margin-bottom: 20px; width: 170px">
                     <div>
                     <button type="submit" class="btn btn btn-primary" >
                        Search
@@ -40,6 +48,7 @@
                 </div>
             </form>
         </div>
+
         <table class="table table-striped">
             <tr>
                 <th>ID</th>
@@ -76,7 +85,7 @@
         </#foreach>
         </table>
     </div>
-    <div>
+    <div style="width: 170px">
         <a class="btn btn-success" href="/products/add">Add new product</a>
     </div>
 </body>
