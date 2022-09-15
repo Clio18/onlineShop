@@ -61,7 +61,7 @@ public class JdbcProductDao implements ProductDao {
     @Override
     public void save(Product product) {
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SAVE);) {
+             PreparedStatement preparedStatement = connection.prepareStatement(SAVE)) {
             preparedStatement.setString(1, product.getName());
             preparedStatement.setDouble(2, product.getPrice());
             LocalDateTime localDateTime = product.getCreationDate();
