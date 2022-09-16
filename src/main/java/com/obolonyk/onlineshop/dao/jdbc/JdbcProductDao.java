@@ -40,6 +40,7 @@ public class JdbcProductDao implements ProductDao {
     }
 
     @Override
+    //TODO: should be Optional
     public Product getById(int id) {
         Product product = Product.builder().build();
         try {

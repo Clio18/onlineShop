@@ -1,76 +1,72 @@
 package com.obolonyk.onlineshop.services;
 
+import com.obolonyk.onlineshop.entity.Credentials;
+import com.obolonyk.onlineshop.entity.Session;
 import com.obolonyk.onlineshop.entity.User;
 import com.obolonyk.onlineshop.web.security.PasswordGenerator;
 import lombok.Setter;
 
 import javax.servlet.http.Cookie;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.time.LocalDateTime;
+import java.util.*;
 
 @Setter
 public class SecurityService {
     private static final String USER_TOKEN = "user-token";
-    private List<String> sessionList;
+    private List<Session> sessionList = Collections.synchronizedList(new ArrayList<>());
     private UserService userService;
 
-    public String getToken() {
-        String uuid = UUID.randomUUID().toString();
-        sessionList.add(uuid);
-        return uuid;
-    }
-
-    public boolean isAlreadyAuth(Cookie[] cookies) {
-        boolean isValid = false;
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals(USER_TOKEN)) {
-                    if (sessionList.contains(cookie.getValue())) {
-                        isValid = true;
-                    }
-                    break;
+    public Session getSession(String token){
+        for (Session session : sessionList) {
+            if (session.getToken().equals(token)) {
+                if (session.getExpirationTime().isBefore(LocalDateTime.now())) {
+                    sessionList.remove(session);
+                    return null;
                 }
+                return session;
             }
         }
-        return isValid;
+        return null;
     }
 
-    public User createAuthorized(User user) {
-        String login = user.getLogin();
-        Optional<User> userByLogin = userService.getByLogin(login);
-        if (userByLogin.isEmpty()) {
-            String salt = UUID.randomUUID().toString();
-            String password = user.getPassword();
-            String encryptedPassword = PasswordGenerator.generateEncrypted(password, salt);
-
-            return User.builder()
-                    .name(user.getName())
-                    .lastName(user.getLastName())
-                    .email(user.getEmail())
-                    .login(user.getLogin())
-                    .password(encryptedPassword)
-                    .salt(salt)
-                    .build();
+    public void logOut(String token) {
+        if (!sessionList.isEmpty()) {
+            sessionList.removeIf(session -> session.getToken().equals(token));
         }
-        return user;
     }
 
-    public boolean isAuth(String login, String password) {
-        Optional<User> userByLogin = userService.getByLogin(login);
+    public Session login(Credentials credentials) {
+        Optional<User> userByLogin = userService.getByLogin(credentials.getLogin());
         if (userByLogin.isPresent()) {
             User user = userByLogin.get();
             String salt = user.getSalt();
-            String enteredPass = PasswordGenerator.generateEncrypted(password, salt);
-            return user.getPassword().equals(enteredPass);
+            String password = user.getPassword();
+            String hashedPass = PasswordGenerator.generateEncrypted(credentials.getPassword(), salt);
+            if (hashedPass.equals(password)) {
+                String token = UUID.randomUUID().toString();
+                Session session = Session.builder()
+                        .user(user)
+                        .token(token)
+                        .expirationTime(LocalDateTime.now().plusMinutes(60))
+                        .cart(new ArrayList<>())
+                        .build();
+                sessionList.add(session);
+                return session;
+            }
         }
-        return false;
+        return null;
     }
 
-    public Cookie logOut() {
-        if (!sessionList.isEmpty()) {
-            sessionList.remove(USER_TOKEN);
+    public Session getSessionIfAuth(Cookie[] cookies) {
+        Session session = null;
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals(USER_TOKEN)) {
+                    String token = cookie.getValue();
+                     return getSession(token);
+                }
+            }
         }
-        return new Cookie(USER_TOKEN, null);
+        return session;
     }
 }

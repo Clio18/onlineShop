@@ -1,6 +1,7 @@
 package com.obolonyk.onlineshop.web.servlets;
 
 import com.obolonyk.onlineshop.services.SecurityService;
+import org.checkerframework.checker.units.qual.C;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -25,9 +26,17 @@ class LogOutServletTest {
         SecurityService securityService = mock(SecurityService.class);
         LogOutServlet logOutServlet = new LogOutServlet();
         logOutServlet.setSecurityService(securityService);
-        when(securityService.logOut()).thenReturn(new Cookie("A", null));
+
+        Cookie [] cookies = new Cookie[1];
+        Cookie cookie = new Cookie("user-token", "user");
+        cookies[0] = cookie;
+        when(mockReq.getCookies()).thenReturn(cookies);
+
+        doNothing().when(securityService).logOut(isA(String.class));
+
         logOutServlet.doPost(mockReq, mockResp);
-        verify(securityService, times(1)).logOut();
+
+        verify(securityService, times(1)).logOut(isA(String.class));
         verify(mockResp, times(1)).addCookie(isA(Cookie.class));
         verify(mockResp, times(1)).sendRedirect(isA(String.class));
     }

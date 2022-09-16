@@ -1,5 +1,6 @@
 package com.obolonyk.onlineshop.web.security;
 
+import com.obolonyk.onlineshop.entity.Session;
 import com.obolonyk.onlineshop.services.SecurityService;
 import lombok.Setter;
 
@@ -18,11 +19,12 @@ public class SecurityFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         Cookie[] cookies = request.getCookies();
-        if (!securityService.isAlreadyAuth(cookies)) {
+        Session session = securityService.getSessionIfAuth(cookies);
+        if (session == null) {
             response.sendRedirect("/login");
-            return;
+        } else {
+            filterChain.doFilter(servletRequest, servletResponse);
         }
-        filterChain.doFilter(servletRequest, servletResponse);
     }
 
     @Override

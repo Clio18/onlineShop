@@ -14,9 +14,15 @@ public class LogOutServlet extends HttpServlet {
     private SecurityService securityService;
 
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        Cookie cookie = securityService.logOut();
-        resp.addCookie(cookie);
-        resp.sendRedirect("/login");
+        Cookie[] cookies = req.getCookies();
+        for (Cookie cookie : cookies) {
+            if(cookie.getName().equals("user-token")){
+                String token = cookie.getValue();
+                securityService.logOut(token);
+                resp.addCookie(new Cookie("user-token", null));
+                resp.sendRedirect("/login");
+            }
+        }
     }
 
 }

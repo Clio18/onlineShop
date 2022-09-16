@@ -1,5 +1,7 @@
 package com.obolonyk.onlineshop.web.servlets;
 
+import com.obolonyk.onlineshop.entity.Credentials;
+import com.obolonyk.onlineshop.entity.Session;
 import com.obolonyk.onlineshop.services.SecurityService;
 import com.obolonyk.onlineshop.utils.PageGenerator;
 import lombok.Setter;
@@ -14,6 +16,7 @@ import java.util.Map;
 @Setter
 public class LoginServlet extends HttpServlet {
     private SecurityService securityService;
+
     private PageGenerator pageGenerator = PageGenerator.instance();
 
     @Override
@@ -26,11 +29,20 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String login = req.getParameter("login");
         String password = req.getParameter("password");
-        boolean isAuth;
-        isAuth = securityService.isAuth(login, password);
-        if (isAuth) {
-            String token = securityService.getToken();
+
+        Credentials credentials = Credentials.builder()
+                .login(login)
+                .password(password)
+                .build();
+
+        Session session = securityService.login(credentials);
+
+        if (session!=null) {
+            String token = session.getToken();
             Cookie cookie = new Cookie("user-token", token);
+            //TODO: ?? Do we need set it here
+            cookie.setMaxAge(3600);
+
             resp.addCookie(cookie);
             resp.sendRedirect("/products");
         } else {
@@ -38,6 +50,7 @@ public class LoginServlet extends HttpServlet {
             PageGenerator pageGenerator = PageGenerator.instance();
             Map<String, Object> parameters = Map.of("errorMessage", errorMessage);
             String page = pageGenerator.getPage("templates/registration.html", parameters);
+
             resp.getWriter().write(page);
         }
     }

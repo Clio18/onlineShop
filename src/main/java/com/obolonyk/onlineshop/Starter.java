@@ -16,15 +16,12 @@ import org.flywaydb.core.Flyway;
 
 import javax.servlet.DispatcherType;
 import javax.sql.DataSource;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.EnumSet;
-import java.util.List;
 
 public class Starter {
     public static void main(String[] args) throws Exception {
+        //TODO: web.xml
         DataSource dataSource = DataSourceCreator.getDataSource();
-        List<String> sessionList = Collections.synchronizedList(new ArrayList<>());
 
         //flyway
         Flyway flyway = Flyway.configure().dataSource(dataSource).load();
@@ -42,9 +39,7 @@ public class Starter {
         userService.setJdbcUserDao(jdbcUserDao);
 
         SecurityService securityService = new SecurityService();
-        securityService.setSessionList(sessionList);
         securityService.setUserService(userService);
-
 
         //config servlets
         ProductsServlet productsServlet = new ProductsServlet();
