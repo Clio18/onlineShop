@@ -49,6 +49,9 @@
             </form>
         </div>
 
+        <#setting number_format=",##0.00">
+        <#setting locale="en_US">
+
         <table class="table table-striped">
             <tr>
                 <th>ID</th>
@@ -62,7 +65,7 @@
             <tr>
                 <td>${product.id}</td>
                 <td>${product.name}</td>
-                <td>${product.price}</td>
+                <td>${product.price?string.currency}</td>
                 <td>${product.creationDate}</td>
                 <td>${product.description}</td>
                 <td>

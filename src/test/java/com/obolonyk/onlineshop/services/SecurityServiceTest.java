@@ -177,30 +177,4 @@ class SecurityServiceTest {
         Session session = securityService.login(credentials);
         assertNull(session);
     }
-
-    @Test
-    @DisplayName("test getSessionIfAuth")
-    void testGetSessionIfAuth(){
-        UserService userService = mock(UserService.class);
-        SecurityService securityService = new SecurityService();
-        securityService.setUserService(userService);
-
-        List<Session> sessionList = Collections.synchronizedList(new ArrayList<>());
-        Session session = Session.builder()
-                .user(user)
-                .token("admin")
-                .cart(new ArrayList<>())
-                .expirationTime(LocalDateTime.now().plusMinutes(1))
-                .build();
-        sessionList.add(session);
-        securityService.setSessionList(sessionList);
-
-        Cookie [] cookies = new Cookie[1];
-        Cookie cookie = new Cookie("user-token", "admin");
-        cookies[0] = cookie;
-
-        Session sessionIfAuth = securityService.getSessionIfAuth(cookies);
-        assertNotNull(sessionIfAuth);
-    }
-
 }

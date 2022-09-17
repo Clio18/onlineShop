@@ -82,7 +82,7 @@ public class Starter {
         servletContextHandler.addServlet(new ServletHolder(registrationServlet), "/registration");
         servletContextHandler.addServlet(new ServletHolder(logOutServlet), "/logout");
 
-        servletContextHandler.addFilter(new FilterHolder(securityFilter), "/products/*", EnumSet.of(DispatcherType.REQUEST));
+        servletContextHandler.addFilter(new FilterHolder(securityFilter), "/*", EnumSet.of(DispatcherType.REQUEST));
 
         //config server
         Server server = new Server(8085);

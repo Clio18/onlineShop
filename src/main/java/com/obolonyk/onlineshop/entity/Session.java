@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -12,5 +13,5 @@ public class Session {
     private User user;
     private String token;
     private LocalDateTime expirationTime;
-    private List<Product> cart;
+    private List<Order> cart = new ArrayList<>();
 }

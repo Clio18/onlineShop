@@ -40,9 +40,8 @@ public class LoginServlet extends HttpServlet {
         if (session!=null) {
             String token = session.getToken();
             Cookie cookie = new Cookie("user-token", token);
-            //TODO: ?? Do we need set it here
+            //TODO: magic number
             cookie.setMaxAge(3600);
-
             resp.addCookie(cookie);
             resp.sendRedirect("/products");
         } else {
