@@ -8,4 +8,5 @@ import lombok.Data;
 public class Order {
     private Product product;
     private int quantity;
+    private double total;
 }
