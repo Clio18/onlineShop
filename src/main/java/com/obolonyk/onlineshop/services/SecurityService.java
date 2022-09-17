@@ -13,6 +13,7 @@ import java.util.*;
 public class SecurityService {
     private List<Session> sessionList = Collections.synchronizedList(new ArrayList<>());
     private UserService userService;
+    private int durationInSeconds;
 
     public void logOut(String token) {
         if (!sessionList.isEmpty()) {
@@ -29,11 +30,10 @@ public class SecurityService {
             String hashedPass = PasswordGenerator.generateEncrypted(credentials.getPassword(), salt);
             if (hashedPass.equals(password)) {
                 String token = UUID.randomUUID().toString();
-                //TODO: magic number
                 Session session = Session.builder()
                         .user(user)
                         .token(token)
-                        .expirationTime(LocalDateTime.now().plusMinutes(60))
+                        .expirationTime(LocalDateTime.now().plusSeconds(durationInSeconds))
                         .build();
                 sessionList.add(session);
                 return session;
@@ -54,4 +54,9 @@ public class SecurityService {
         }
         return null;
     }
+
+    public void setDurationInSeconds(int durationInSeconds) {
+        this.durationInSeconds = durationInSeconds;
+    }
+
 }

@@ -10,8 +10,7 @@ public class DataSourceCreator {
     private static final String USER_NAME = "user";
     private static final String PASSWORD = "password";
 
-    public static DataSource getDataSource() {
-        Properties props = PropertiesReader.getProperties();
+    public static DataSource getDataSource(Properties props) {
         BasicDataSource dataSource = new BasicDataSource();
         dataSource.setUsername(props.getProperty(USER_NAME));
         dataSource.setPassword(props.getProperty(PASSWORD));

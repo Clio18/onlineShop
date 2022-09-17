@@ -5,6 +5,8 @@ import com.obolonyk.onlineshop.dao.jdbc.JdbcUserDao;
 import com.obolonyk.onlineshop.services.ProductService;
 import com.obolonyk.onlineshop.services.SecurityService;
 import com.obolonyk.onlineshop.services.UserService;
+import com.obolonyk.onlineshop.utils.PageGenerator;
+import com.obolonyk.onlineshop.utils.PropertiesReader;
 import com.obolonyk.onlineshop.web.security.SecurityFilter;
 import com.obolonyk.onlineshop.web.servlets.*;
 import com.obolonyk.onlineshop.utils.DataSourceCreator;
@@ -17,11 +19,16 @@ import org.flywaydb.core.Flyway;
 import javax.servlet.DispatcherType;
 import javax.sql.DataSource;
 import java.util.EnumSet;
+import java.util.Properties;
 
 public class Starter {
     public static void main(String[] args) throws Exception {
         //TODO: web.xml
-        DataSource dataSource = DataSourceCreator.getDataSource();
+        Properties props = PropertiesReader.getProperties();
+        int duration = Integer.parseInt(props.getProperty("durationInSeconds"));
+        DataSource dataSource = DataSourceCreator.getDataSource(props);
+
+        PageGenerator pageGenerator = PageGenerator.instance();
 
         //flyway
         Flyway flyway = Flyway.configure().dataSource(dataSource).load();
@@ -40,29 +47,36 @@ public class Starter {
 
         SecurityService securityService = new SecurityService();
         securityService.setUserService(userService);
+        securityService.setDurationInSeconds(duration);
 
         //config servlets
         ProductsServlet productsServlet = new ProductsServlet();
         productsServlet.setProductService(productService);
+        productsServlet.setPageGenerator(pageGenerator);
 
         AddProductServlet addProductServlet = new AddProductServlet();
         addProductServlet.setProductService(productService);
+        addProductServlet.setPageGenerator(pageGenerator);
 
         RemoveProductServlet removeProductServlet = new RemoveProductServlet();
         removeProductServlet.setProductService(productService);
 
         UpdateProductServlet updateProductServlet = new UpdateProductServlet();
         updateProductServlet.setProductService(productService);
+        updateProductServlet.setPageGenerator(pageGenerator);
 
         SearchProductsServlet searchProductsServlet = new SearchProductsServlet();
         searchProductsServlet.setProductService(productService);
+        searchProductsServlet.setPageGenerator(pageGenerator);
 
         LoginServlet loginServlet = new LoginServlet();
         loginServlet.setSecurityService(securityService);
+        loginServlet.setDurationInSeconds(duration);
 
         RegistrationServlet registrationServlet = new RegistrationServlet();
         registrationServlet.setUserService(userService);
         registrationServlet.setSecurityService(securityService);
+        registrationServlet.setPageGenerator(pageGenerator);
 
         LogOutServlet logOutServlet = new LogOutServlet();
         logOutServlet.setSecurityService(securityService);

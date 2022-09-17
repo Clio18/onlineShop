@@ -16,6 +16,7 @@ import java.util.Map;
 @Setter
 public class LoginServlet extends HttpServlet {
     private SecurityService securityService;
+    private int durationInSeconds;
 
     private PageGenerator pageGenerator = PageGenerator.instance();
 
@@ -40,8 +41,7 @@ public class LoginServlet extends HttpServlet {
         if (session!=null) {
             String token = session.getToken();
             Cookie cookie = new Cookie("user-token", token);
-            //TODO: magic number
-            cookie.setMaxAge(3600);
+            cookie.setMaxAge(durationInSeconds);
             resp.addCookie(cookie);
             resp.sendRedirect("/products");
         } else {
@@ -52,5 +52,9 @@ public class LoginServlet extends HttpServlet {
 
             resp.getWriter().write(page);
         }
+    }
+
+    public void setDurationInSeconds(int durationInSeconds) {
+        this.durationInSeconds = durationInSeconds;
     }
 }

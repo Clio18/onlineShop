@@ -18,13 +18,13 @@ import java.util.UUID;
 
 @Setter
 public class RegistrationServlet extends HttpServlet {
-    private PageGenerator instance = PageGenerator.instance();
+    private PageGenerator pageGenerator;
     private UserService userService;
     private SecurityService securityService;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String page = instance.getPage("templates/registration.html", null);
+        String page = pageGenerator.getPage("templates/registration.html", null);
         resp.getWriter().write(page);
     }
 
@@ -52,7 +52,6 @@ public class RegistrationServlet extends HttpServlet {
             resp.sendRedirect("/login");
         } else {
             String errorMessage = "This login is already exists";
-            PageGenerator pageGenerator = PageGenerator.instance();
             Map<String, Object> parameters = Map.of("errorMessage", errorMessage);
             String page = pageGenerator.getPage("templates/registration.html", parameters);
             resp.getWriter().write(page);

@@ -17,7 +17,7 @@ import java.util.Map;
 @Setter
 public class SearchProductsServlet extends HttpServlet {
     private ProductService productService;
-    private PageGenerator pageGenerator = PageGenerator.instance();
+    private PageGenerator pageGenerator;
 
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String parameter = req.getParameter("search");

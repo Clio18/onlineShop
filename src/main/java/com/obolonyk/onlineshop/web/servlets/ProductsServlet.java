@@ -16,7 +16,7 @@ import java.util.Map;
 @Setter
 public class ProductsServlet extends HttpServlet {
     private ProductService productService;
-    private PageGenerator pageGenerator = PageGenerator.instance();
+    private PageGenerator pageGenerator;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {

@@ -11,10 +11,9 @@ public class PropertiesReader {
 
     private static final Map<String, Properties> cachedProps = new ConcurrentHashMap<>();
 
-    static Properties getProperties() {
+    public static Properties getProperties() {
         if (cachedProps.isEmpty()) {
             Properties properties = readProperties();
-            //TODO: can be empty
             return properties;
         } else {
             return cachedProps.get(PATH_TO_PROPS);

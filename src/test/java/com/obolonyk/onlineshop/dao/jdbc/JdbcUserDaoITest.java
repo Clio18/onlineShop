@@ -2,6 +2,7 @@ package com.obolonyk.onlineshop.dao.jdbc;
 
 import com.obolonyk.onlineshop.entity.User;
 import com.obolonyk.onlineshop.utils.DataSourceCreator;
+import com.obolonyk.onlineshop.utils.PropertiesReader;
 import org.flywaydb.core.Flyway;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -9,6 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import javax.sql.DataSource;
 import java.util.Optional;
+import java.util.Properties;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,7 +21,8 @@ class JdbcUserDaoITest {
 
     @BeforeEach
     void init() {
-        dataSource = DataSourceCreator.getDataSource();
+        Properties props = PropertiesReader.getProperties();
+        dataSource = DataSourceCreator.getDataSource(props);
         flyway = Flyway.configure().dataSource(dataSource).load();
         flyway.migrate();
         jdbcUserDao = new JdbcUserDao(dataSource);
