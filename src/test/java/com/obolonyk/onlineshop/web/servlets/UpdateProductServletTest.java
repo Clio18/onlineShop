@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Matchers.isA;
@@ -38,7 +39,7 @@ class UpdateProductServletTest {
                 .creationDate(LocalDateTime.now())
                 .build();
 
-        when(productService.getProductById(1)).thenReturn(product);
+        when(productService.getProductById(1)).thenReturn(Optional.of(product));
 
         StringWriter stringWriter = new StringWriter();
         PrintWriter writer = new PrintWriter(stringWriter);

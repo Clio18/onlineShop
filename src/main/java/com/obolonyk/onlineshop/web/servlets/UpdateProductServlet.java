@@ -9,8 +9,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.rmi.RemoteException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Setter
 public class UpdateProductServlet extends HttpServlet {
@@ -19,11 +21,16 @@ public class UpdateProductServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         int id = Integer.parseInt(req.getParameter("id"));
-        Product product = productService.getProductById(id);
-        Map<String, Object> paramMap = new HashMap<>();
-        paramMap.put("product", product);
-        String page = pageGenerator.getPage("templates/updateProduct.html", paramMap);
-        resp.getWriter().write(page);
+        Optional<Product> productOptional = productService.getProductById(id);
+        if(productOptional.isPresent()) {
+            Product product = productOptional.get();
+            Map<String, Object> paramMap = new HashMap<>();
+            paramMap.put("product", product);
+            String page = pageGenerator.getPage("templates/updateProduct.html", paramMap);
+            resp.getWriter().write(page);
+        } else {
+            throw new RemoteException("Product not found");
+        }
     }
 
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) {

@@ -10,21 +10,23 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Optional;
 
 @Setter
-public class AddProductToCartServlet extends HttpServlet {
+public class AddToCartServlet extends HttpServlet {
     private ProductService productService;
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
         try {
             int id = Integer.parseInt(req.getParameter("id"));
-            Product product = productService.getProductById(id);
-            if (product != null) {
+            Optional<Product> optionalProduct = productService.getProductById(id);
+            if (optionalProduct.isPresent()) {
                 Session session = (Session) req.getAttribute("session");
                 List<Order> cart = session.getCart();
+                Product product = optionalProduct.get();
                 for (Order order : cart) {
-                    if (order.getProduct().getName().equals(product.getName())){
+                    if (order.getProduct().getName().equals(product.getName())) {
                         int quantity = order.getQuantity() + 1;
                         double total = quantity * product.getPrice();
                         order.setQuantity(quantity);

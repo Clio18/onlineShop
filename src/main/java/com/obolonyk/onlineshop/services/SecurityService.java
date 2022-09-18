@@ -56,8 +56,4 @@ public class SecurityService {
         return null;
     }
 
-    public void setDurationInSeconds(int durationInSeconds) {
-        this.durationInSeconds = durationInSeconds;
-    }
-
 }

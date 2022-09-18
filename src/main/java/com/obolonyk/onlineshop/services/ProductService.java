@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Setter
 public class ProductService {
@@ -15,7 +16,7 @@ public class ProductService {
         return jdbcProductDao.getAll();
     }
 
-    public Product getProductById(int id) {
+    public Optional<Product> getProductById(int id) {
         return jdbcProductDao.getById(id);
     }
 

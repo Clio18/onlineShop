@@ -10,6 +10,7 @@ import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @AllArgsConstructor
 public class JdbcProductDao implements ProductDao {
@@ -41,7 +42,7 @@ public class JdbcProductDao implements ProductDao {
 
     @Override
     //TODO: should be Optional
-    public Product getById(int id) {
+    public Optional<Product> getById(int id) {
         Product product = Product.builder().build();
         try {
             try (Connection connection = dataSource.getConnection();
@@ -56,7 +57,7 @@ public class JdbcProductDao implements ProductDao {
         } catch (SQLException e) {
             new RuntimeException(e);
         }
-        return product;
+        return Optional.of(product);
     }
 
     @Override
