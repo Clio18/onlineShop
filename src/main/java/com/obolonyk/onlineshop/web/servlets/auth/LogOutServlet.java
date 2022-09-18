@@ -1,6 +1,7 @@
 package com.obolonyk.onlineshop.web.servlets.auth;
 
 import com.obolonyk.onlineshop.services.SecurityService;
+import com.obolonyk.onlineshop.services.locator.ServiceLocator;
 import lombok.Setter;
 
 import javax.servlet.http.Cookie;
@@ -11,7 +12,7 @@ import java.io.IOException;
 
 @Setter
 public class LogOutServlet extends HttpServlet {
-    private SecurityService securityService;
+    private SecurityService securityService = ServiceLocator.getService(SecurityService.class);
 
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Cookie[] cookies = req.getCookies();

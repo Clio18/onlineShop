@@ -6,6 +6,7 @@ import com.obolonyk.onlineshop.services.CartService;
 import com.obolonyk.onlineshop.services.ProductService;
 import com.obolonyk.onlineshop.services.SecurityService;
 import com.obolonyk.onlineshop.services.UserService;
+import com.obolonyk.onlineshop.services.locator.ServiceLocator;
 import com.obolonyk.onlineshop.utils.PageGenerator;
 import com.obolonyk.onlineshop.utils.PropertiesReader;
 import com.obolonyk.onlineshop.web.security.SecurityFilter;
@@ -22,90 +23,30 @@ import org.eclipse.jetty.servlet.ServletHolder;
 import org.flywaydb.core.Flyway;
 
 import javax.servlet.DispatcherType;
-import javax.sql.DataSource;
 import java.util.EnumSet;
-import java.util.Properties;
 
 public class Starter {
     public static void main(String[] args) throws Exception {
         //TODO: web.xml
-        Properties props = PropertiesReader.getProperties();
-        int duration = Integer.parseInt(props.getProperty("durationInSeconds"));
-        DataSource dataSource = DataSourceCreator.getDataSource(props);
-
-        PageGenerator pageGenerator = PageGenerator.instance();
-
-        //flyway
-        Flyway flyway = Flyway.configure().dataSource(dataSource).load();
+        Flyway flyway = ServiceLocator.getService(Flyway.class);
         flyway.migrate();
-
-        //config dao
-        JdbcProductDao jdbcProductDao = new JdbcProductDao(dataSource);
-        JdbcUserDao jdbcUserDao = new JdbcUserDao(dataSource);
-
-        //config services
-        ProductService productService = new ProductService();
-        productService.setJdbcProductDao(jdbcProductDao);
-
-        UserService userService = new UserService();
-        userService.setJdbcUserDao(jdbcUserDao);
-
-        SecurityService securityService = new SecurityService();
-        securityService.setUserService(userService);
-        securityService.setDurationInSeconds(duration);
-
-        CartService cartService = new CartService();
-
         //config servlets
         ProductsServlet productsServlet = new ProductsServlet();
-        productsServlet.setProductService(productService);
-        productsServlet.setPageGenerator(pageGenerator);
-        productsServlet.setCartService(cartService);
-
         AddProductServlet addProductServlet = new AddProductServlet();
-        addProductServlet.setProductService(productService);
-        addProductServlet.setPageGenerator(pageGenerator);
-
         RemoveProductServlet removeProductServlet = new RemoveProductServlet();
-        removeProductServlet.setProductService(productService);
-
         UpdateProductServlet updateProductServlet = new UpdateProductServlet();
-        updateProductServlet.setProductService(productService);
-        updateProductServlet.setPageGenerator(pageGenerator);
-
         SearchProductsServlet searchProductsServlet = new SearchProductsServlet();
-        searchProductsServlet.setProductService(productService);
-        searchProductsServlet.setPageGenerator(pageGenerator);
-
         LoginServlet loginServlet = new LoginServlet();
-        loginServlet.setSecurityService(securityService);
-        loginServlet.setDurationInSeconds(duration);
-
         RegistrationServlet registrationServlet = new RegistrationServlet();
-        registrationServlet.setUserService(userService);
-        registrationServlet.setSecurityService(securityService);
-        registrationServlet.setPageGenerator(pageGenerator);
-
         LogOutServlet logOutServlet = new LogOutServlet();
-        logOutServlet.setSecurityService(securityService);
-
         AddToCartServlet addToCartServlet = new AddToCartServlet();
-        addToCartServlet.setProductService(productService);
-
         CartServlet cartServlet = new CartServlet();
-        cartServlet.setPageGenerator(pageGenerator);
-        cartServlet.setCartService(cartService);
-
         UpdatePlusCartServlet updatePlusCartServlet = new UpdatePlusCartServlet();
-        updatePlusCartServlet.setCartService(cartService);
         UpdateMinusCartServlet updateMinusCartServlet = new UpdateMinusCartServlet();
-        updateMinusCartServlet.setCartService(cartService);
         DeleteCartServlet deleteCartServlet = new DeleteCartServlet();
-        deleteCartServlet.setCartService(cartService);
 
         //config filters
         SecurityFilter securityFilter = new SecurityFilter();
-        securityFilter.setSecurityService(securityService);
 
         //config context
         ServletContextHandler servletContextHandler = new ServletContextHandler();

@@ -5,6 +5,7 @@ import com.obolonyk.onlineshop.entity.Session;
 import com.obolonyk.onlineshop.entity.User;
 import com.obolonyk.onlineshop.services.SecurityService;
 import com.obolonyk.onlineshop.services.UserService;
+import com.obolonyk.onlineshop.services.locator.ServiceLocator;
 import com.obolonyk.onlineshop.utils.PageGenerator;
 import com.obolonyk.onlineshop.web.security.PasswordGenerator;
 import lombok.Setter;
@@ -18,9 +19,9 @@ import java.util.UUID;
 
 @Setter
 public class RegistrationServlet extends HttpServlet {
-    private PageGenerator pageGenerator;
-    private UserService userService;
-    private SecurityService securityService;
+    private PageGenerator pageGenerator = ServiceLocator.getService(PageGenerator.class);
+    private UserService userService = ServiceLocator.getService(UserService.class);
+    private SecurityService securityService = ServiceLocator.getService(SecurityService.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {

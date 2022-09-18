@@ -2,6 +2,7 @@ package com.obolonyk.onlineshop.web.servlets.product;
 
 import com.obolonyk.onlineshop.entity.Product;
 import com.obolonyk.onlineshop.services.ProductService;
+import com.obolonyk.onlineshop.services.locator.ServiceLocator;
 import com.obolonyk.onlineshop.utils.PageGenerator;
 import lombok.Setter;
 
@@ -12,8 +13,8 @@ import java.io.IOException;
 
 @Setter
 public class AddProductServlet extends HttpServlet {
-    private ProductService productService;
-    private PageGenerator pageGenerator;
+    private ProductService productService = ServiceLocator.getService(ProductService.class);
+    private PageGenerator pageGenerator = ServiceLocator.getService(PageGenerator.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {

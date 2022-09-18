@@ -62,7 +62,6 @@
 
         <table class="table table-striped">
             <tr>
-                <th>ID</th>
                 <th>NAME</th>
                 <th>PRICE</th>
                 <th>CREATED ON</th>
@@ -71,7 +70,6 @@
             </tr>
             <#foreach product in products>
             <tr>
-                <td>${product.id}</td>
                 <td>${product.name}</td>
                 <#setting locale="en_US">
                 <td>${product.price?string.currency}</td>

@@ -3,6 +3,7 @@ package com.obolonyk.onlineshop.web.servlets.cart;
 import com.obolonyk.onlineshop.entity.Order;
 import com.obolonyk.onlineshop.entity.Session;
 import com.obolonyk.onlineshop.services.CartService;
+import com.obolonyk.onlineshop.services.locator.ServiceLocator;
 import lombok.Setter;
 
 import javax.servlet.http.HttpServlet;
@@ -13,7 +14,7 @@ import java.util.List;
 
 @Setter
 public class UpdatePlusCartServlet extends HttpServlet {
-private CartService cartService;
+private CartService cartService = ServiceLocator.getService(CartService.class);
 private static final String  PLUS = "plus";
 
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {

@@ -44,7 +44,6 @@
         </div>
         <table class="table table-striped">
             <tr>
-                <th>ID</th>
                 <th>NAME</th>
                 <th>AMOUNT</th>
                 <th>TOTAL PRICE</th>
@@ -52,7 +51,6 @@
             </tr>
             <#foreach order in orders>
             <tr>
-                <td>${order.product.id}</td>
                 <td>${order.product.name}</td>
                 <td>${order.quantity}</td>
                 <td>${order.total?string.currency}</td>

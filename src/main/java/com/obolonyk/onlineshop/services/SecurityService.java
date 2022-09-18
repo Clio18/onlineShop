@@ -3,6 +3,7 @@ package com.obolonyk.onlineshop.services;
 import com.obolonyk.onlineshop.entity.Credentials;
 import com.obolonyk.onlineshop.entity.Session;
 import com.obolonyk.onlineshop.entity.User;
+import com.obolonyk.onlineshop.services.locator.ServiceLocator;
 import com.obolonyk.onlineshop.web.security.PasswordGenerator;
 import lombok.Setter;
 
@@ -12,7 +13,7 @@ import java.util.*;
 @Setter
 public class SecurityService {
     private List<Session> sessionList = Collections.synchronizedList(new ArrayList<>());
-    private UserService userService;
+    private UserService userService = ServiceLocator.getService(UserService.class);
     private int durationInSeconds;
 
     public void logOut(String token) {
@@ -56,4 +57,7 @@ public class SecurityService {
         return null;
     }
 
+    public int getDurationInSeconds() {
+        return durationInSeconds;
+    }
 }

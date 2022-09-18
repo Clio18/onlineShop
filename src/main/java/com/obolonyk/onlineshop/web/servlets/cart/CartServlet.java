@@ -3,6 +3,7 @@ package com.obolonyk.onlineshop.web.servlets.cart;
 import com.obolonyk.onlineshop.entity.Order;
 import com.obolonyk.onlineshop.entity.Session;
 import com.obolonyk.onlineshop.services.CartService;
+import com.obolonyk.onlineshop.services.locator.ServiceLocator;
 import com.obolonyk.onlineshop.utils.PageGenerator;
 import lombok.Setter;
 
@@ -16,8 +17,8 @@ import java.util.Map;
 
 @Setter
 public class CartServlet extends HttpServlet {
-    private PageGenerator pageGenerator;
-    private CartService cartService;
+    private PageGenerator pageGenerator = ServiceLocator.getService(PageGenerator.class);
+    private CartService cartService = ServiceLocator.getService(CartService.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {

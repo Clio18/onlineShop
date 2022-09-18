@@ -1,6 +1,7 @@
 package com.obolonyk.onlineshop.web.servlets.product;
 
 import com.obolonyk.onlineshop.services.ProductService;
+import com.obolonyk.onlineshop.services.locator.ServiceLocator;
 import lombok.Setter;
 
 import javax.servlet.http.HttpServlet;
@@ -10,7 +11,7 @@ import java.io.IOException;
 
 @Setter
 public class RemoveProductServlet extends HttpServlet {
-    private ProductService productService;
+    private ProductService productService = ServiceLocator.getService(ProductService.class);
 
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
             int id = Integer.parseInt(req.getParameter("id"));

@@ -3,6 +3,7 @@ package com.obolonyk.onlineshop.web.servlets.auth;
 import com.obolonyk.onlineshop.entity.Credentials;
 import com.obolonyk.onlineshop.entity.Session;
 import com.obolonyk.onlineshop.services.SecurityService;
+import com.obolonyk.onlineshop.services.locator.ServiceLocator;
 import com.obolonyk.onlineshop.utils.PageGenerator;
 import lombok.Setter;
 
@@ -15,10 +16,8 @@ import java.util.Map;
 
 @Setter
 public class LoginServlet extends HttpServlet {
-    private SecurityService securityService;
-    private int durationInSeconds;
-
-    private PageGenerator pageGenerator = PageGenerator.instance();
+    private SecurityService securityService = ServiceLocator.getService(SecurityService.class);
+    private PageGenerator pageGenerator = ServiceLocator.getService(PageGenerator.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -37,6 +36,7 @@ public class LoginServlet extends HttpServlet {
                 .build();
 
         Session session = securityService.login(credentials);
+        int durationInSeconds = securityService.getDurationInSeconds();
 
         if (session!=null) {
             String token = session.getToken();
@@ -52,9 +52,5 @@ public class LoginServlet extends HttpServlet {
 
             resp.getWriter().write(page);
         }
-    }
-
-    public void setDurationInSeconds(int durationInSeconds) {
-        this.durationInSeconds = durationInSeconds;
     }
 }

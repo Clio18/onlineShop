@@ -1,6 +1,7 @@
 package com.obolonyk.onlineshop.web.security;
 import com.obolonyk.onlineshop.entity.Session;
 import com.obolonyk.onlineshop.services.SecurityService;
+import com.obolonyk.onlineshop.services.locator.ServiceLocator;
 import lombok.Setter;
 
 import javax.servlet.*;
@@ -12,7 +13,7 @@ import java.io.IOException;
 @Setter
 public class SecurityFilter implements Filter {
     private static final String USER_TOKEN = "user-token";
-    private SecurityService securityService;
+    private SecurityService securityService = ServiceLocator.getService(SecurityService.class);
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
