@@ -20,8 +20,39 @@ public class CartService {
     public double getTotalPrice(List<Order> orders) {
         double totalPrice = 0;
         for (Order order : orders) {
-            totalPrice = totalPrice + (order.getQuantity()*order.getProduct().getPrice());
+            totalPrice = totalPrice + (order.getQuantity() * order.getProduct().getPrice());
         }
         return totalPrice;
+    }
+
+    public void update(List<Order> cart, long id, String action) {
+        for (Order order : cart) {
+            if (order.getProduct().getId() == id) {
+                int quantity = order.getQuantity();
+                double total = order.getTotal();
+                int newQuantity = 0;
+                double newTotal = 0;
+
+                if (action.equals("minus")) {
+                    newQuantity = quantity - 1;
+                    if (newQuantity == 0) {
+                        cart.remove(order);
+                        return;
+                    }
+                    newTotal = total - order.getProduct().getPrice();
+                } else if (action.equals("plus")) {
+                    newQuantity = quantity + 1;
+                    newTotal = total + order.getProduct().getPrice();
+                }
+
+                order.setQuantity(newQuantity);
+                order.setTotal(newTotal);
+
+                if (action.equals("delete")) {
+                    cart.remove(order);
+                }
+                break;
+            }
+        }
     }
 }

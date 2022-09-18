@@ -97,8 +97,11 @@ public class Starter {
         cartServlet.setCartService(cartService);
 
         UpdatePlusCartServlet updatePlusCartServlet = new UpdatePlusCartServlet();
+        updatePlusCartServlet.setCartService(cartService);
         UpdateMinusCartServlet updateMinusCartServlet = new UpdateMinusCartServlet();
+        updateMinusCartServlet.setCartService(cartService);
         DeleteCartServlet deleteCartServlet = new DeleteCartServlet();
+        deleteCartServlet.setCartService(cartService);
 
         //config filters
         SecurityFilter securityFilter = new SecurityFilter();
