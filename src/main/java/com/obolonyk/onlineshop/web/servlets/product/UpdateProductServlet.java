@@ -1,4 +1,4 @@
-package com.obolonyk.onlineshop.web.servlets;
+package com.obolonyk.onlineshop.web.servlets.product;
 
 import com.obolonyk.onlineshop.entity.Product;
 import com.obolonyk.onlineshop.services.ProductService;
@@ -9,33 +9,46 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.rmi.RemoteException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 @Setter
-public class AddProductServlet extends HttpServlet {
+public class UpdateProductServlet extends HttpServlet {
     private ProductService productService;
     private PageGenerator pageGenerator;
 
-    @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String page = pageGenerator.getPage("templates/addProduct.html", null);
-        resp.getWriter().write(page);
+        int id = Integer.parseInt(req.getParameter("id"));
+        Optional<Product> productOptional = productService.getProductById(id);
+        if(productOptional.isPresent()) {
+            Product product = productOptional.get();
+            Map<String, Object> paramMap = new HashMap<>();
+            paramMap.put("product", product);
+            String page = pageGenerator.getPage("templates/addProduct.html", paramMap);
+            resp.getWriter().write(page);
+        } else {
+            throw new RemoteException("Product not found");
+        }
     }
 
-    @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
         try {
+            int id = Integer.parseInt(req.getParameter("id"));
             String name = req.getParameter("name");
             String description = req.getParameter("description");
             double price = Double.parseDouble(req.getParameter("price"));
             Product product = Product.builder()
-                    .name(name)
+                    .id(id)
                     .price(price)
                     .description(description)
+                    .name(name)
                     .build();
-            productService.save(product);
+            productService.update(product);
             resp.sendRedirect("/products");
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException();
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.obolonyk.onlineshop.web.servlets;
+package com.obolonyk.onlineshop.web.servlets.cart;
 
 import com.obolonyk.onlineshop.entity.Order;
 import com.obolonyk.onlineshop.entity.Product;

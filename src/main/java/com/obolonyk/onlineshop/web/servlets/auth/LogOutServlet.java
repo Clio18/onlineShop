@@ -1,4 +1,4 @@
-package com.obolonyk.onlineshop.web.servlets;
+package com.obolonyk.onlineshop.web.servlets.auth;
 
 import com.obolonyk.onlineshop.services.SecurityService;
 import lombok.Setter;

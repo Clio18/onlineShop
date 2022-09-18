@@ -1,7 +1,9 @@
-package com.obolonyk.onlineshop.web.servlets;
+package com.obolonyk.onlineshop.web.servlets.product;
 
 import com.obolonyk.onlineshop.entity.Product;
 import com.obolonyk.onlineshop.services.ProductService;
+import com.obolonyk.onlineshop.utils.PageGenerator;
+import com.obolonyk.onlineshop.web.servlets.product.SearchProductsServlet;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -30,8 +32,10 @@ class SearchProductsServletTest {
         when(mockReq.getParameter("search")).thenReturn("An");
 
         ProductService productService = mock(ProductService.class);
+        PageGenerator pageGenerator = PageGenerator.instance();
         SearchProductsServlet searchProductsServlet = new SearchProductsServlet();
         searchProductsServlet.setProductService(productService);
+        searchProductsServlet.setPageGenerator(pageGenerator);
 
         Product product1 = Product.builder()
                 .id(1)

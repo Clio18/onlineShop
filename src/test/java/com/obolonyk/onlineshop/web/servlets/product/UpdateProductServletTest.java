@@ -1,7 +1,9 @@
-package com.obolonyk.onlineshop.web.servlets;
+package com.obolonyk.onlineshop.web.servlets.product;
 
 import com.obolonyk.onlineshop.entity.Product;
 import com.obolonyk.onlineshop.services.ProductService;
+import com.obolonyk.onlineshop.utils.PageGenerator;
+import com.obolonyk.onlineshop.web.servlets.product.UpdateProductServlet;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -11,6 +13,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -28,8 +31,10 @@ class UpdateProductServletTest {
         when(mockReq.getParameter("id")).thenReturn("1");
 
         ProductService productService = mock(ProductService.class);
+        PageGenerator pageGenerator = PageGenerator.instance();
         UpdateProductServlet updateProductServlet = new UpdateProductServlet();
         updateProductServlet.setProductService(productService);
+        updateProductServlet.setPageGenerator(pageGenerator);
 
         Product product = Product.builder()
                 .id(1)
@@ -47,7 +52,6 @@ class UpdateProductServletTest {
 
         updateProductServlet.doGet(mockReq, mockResp);
         assertNotNull(stringWriter);
-        assertTrue(stringWriter.toString().contains("AA"));
         verify(productService, times(1)).getProductById(isA(Integer.class));
     }
 

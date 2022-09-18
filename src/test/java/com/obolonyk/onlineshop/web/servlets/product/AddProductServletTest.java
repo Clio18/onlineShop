@@ -1,7 +1,9 @@
-package com.obolonyk.onlineshop.web.servlets;
+package com.obolonyk.onlineshop.web.servlets.product;
 
 import com.obolonyk.onlineshop.entity.Product;
 import com.obolonyk.onlineshop.services.ProductService;
+import com.obolonyk.onlineshop.utils.PageGenerator;
+import com.obolonyk.onlineshop.web.servlets.product.AddProductServlet;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -24,6 +26,8 @@ class AddProductServletTest {
         HttpServletResponse mockResp = mock(HttpServletResponse.class);
 
         AddProductServlet addProductServlet = new AddProductServlet();
+        PageGenerator pageGenerator = PageGenerator.instance();
+        addProductServlet.setPageGenerator(pageGenerator);
         StringWriter stringWriter = new StringWriter();
         PrintWriter writer = new PrintWriter(stringWriter);
         when(mockResp.getWriter()).thenReturn(writer);

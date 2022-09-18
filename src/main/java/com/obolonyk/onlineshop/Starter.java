@@ -2,14 +2,19 @@ package com.obolonyk.onlineshop;
 
 import com.obolonyk.onlineshop.dao.jdbc.JdbcProductDao;
 import com.obolonyk.onlineshop.dao.jdbc.JdbcUserDao;
+import com.obolonyk.onlineshop.services.CartService;
 import com.obolonyk.onlineshop.services.ProductService;
 import com.obolonyk.onlineshop.services.SecurityService;
 import com.obolonyk.onlineshop.services.UserService;
 import com.obolonyk.onlineshop.utils.PageGenerator;
 import com.obolonyk.onlineshop.utils.PropertiesReader;
 import com.obolonyk.onlineshop.web.security.SecurityFilter;
-import com.obolonyk.onlineshop.web.servlets.*;
 import com.obolonyk.onlineshop.utils.DataSourceCreator;
+import com.obolonyk.onlineshop.web.servlets.auth.LogOutServlet;
+import com.obolonyk.onlineshop.web.servlets.auth.LoginServlet;
+import com.obolonyk.onlineshop.web.servlets.auth.RegistrationServlet;
+import com.obolonyk.onlineshop.web.servlets.cart.*;
+import com.obolonyk.onlineshop.web.servlets.product.*;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletContextHandler;
@@ -49,10 +54,13 @@ public class Starter {
         securityService.setUserService(userService);
         securityService.setDurationInSeconds(duration);
 
+        CartService cartService = new CartService();
+
         //config servlets
         ProductsServlet productsServlet = new ProductsServlet();
         productsServlet.setProductService(productService);
         productsServlet.setPageGenerator(pageGenerator);
+        productsServlet.setCartService(cartService);
 
         AddProductServlet addProductServlet = new AddProductServlet();
         addProductServlet.setProductService(productService);
@@ -86,6 +94,11 @@ public class Starter {
 
         CartServlet cartServlet = new CartServlet();
         cartServlet.setPageGenerator(pageGenerator);
+        cartServlet.setCartService(cartService);
+
+        UpdatePlusCartServlet updatePlusCartServlet = new UpdatePlusCartServlet();
+        UpdateMinusCartServlet updateMinusCartServlet = new UpdateMinusCartServlet();
+        DeleteCartServlet deleteCartServlet = new DeleteCartServlet();
 
         //config filters
         SecurityFilter securityFilter = new SecurityFilter();
@@ -103,6 +116,9 @@ public class Starter {
         servletContextHandler.addServlet(new ServletHolder(logOutServlet), "/logout");
         servletContextHandler.addServlet(new ServletHolder(addToCartServlet), "/product/cart");
         servletContextHandler.addServlet(new ServletHolder(cartServlet), "/products/cart");
+        servletContextHandler.addServlet(new ServletHolder(updatePlusCartServlet), "/products/cart/update/plus");
+        servletContextHandler.addServlet(new ServletHolder(updateMinusCartServlet), "/products/cart/update/minus");
+        servletContextHandler.addServlet(new ServletHolder(deleteCartServlet), "/products/cart/delete");
 
         servletContextHandler.addFilter(new FilterHolder(securityFilter), "/*", EnumSet.of(DispatcherType.REQUEST));
 

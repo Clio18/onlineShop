@@ -19,6 +19,7 @@
         crossorigin="anonymous"
 ></script>
 <div style="width: 1000px">
+    <#setting locale="en_US">
     <div style="margin-bottom: 5px">
         <div style="margin-bottom: 20px">
             <div style="margin-bottom: 20px" class="btn-group" role="group" aria-label="Basic example">
@@ -31,12 +32,16 @@
                         </div>
                     </form>
                 </div>
-            </div>
-            <div>
-                <a type="button" href="/products" class="btn btn-success" style="width: 80px">Back</a>
+                <div>
+                    <a type="button" href="/products" class="btn btn-success" style="width: 80px">Back</a>
+                </div>
             </div>
         </div>
-
+        <div>
+            <h1>
+                Total price: ${totalPrice?string.currency}
+            </h1>
+        </div>
         <table class="table table-striped">
             <tr>
                 <th>ID</th>
@@ -50,14 +55,19 @@
                 <td>${order.product.id}</td>
                 <td>${order.product.name}</td>
                 <td>${order.quantity}</td>
-                <#setting locale="en_US">
-                <td>${order.total}</td>
+                <td>${order.total?string.currency}</td>
                 <td>
                     <div class="btn-group" role="group" aria-label="Basic example">
                         <div style="margin-right: 20px">
-                            <form action="/products/cart/update" method="get">
+                            <form action="/products/cart/update/plus" method="post">
                                 <input type="hidden" name="id" value="${order.product.id}">
-                                <button type="submit" class="btn btn btn-warning" style="width: 80px">Update</button>
+                                <button type="submit" class="btn btn" style="width: 38px">+</button>
+                            </form>
+                        </div>
+                        <div style="margin-right: 20px">
+                            <form action="/products/cart/update/minus" method="post">
+                                <input type="hidden" name="id" value="${order.product.id}">
+                                <button type="submit" class="btn btn" style="width: 38px">-</button>
                             </form>
                         </div>
                         <div style="margin-right: 20px">

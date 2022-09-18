@@ -1,10 +1,12 @@
-package com.obolonyk.onlineshop.web.servlets;
+package com.obolonyk.onlineshop.web.servlets.auth;
 
 import com.obolonyk.onlineshop.entity.Credentials;
 import com.obolonyk.onlineshop.entity.Session;
 import com.obolonyk.onlineshop.entity.User;
 import com.obolonyk.onlineshop.services.SecurityService;
 import com.obolonyk.onlineshop.services.UserService;
+import com.obolonyk.onlineshop.utils.PageGenerator;
+import com.obolonyk.onlineshop.web.servlets.auth.RegistrationServlet;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -27,13 +29,14 @@ class RegistrationServletTest {
         HttpServletResponse mockResp = mock(HttpServletResponse.class);
 
         RegistrationServlet registrationServlet = new RegistrationServlet();
+        PageGenerator pageGenerator = PageGenerator.instance();
+        registrationServlet.setPageGenerator(pageGenerator);
         StringWriter stringWriter = new StringWriter();
         PrintWriter writer = new PrintWriter(stringWriter);
         when(mockResp.getWriter()).thenReturn(writer);
 
         registrationServlet.doGet(mockReq, mockResp);
         assertNotNull(stringWriter);
-
     }
 
     @Test
@@ -72,6 +75,8 @@ class RegistrationServletTest {
         SecurityService securityService = mock(SecurityService.class);
         UserService userService = mock(UserService.class);
         RegistrationServlet registrationServlet = new RegistrationServlet();
+        PageGenerator pageGenerator = PageGenerator.instance();
+        registrationServlet.setPageGenerator(pageGenerator);
         registrationServlet.setUserService(userService);
         registrationServlet.setSecurityService(securityService);
 

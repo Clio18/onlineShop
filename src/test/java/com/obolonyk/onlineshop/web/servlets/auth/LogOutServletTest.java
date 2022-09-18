@@ -1,7 +1,7 @@
-package com.obolonyk.onlineshop.web.servlets;
+package com.obolonyk.onlineshop.web.servlets.auth;
 
 import com.obolonyk.onlineshop.services.SecurityService;
-import org.checkerframework.checker.units.qual.C;
+import com.obolonyk.onlineshop.web.servlets.auth.LogOutServlet;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.times;

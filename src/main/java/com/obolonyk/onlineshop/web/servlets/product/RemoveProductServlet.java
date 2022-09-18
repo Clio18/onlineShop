@@ -1,4 +1,4 @@
-package com.obolonyk.onlineshop.web.servlets;
+package com.obolonyk.onlineshop.web.servlets.product;
 
 import com.obolonyk.onlineshop.services.ProductService;
 import lombok.Setter;
