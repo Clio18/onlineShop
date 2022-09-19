@@ -4,11 +4,12 @@ import com.obolonyk.onlineshop.dao.jdbc.JdbcProductDao;
 import com.obolonyk.onlineshop.dao.jdbc.JdbcUserDao;
 import com.obolonyk.onlineshop.services.CartService;
 import com.obolonyk.onlineshop.services.ProductService;
-import com.obolonyk.onlineshop.services.SecurityService;
+import com.obolonyk.onlineshop.web.security.service.DefaultSecurityService;
 import com.obolonyk.onlineshop.services.UserService;
 import com.obolonyk.onlineshop.utils.DataSourceCreator;
 import com.obolonyk.onlineshop.utils.PageGenerator;
 import com.obolonyk.onlineshop.utils.PropertiesReader;
+import com.obolonyk.onlineshop.web.security.service.SecurityService;
 import org.flywaydb.core.Flyway;
 
 import javax.sql.DataSource;
@@ -20,17 +21,19 @@ public class ServiceLocator {
     private static final Map<Class<?>, Object> SERVICES = new HashMap<>();
 
     static {
-        Properties props = PropertiesReader.getProperties();
-        int duration = Integer.parseInt(props.getProperty("durationInSeconds"));
-        DataSource dataSource = DataSourceCreator.getDataSource(props);
         PageGenerator pageGenerator = PageGenerator.instance();
         SERVICES.put(PageGenerator.class, pageGenerator);
 
+        Properties props = PropertiesReader.getProperties();
+        SERVICES.put(Properties.class, props);
+
         //config dao
+        DataSource dataSource = DataSourceCreator.getDataSource(props);
         JdbcProductDao jdbcProductDao = new JdbcProductDao(dataSource);
         JdbcUserDao jdbcUserDao = new JdbcUserDao(dataSource);
 
         //flyway
+        //TODO: it should not be here
         Flyway flyway = Flyway.configure().dataSource(dataSource).load();
         SERVICES.put(Flyway.class, flyway);
 
@@ -43,10 +46,8 @@ public class ServiceLocator {
         userService.setJdbcUserDao(jdbcUserDao);
         SERVICES.put(UserService.class, userService);
 
-        SecurityService securityService = new SecurityService();
-        securityService.setUserService(userService);
-        securityService.setDurationInSeconds(duration);
-        SERVICES.put(SecurityService.class, securityService);
+        DefaultSecurityService defaultSecurityService = new DefaultSecurityService();
+        SERVICES.put(SecurityService.class, defaultSecurityService);
 
         CartService cartService = new CartService();
         SERVICES.put(CartService.class, cartService);

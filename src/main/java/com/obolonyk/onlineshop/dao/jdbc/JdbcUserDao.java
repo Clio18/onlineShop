@@ -20,12 +20,15 @@ public class JdbcUserDao implements UserDao {
     public Optional<User> getByLogin(String login) {
         try (Connection connection = dataSource.getConnection()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_LOGIN)) {
+
                 preparedStatement.setString(1, login);
-                ResultSet resultSet = preparedStatement.executeQuery();
-                if (resultSet.next()) {
-                    return Optional.of(UserRowMapper.mapRow(resultSet));
-                } else {
-                    return Optional.empty();
+
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    if (resultSet.next()) {
+                        return Optional.of(UserRowMapper.mapRow(resultSet));
+                    } else {
+                        return Optional.empty();
+                    }
                 }
             }
         } catch (SQLException e) {
@@ -37,6 +40,7 @@ public class JdbcUserDao implements UserDao {
     public void save(User user) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SAVE)) {
+
             preparedStatement.setString(1, user.getName());
             preparedStatement.setString(2, user.getLastName());
             preparedStatement.setString(3, user.getLogin());

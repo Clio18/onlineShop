@@ -3,8 +3,7 @@ package com.obolonyk.onlineshop.web.servlets.auth;
 import com.obolonyk.onlineshop.entity.Credentials;
 import com.obolonyk.onlineshop.entity.Session;
 import com.obolonyk.onlineshop.entity.User;
-import com.obolonyk.onlineshop.services.SecurityService;
-import com.obolonyk.onlineshop.web.servlets.auth.LoginServlet;
+import com.obolonyk.onlineshop.web.security.service.DefaultSecurityService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -47,9 +46,9 @@ class LoginServletTest {
         when(mockReq.getParameter("login")).thenReturn("admin");
         when(mockReq.getParameter("password")).thenReturn("admin");
 
-        SecurityService securityService = mock(SecurityService.class);
+        DefaultSecurityService defaultSecurityService = mock(DefaultSecurityService.class);
         LoginServlet loginServlet = new LoginServlet();
-        loginServlet.setSecurityService(securityService);
+        loginServlet.setSecurityService(defaultSecurityService);
 
         User user = User.builder()
                 .login("admin")
@@ -60,7 +59,7 @@ class LoginServletTest {
                 .cart(new ArrayList<>())
                 .token("user")
                 .build();
-        when(securityService.login(isA(Credentials.class))).thenReturn(session);
+        when(defaultSecurityService.login(isA(Credentials.class))).thenReturn(session);
 
         loginServlet.doPost(mockReq, mockResp);
 
@@ -77,11 +76,11 @@ class LoginServletTest {
         when(mockReq.getParameter("login")).thenReturn("admin");
         when(mockReq.getParameter("password")).thenReturn("admin");
 
-        SecurityService securityService = mock(SecurityService.class);
+        DefaultSecurityService defaultSecurityService = mock(DefaultSecurityService.class);
         LoginServlet loginServlet = new LoginServlet();
-        loginServlet.setSecurityService(securityService);
+        loginServlet.setSecurityService(defaultSecurityService);
 
-        when(securityService.login(isA(Credentials.class))).thenReturn(null);
+        when(defaultSecurityService.login(isA(Credentials.class))).thenReturn(null);
 
         StringWriter stringWriter = new StringWriter();
         PrintWriter writer = new PrintWriter(stringWriter);

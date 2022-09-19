@@ -1,7 +1,8 @@
 package com.obolonyk.onlineshop.web.servlets.auth;
 
-import com.obolonyk.onlineshop.services.SecurityService;
+import com.obolonyk.onlineshop.web.security.service.DefaultSecurityService;
 import com.obolonyk.onlineshop.services.locator.ServiceLocator;
+import com.obolonyk.onlineshop.web.security.service.SecurityService;
 import lombok.Setter;
 
 import javax.servlet.http.Cookie;

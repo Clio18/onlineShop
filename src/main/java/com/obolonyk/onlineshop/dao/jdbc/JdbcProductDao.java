@@ -28,8 +28,9 @@ public class JdbcProductDao implements ProductDao {
         List<Product> products = new ArrayList<>();
         try {
             try (Connection connection = dataSource.getConnection();
-                 Statement statement = connection.createStatement()) {
-                ResultSet resultSet = statement.executeQuery(SELECT_ALL);
+                 Statement statement = connection.createStatement();
+                 ResultSet resultSet = statement.executeQuery(SELECT_ALL)) {
+
                 while (resultSet.next()) {
                     products.add(ProductRowMapper.mapRow(resultSet));
                 }
@@ -41,18 +42,20 @@ public class JdbcProductDao implements ProductDao {
     }
 
     @Override
-    //TODO: should be Optional
     public Optional<Product> getById(int id) {
         Product product = Product.builder().build();
         try {
             try (Connection connection = dataSource.getConnection();
                  PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_ID)) {
+
                 preparedStatement.setLong(1, id);
-                ResultSet resultSet = preparedStatement.executeQuery();
-                if (!resultSet.next()) {
-                    throw new RuntimeException();
+
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    if (!resultSet.next()) {
+                        throw new RuntimeException();
+                    }
+                    product = ProductRowMapper.mapRow(resultSet);
                 }
-                product = ProductRowMapper.mapRow(resultSet);
             }
         } catch (SQLException e) {
             new RuntimeException(e);
@@ -64,6 +67,7 @@ public class JdbcProductDao implements ProductDao {
     public void save(Product product) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SAVE)) {
+
             preparedStatement.setString(1, product.getName());
             preparedStatement.setDouble(2, product.getPrice());
             LocalDateTime localDateTime = product.getCreationDate();
@@ -80,6 +84,7 @@ public class JdbcProductDao implements ProductDao {
     public void remove(int id) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(DELETE)) {
+
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
@@ -91,6 +96,7 @@ public class JdbcProductDao implements ProductDao {
     public void update(Product product) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(UPDATE)) {
+
             preparedStatement.setString(1, product.getName());
             preparedStatement.setDouble(2, product.getPrice());
             preparedStatement.setString(3, product.getDescription());
@@ -107,11 +113,15 @@ public class JdbcProductDao implements ProductDao {
         try {
             try (Connection connection = dataSource.getConnection();
                  PreparedStatement preparedStatement = connection.prepareStatement(SEARCH)) {
+
                 preparedStatement.setString(1, "%" + pattern + "%");
                 preparedStatement.setString(2, "%" + pattern + "%");
-                ResultSet resultSet = preparedStatement.executeQuery();
-                while (resultSet.next()) {
-                    products.add(ProductRowMapper.mapRow(resultSet));
+
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+
+                    while (resultSet.next()) {
+                        products.add(ProductRowMapper.mapRow(resultSet));
+                    }
                 }
             }
             return products;

@@ -3,10 +3,9 @@ package com.obolonyk.onlineshop.web.servlets.auth;
 import com.obolonyk.onlineshop.entity.Credentials;
 import com.obolonyk.onlineshop.entity.Session;
 import com.obolonyk.onlineshop.entity.User;
-import com.obolonyk.onlineshop.services.SecurityService;
+import com.obolonyk.onlineshop.web.security.service.DefaultSecurityService;
 import com.obolonyk.onlineshop.services.UserService;
 import com.obolonyk.onlineshop.utils.PageGenerator;
-import com.obolonyk.onlineshop.web.servlets.auth.RegistrationServlet;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -44,11 +43,11 @@ class RegistrationServletTest {
     void testDoPostIfIsNewUser() throws IOException {
         HttpServletRequest mockReq = mock(HttpServletRequest.class);
         HttpServletResponse mockResp = mock(HttpServletResponse.class);
-        SecurityService securityService = mock(SecurityService.class);
+        DefaultSecurityService defaultSecurityService = mock(DefaultSecurityService.class);
         UserService userService = mock(UserService.class);
         RegistrationServlet registrationServlet = new RegistrationServlet();
         registrationServlet.setUserService(userService);
-        registrationServlet.setSecurityService(securityService);
+        registrationServlet.setDefaultSecurityService(defaultSecurityService);
 
         when(mockReq.getParameter("login")).thenReturn("admin");
         when(mockReq.getParameter("password")).thenReturn("admin");
@@ -58,7 +57,7 @@ class RegistrationServletTest {
                 .password("admin")
                 .build();
 
-        when(securityService.login(credentials)).thenReturn(null);
+        when(defaultSecurityService.login(credentials)).thenReturn(null);
 
         registrationServlet.doPost(mockReq, mockResp);
 
@@ -72,13 +71,13 @@ class RegistrationServletTest {
     void testDoPostIfIsExistingUser() throws IOException {
         HttpServletRequest mockReq = mock(HttpServletRequest.class);
         HttpServletResponse mockResp = mock(HttpServletResponse.class);
-        SecurityService securityService = mock(SecurityService.class);
+        DefaultSecurityService defaultSecurityService = mock(DefaultSecurityService.class);
         UserService userService = mock(UserService.class);
         RegistrationServlet registrationServlet = new RegistrationServlet();
         PageGenerator pageGenerator = PageGenerator.instance();
         registrationServlet.setPageGenerator(pageGenerator);
         registrationServlet.setUserService(userService);
-        registrationServlet.setSecurityService(securityService);
+        registrationServlet.setDefaultSecurityService(defaultSecurityService);
 
         when(mockReq.getParameter("login")).thenReturn("admin");
         when(mockReq.getParameter("password")).thenReturn("admin");
@@ -98,7 +97,7 @@ class RegistrationServletTest {
                 .token("user")
                 .build();
 
-        when(securityService.login(credentials)).thenReturn(session);
+        when(defaultSecurityService.login(credentials)).thenReturn(session);
 
         StringWriter stringWriter = new StringWriter();
         PrintWriter writer = new PrintWriter(stringWriter);

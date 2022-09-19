@@ -1,9 +1,9 @@
-package com.obolonyk.onlineshop.web.security;
+package com.obolonyk.onlineshop.web.security.filters;
 
 import com.obolonyk.onlineshop.entity.Role;
 import com.obolonyk.onlineshop.entity.Session;
-import com.obolonyk.onlineshop.services.SecurityService;
 import com.obolonyk.onlineshop.services.locator.ServiceLocator;
+import com.obolonyk.onlineshop.web.security.service.SecurityService;
 import lombok.Setter;
 
 import javax.servlet.*;

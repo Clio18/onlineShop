@@ -1,8 +1,8 @@
 package com.obolonyk.onlineshop;
 
 import com.obolonyk.onlineshop.services.locator.ServiceLocator;
-import com.obolonyk.onlineshop.web.security.AdminFilter;
-import com.obolonyk.onlineshop.web.security.UserFilter;
+import com.obolonyk.onlineshop.web.security.filters.AdminFilter;
+import com.obolonyk.onlineshop.web.security.filters.UserFilter;
 import com.obolonyk.onlineshop.web.servlets.auth.LogOutServlet;
 import com.obolonyk.onlineshop.web.servlets.auth.LoginServlet;
 import com.obolonyk.onlineshop.web.servlets.auth.RegistrationServlet;

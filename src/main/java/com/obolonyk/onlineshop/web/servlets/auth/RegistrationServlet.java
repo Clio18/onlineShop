@@ -3,7 +3,7 @@ package com.obolonyk.onlineshop.web.servlets.auth;
 import com.obolonyk.onlineshop.entity.Credentials;
 import com.obolonyk.onlineshop.entity.Session;
 import com.obolonyk.onlineshop.entity.User;
-import com.obolonyk.onlineshop.services.SecurityService;
+import com.obolonyk.onlineshop.web.security.service.DefaultSecurityService;
 import com.obolonyk.onlineshop.services.UserService;
 import com.obolonyk.onlineshop.services.locator.ServiceLocator;
 import com.obolonyk.onlineshop.utils.PageGenerator;
@@ -21,7 +21,7 @@ import java.util.UUID;
 public class RegistrationServlet extends HttpServlet {
     private PageGenerator pageGenerator = ServiceLocator.getService(PageGenerator.class);
     private UserService userService = ServiceLocator.getService(UserService.class);
-    private SecurityService securityService = ServiceLocator.getService(SecurityService.class);
+    private DefaultSecurityService defaultSecurityService = ServiceLocator.getService(DefaultSecurityService.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -37,7 +37,7 @@ public class RegistrationServlet extends HttpServlet {
                 .login(login)
                 .password(password)
                 .build();
-        Session session = securityService.login(credentials);
+        Session session = defaultSecurityService.login(credentials);
         if (session == null) {
             String salt = UUID.randomUUID().toString();
             String encrypted = PasswordGenerator.generateEncrypted(password, salt);
