@@ -36,9 +36,9 @@ public class LoginServlet extends HttpServlet {
                 .build();
 
         Session session = securityService.login(credentials);
-        int durationInSeconds = securityService.getDurationInSeconds();
 
         if (session!=null) {
+            int durationInSeconds = securityService.getDurationInSeconds();
             String token = session.getToken();
             Cookie cookie = new Cookie("user-token", token);
             cookie.setMaxAge(durationInSeconds);

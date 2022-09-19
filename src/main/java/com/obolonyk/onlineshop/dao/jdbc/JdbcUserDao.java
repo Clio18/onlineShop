@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @AllArgsConstructor
 public class JdbcUserDao implements UserDao {
-    private static final String SELECT_BY_LOGIN = "SELECT id, name, last_name, login, email, password, salt FROM users WHERE login = ?;";
+    private static final String SELECT_BY_LOGIN = "SELECT id, name, last_name, login, email, password, salt, role FROM users WHERE login = ?;";
     private static final String SAVE = "INSERT INTO users (name, last_name, login, email, password, salt) VALUES (?, ?, ?, ?, ?, ?);";
 
     private DataSource dataSource;

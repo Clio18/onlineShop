@@ -5,5 +5,6 @@ CREATE TABLE IF NOT EXISTS users(
    email VARCHAR(50) UNIQUE,
    login VARCHAR(50) UNIQUE,
    password VARCHAR(50),
-   salt VARCHAR(50)
+   salt VARCHAR(50),
+   role VARCHAR(50)
 );

@@ -1,5 +1,6 @@
 package com.obolonyk.onlineshop.dao.rowmapper;
 
+import com.obolonyk.onlineshop.entity.Role;
 import com.obolonyk.onlineshop.entity.User;
 
 import java.sql.ResultSet;
@@ -15,6 +16,7 @@ public class UserRowMapper {
                 .login(resultSet.getString("login"))
                 .password(resultSet.getString("password"))
                 .salt(resultSet.getString("salt"))
+                .role(Role.valueOf(resultSet.getString("role")))
                 .build();
     }
 }

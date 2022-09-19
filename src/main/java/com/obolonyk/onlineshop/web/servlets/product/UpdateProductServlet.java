@@ -27,7 +27,7 @@ public class UpdateProductServlet extends HttpServlet {
             Product product = productOptional.get();
             Map<String, Object> paramMap = new HashMap<>();
             paramMap.put("product", product);
-            String page = pageGenerator.getPage("templates/addProduct.html", paramMap);
+            String page = pageGenerator.getPage("templates/updateProduct.html", paramMap);
             resp.getWriter().write(page);
         } else {
             throw new RemoteException("Product not found");
