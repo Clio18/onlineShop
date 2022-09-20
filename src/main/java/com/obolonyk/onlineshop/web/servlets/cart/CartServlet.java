@@ -17,7 +17,7 @@ import java.util.Map;
 
 @Setter
 public class CartServlet extends HttpServlet {
-    private PageGenerator pageGenerator = ServiceLocator.getService(PageGenerator.class);
+    private PageGenerator pageGenerator = PageGenerator.instance();
     private CartService cartService = ServiceLocator.getService(CartService.class);
 
     @Override

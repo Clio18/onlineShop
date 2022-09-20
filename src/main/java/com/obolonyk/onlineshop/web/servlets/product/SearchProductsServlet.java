@@ -1,5 +1,6 @@
 package com.obolonyk.onlineshop.web.servlets.product;
 
+import com.obolonyk.onlineshop.entity.Order;
 import com.obolonyk.onlineshop.entity.Product;
 import com.obolonyk.onlineshop.entity.Session;
 import com.obolonyk.onlineshop.services.CartService;
@@ -20,7 +21,7 @@ import java.util.Map;
 @Setter
 public class SearchProductsServlet extends HttpServlet {
     private ProductService productService = ServiceLocator.getService(ProductService.class);
-    private PageGenerator pageGenerator = ServiceLocator.getService(PageGenerator.class);
+    private PageGenerator pageGenerator = PageGenerator.instance();
     private CartService cartService = ServiceLocator.getService(CartService.class);
 
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -28,7 +29,8 @@ public class SearchProductsServlet extends HttpServlet {
         List<Product> bySearch = productService.getBySearch(parameter);
         Map<String, Object> paramMap = new HashMap<>();
         Session session = (Session) req.getAttribute("session");
-        int count = cartService.getTotalProductCount(session);
+        List<Order> cart = session.getCart();
+        int count = cartService.getTotalProductCount(cart);
         paramMap.put("count", count);
         paramMap.put("products", bySearch);
         String page = pageGenerator.getPage("templates/products.html", paramMap);

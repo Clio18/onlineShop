@@ -19,7 +19,7 @@ import java.util.UUID;
 
 @Setter
 public class RegistrationServlet extends HttpServlet {
-    private PageGenerator pageGenerator = ServiceLocator.getService(PageGenerator.class);
+    private PageGenerator pageGenerator = PageGenerator.instance();
     private UserService userService = ServiceLocator.getService(UserService.class);
     private DefaultSecurityService defaultSecurityService = ServiceLocator.getService(DefaultSecurityService.class);
 

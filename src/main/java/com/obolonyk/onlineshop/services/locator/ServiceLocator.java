@@ -21,9 +21,6 @@ public class ServiceLocator {
     private static final Map<Class<?>, Object> SERVICES = new HashMap<>();
 
     static {
-        PageGenerator pageGenerator = PageGenerator.instance();
-        SERVICES.put(PageGenerator.class, pageGenerator);
-
         Properties props = PropertiesReader.getProperties();
         SERVICES.put(Properties.class, props);
 

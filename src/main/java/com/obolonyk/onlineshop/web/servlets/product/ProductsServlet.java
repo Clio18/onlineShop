@@ -20,14 +20,15 @@ import java.util.Map;
 @Setter
 public class ProductsServlet extends HttpServlet {
     private ProductService productService = ServiceLocator.getService(ProductService.class);
-    private PageGenerator pageGenerator = ServiceLocator.getService(PageGenerator.class);
+    private PageGenerator pageGenerator =  PageGenerator.instance();
     private CartService cartService = ServiceLocator.getService(CartService.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Map<String, Object> paramMap = new HashMap<>();
         Session session = (Session) req.getAttribute("session");
-        int count = cartService.getTotalProductCount(session);
+        List<Order> cart = session.getCart();
+        int count = cartService.getTotalProductCount(cart);
         paramMap.put("count", count);
         List<Product> products = productService.getAllProducts();
         paramMap.put("products", products);

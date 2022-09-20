@@ -17,13 +17,34 @@ public class DefaultSecurityService implements SecurityService {
 
     @Override
     public void logOut(String token) {
-        if (!sessionList.isEmpty()) {
-            sessionList.removeIf(session -> session.getToken().equals(token));
-        }
+       logOut(token, sessionList);
     }
 
     @Override
     public Session login(Credentials credentials) {
+        return login(credentials, userService);
+    }
+
+
+    @Override
+    public Session getSession(String token) {
+        return getSession(token, sessionList);
+    }
+
+    Session getSession(String token, List<Session> sessionList) {
+        for (Session session : sessionList) {
+            if (session.getToken().equals(token)) {
+                if (session.getExpirationTime().isBefore(LocalDateTime.now())) {
+                    sessionList.remove(session);
+                    return null;
+                }
+                return session;
+            }
+        }
+        return null;
+    }
+
+    Session login(Credentials credentials, UserService userService){
         Optional<User> userByLogin = userService.getByLogin(credentials.getLogin());
         if (userByLogin.isPresent()) {
             User user = userByLogin.get();
@@ -46,17 +67,10 @@ public class DefaultSecurityService implements SecurityService {
         return null;
     }
 
-    @Override
-    public Session getSession(String token) {
-        for (Session session : sessionList) {
-            if (session.getToken().equals(token)) {
-                if (session.getExpirationTime().isBefore(LocalDateTime.now())) {
-                    sessionList.remove(session);
-                    return null;
-                }
-                return session;
-            }
+
+    void logOut(String token, List<Session> sessionList) {
+        if (!sessionList.isEmpty()) {
+            sessionList.removeIf(session -> session.getToken().equals(token));
         }
-        return null;
     }
 }

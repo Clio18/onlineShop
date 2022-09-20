@@ -18,7 +18,7 @@ import java.util.Properties;
 @Setter
 public class LoginServlet extends HttpServlet {
     private SecurityService securityService = ServiceLocator.getService(SecurityService.class);
-    private PageGenerator pageGenerator = ServiceLocator.getService(PageGenerator.class);
+    private PageGenerator pageGenerator = PageGenerator.instance();
     private Properties props = ServiceLocator.getService(Properties.class);
 
     @Override

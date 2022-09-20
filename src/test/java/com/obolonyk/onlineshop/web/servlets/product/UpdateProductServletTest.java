@@ -3,7 +3,6 @@ package com.obolonyk.onlineshop.web.servlets.product;
 import com.obolonyk.onlineshop.entity.Product;
 import com.obolonyk.onlineshop.services.ProductService;
 import com.obolonyk.onlineshop.utils.PageGenerator;
-import com.obolonyk.onlineshop.web.servlets.product.UpdateProductServlet;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -16,7 +15,6 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.*;
 
 class UpdateProductServletTest {

@@ -16,7 +16,6 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.*;
 
 class LoginServletTest {

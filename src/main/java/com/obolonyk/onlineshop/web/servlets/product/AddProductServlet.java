@@ -14,7 +14,7 @@ import java.io.IOException;
 @Setter
 public class AddProductServlet extends HttpServlet {
     private ProductService productService = ServiceLocator.getService(ProductService.class);
-    private PageGenerator pageGenerator = ServiceLocator.getService(PageGenerator.class);
+    private PageGenerator pageGenerator = PageGenerator.instance();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {

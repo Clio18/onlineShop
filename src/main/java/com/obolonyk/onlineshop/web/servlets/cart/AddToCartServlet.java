@@ -3,6 +3,7 @@ package com.obolonyk.onlineshop.web.servlets.cart;
 import com.obolonyk.onlineshop.entity.Order;
 import com.obolonyk.onlineshop.entity.Product;
 import com.obolonyk.onlineshop.entity.Session;
+import com.obolonyk.onlineshop.services.CartService;
 import com.obolonyk.onlineshop.services.ProductService;
 import com.obolonyk.onlineshop.services.locator.ServiceLocator;
 import lombok.Setter;
@@ -16,6 +17,7 @@ import java.util.Optional;
 @Setter
 public class AddToCartServlet extends HttpServlet {
     private ProductService productService = ServiceLocator.getService(ProductService.class);
+    private CartService cartService = ServiceLocator.getService(CartService.class);
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
@@ -26,23 +28,7 @@ public class AddToCartServlet extends HttpServlet {
                 Session session = (Session) req.getAttribute("session");
                 List<Order> cart = session.getCart();
                 Product product = optionalProduct.get();
-                for (Order order : cart) {
-                    if (order.getProduct().getName().equals(product.getName())) {
-                        int quantity = order.getQuantity() + 1;
-                        double total = quantity * product.getPrice();
-                        order.setQuantity(quantity);
-                        order.setTotal(total);
-                        resp.sendRedirect("/products");
-                        return;
-                    }
-                }
-                Order order = Order.builder()
-                        .product(product)
-                        .quantity(1)
-                        .total(product.getPrice())
-                        .build();
-                cart.add(order);
-                session.setCart(cart);
+                cartService.addToCart(product, cart);
             }
             resp.sendRedirect("/products");
         } catch (Exception e) {

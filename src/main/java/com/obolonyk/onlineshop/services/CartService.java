@@ -1,18 +1,15 @@
 package com.obolonyk.onlineshop.services;
 
 import com.obolonyk.onlineshop.entity.Order;
-import com.obolonyk.onlineshop.entity.Session;
+import com.obolonyk.onlineshop.entity.Product;
 
 import java.util.List;
 
 public class CartService {
-    public int getTotalProductCount(Session session) {
+    public int getTotalProductCount(List<Order> cart) {
         int count = 0;
-        if (session != null) {
-            List<Order> cart = session.getCart();
-            for (Order order : cart) {
-                count = count + order.getQuantity();
-            }
+        for (Order order : cart) {
+            count = count + order.getQuantity();
         }
         return count;
     }
@@ -54,5 +51,23 @@ public class CartService {
                 break;
             }
         }
+    }
+
+    public void addToCart(Product product, List<Order> cart) {
+        for (Order order : cart) {
+            if (order.getProduct().getName().equals(product.getName())) {
+                int quantity = order.getQuantity() + 1;
+                double total = quantity * product.getPrice();
+                order.setQuantity(quantity);
+                order.setTotal(total);
+                return;
+            }
+        }
+        Order order = Order.builder()
+                .product(product)
+                .quantity(1)
+                .total(product.getPrice())
+                .build();
+        cart.add(order);
     }
 }

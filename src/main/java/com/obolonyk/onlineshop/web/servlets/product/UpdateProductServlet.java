@@ -18,7 +18,7 @@ import java.util.Optional;
 @Setter
 public class UpdateProductServlet extends HttpServlet {
     private ProductService productService = ServiceLocator.getService(ProductService.class);
-    private PageGenerator pageGenerator = ServiceLocator.getService(PageGenerator.class);
+    private PageGenerator pageGenerator = PageGenerator.instance();
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         int id = Integer.parseInt(req.getParameter("id"));
