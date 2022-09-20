@@ -15,10 +15,6 @@ public class DefaultSecurityService implements SecurityService {
     private UserService userService = ServiceLocator.getService(UserService.class);
     private Properties props = ServiceLocator.getService(Properties.class);
 
-    @Override
-    public void logOut(String token) {
-       logOut(token, sessionList);
-    }
 
     @Override
     public Session login(Credentials credentials) {
@@ -29,6 +25,11 @@ public class DefaultSecurityService implements SecurityService {
     @Override
     public Session getSession(String token) {
         return getSession(token, sessionList);
+    }
+
+    @Override
+    public void logOut(List<Session> sessionList) {
+        //TODO: remove all expired sessions
     }
 
     Session getSession(String token, List<Session> sessionList) {
@@ -52,6 +53,14 @@ public class DefaultSecurityService implements SecurityService {
             String password = user.getPassword();
             String hashedPass = PasswordGenerator.generateEncrypted(credentials.getPassword(), salt);
             if (hashedPass.equals(password)) {
+
+                for (Session session : sessionList) {
+                    if (session.getUser().getLogin().equals(user.getLogin())
+                            && session.getExpirationTime().isAfter(LocalDateTime.now())){
+                        return session;
+                    }
+                }
+
                 String token = UUID.randomUUID().toString();
                 int durationInSeconds = Integer.parseInt(props.getProperty("durationInSeconds"));
                 Session session = Session.builder()
@@ -67,10 +76,4 @@ public class DefaultSecurityService implements SecurityService {
         return null;
     }
 
-
-    void logOut(String token, List<Session> sessionList) {
-        if (!sessionList.isEmpty()) {
-            sessionList.removeIf(session -> session.getToken().equals(token));
-        }
-    }
 }

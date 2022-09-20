@@ -20,15 +20,12 @@ class LogOutServletTest {
         HttpServletRequest mockReq = mock(HttpServletRequest.class);
         HttpServletResponse mockResp = mock(HttpServletResponse.class);
 
-        SecurityService defaultSecurityService = mock(SecurityService.class);
         LogOutServlet logOutServlet = new LogOutServlet();
 
         Cookie [] cookies = new Cookie[1];
         Cookie cookie = new Cookie("user-token", "user");
         cookies[0] = cookie;
         when(mockReq.getCookies()).thenReturn(cookies);
-
-        doNothing().when(defaultSecurityService).logOut(isA(String.class));
 
         logOutServlet.doPost(mockReq, mockResp);
 

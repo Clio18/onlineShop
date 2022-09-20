@@ -91,14 +91,6 @@ class DefaultSecurityServiceTest {
     }
 
     @Test
-    @DisplayName("test LogOut")
-    void testLogOut() {
-        DefaultSecurityService securityService = new DefaultSecurityService();
-        securityService.logOut(token, sessionList);
-        assertTrue(sessionList.isEmpty());
-    }
-
-    @Test
     @DisplayName("test Get Session With Valid Token")
     void testGetSessionWithValidToken() {
         DefaultSecurityService securityService = new DefaultSecurityService();
