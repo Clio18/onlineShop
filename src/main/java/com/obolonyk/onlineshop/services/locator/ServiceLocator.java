@@ -29,11 +29,6 @@ public class ServiceLocator {
         JdbcProductDao jdbcProductDao = new JdbcProductDao(dataSource);
         JdbcUserDao jdbcUserDao = new JdbcUserDao(dataSource);
 
-        //flyway
-        //TODO: it should not be here
-        Flyway flyway = Flyway.configure().dataSource(dataSource).load();
-        SERVICES.put(Flyway.class, flyway);
-
         //config services
         ProductService productService = new ProductService();
         productService.setJdbcProductDao(jdbcProductDao);
