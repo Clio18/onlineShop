@@ -10,13 +10,16 @@ import com.obolonyk.onlineshop.utils.DataSourceCreator;
 import com.obolonyk.onlineshop.utils.PageGenerator;
 import com.obolonyk.onlineshop.utils.PropertiesReader;
 import com.obolonyk.onlineshop.web.security.service.SecurityService;
+import lombok.extern.slf4j.Slf4j;
 import org.flywaydb.core.Flyway;
 
 import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 
+@Slf4j
 public class ServiceLocator {
     private static final Map<Class<?>, Object> SERVICES = new HashMap<>();
 
@@ -43,9 +46,34 @@ public class ServiceLocator {
 
         CartService cartService = new CartService();
         SERVICES.put(CartService.class, cartService);
+
+        printEnvVariables();
+        printSystemVariables();
     }
 
     public static <T> T getService(Class<T> clazz){
         return clazz.cast(SERVICES.get(clazz));
+    }
+
+    //shows all system variables
+    private static void printSystemVariables(){
+        log.info("=====SYSTEM VARIABLES START=====");
+        Properties properties = System.getProperties();
+        Set<Map.Entry<Object, Object>> entries = properties.entrySet();
+        for (Map.Entry<Object, Object> entry : entries) {
+            log.info(entry.getKey() + " = " + entry.getValue());
+        }
+        log.info("=====SYSTEM VARIABLES STOP=====");
+    }
+
+    //shows all environment variables
+    private static void printEnvVariables(){
+       log.info("=====ENV VARIABLES START=====");
+        Map<String, String> getenv = System.getenv();
+        Set<Map.Entry<String, String>> entries = getenv.entrySet();
+        for (Map.Entry<String, String> entry : entries) {
+            log.info(entry.getKey() + " = " + entry.getValue());
+        }
+        log.info("====ENV VARIABLES STOP=====");
     }
 }
