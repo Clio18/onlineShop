@@ -19,6 +19,7 @@ public class PropertiesReader {
             properties.setProperty("jdbc.url", System.getenv("JDBC_DATABASE_URL"));
             properties.setProperty("jdbc.user", System.getenv("JDBC_DATABASE_USERNAME"));
             properties.setProperty("jdbc.password", System.getenv("JDBC_DATABASE_PASSWORD"));
+            properties.setProperty("durationInSeconds", "3600");
             return properties;
         }
 
