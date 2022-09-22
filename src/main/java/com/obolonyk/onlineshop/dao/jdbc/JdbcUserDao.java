@@ -12,7 +12,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class JdbcUserDao implements UserDao {
     private static final String SELECT_BY_LOGIN = "SELECT id, name, last_name, login, email, password, salt, role FROM users WHERE login = ?;";
-    private static final String SAVE = "INSERT INTO users (name, last_name, login, email, password, salt) VALUES (?, ?, ?, ?, ?, ?);";
+    private static final String SAVE = "INSERT INTO users (name, last_name, login, email, password, salt, role) VALUES (?, ?, ?, ?, ?, ?, ?);";
 
     private DataSource dataSource;
 
@@ -47,6 +47,7 @@ public class JdbcUserDao implements UserDao {
             preparedStatement.setString(4, user.getEmail());
             preparedStatement.setString(5, user.getPassword());
             preparedStatement.setString(6, user.getSalt());
+            preparedStatement.setString(7, "USER");
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
