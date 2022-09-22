@@ -12,6 +12,16 @@ public class PropertiesReader {
     private static final Map<String, Properties> cachedProps = new ConcurrentHashMap<>();
 
     public static Properties getProperties() {
+        String env = System.getenv("env");
+        if("production".equalsIgnoreCase(env)){
+            Properties properties = new Properties();
+            properties.setProperty("server.port", System.getenv("PORT"));
+            properties.setProperty("jdbc.url", System.getenv("JDBC_DATABASE_URL"));
+            properties.setProperty("jdbc.user", System.getenv("JDBC_DATABASE_USERNAME"));
+            properties.setProperty("jdbc.password", System.getenv("JDBC_DATABASE_PASSWORD"));
+            return properties;
+        }
+
         if (cachedProps.isEmpty()) {
             Properties properties = readProperties();
             return properties;
