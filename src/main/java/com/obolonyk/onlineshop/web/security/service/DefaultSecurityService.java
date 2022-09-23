@@ -6,10 +6,12 @@ import com.obolonyk.onlineshop.entity.User;
 import com.obolonyk.onlineshop.services.UserService;
 import com.obolonyk.onlineshop.services.locator.ServiceLocator;
 import com.obolonyk.onlineshop.web.security.PasswordGenerator;
+import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDateTime;
 import java.util.*;
 
+@Slf4j
 public class DefaultSecurityService implements SecurityService {
     private List<Session> sessionList = Collections.synchronizedList(new ArrayList<>());
     private UserService userService = ServiceLocator.getService(UserService.class);
@@ -45,7 +47,7 @@ public class DefaultSecurityService implements SecurityService {
         return null;
     }
 
-    Session login(Credentials credentials, UserService userService){
+    Session login(Credentials credentials, UserService userService) {
         Optional<User> userByLogin = userService.getByLogin(credentials.getLogin());
         if (userByLogin.isPresent()) {
             User user = userByLogin.get();
@@ -56,7 +58,9 @@ public class DefaultSecurityService implements SecurityService {
 
                 for (Session session : sessionList) {
                     if (session.getUser().getLogin().equals(user.getLogin())
-                            && session.getExpirationTime().isAfter(LocalDateTime.now())){
+                            && session.getExpirationTime().isAfter(LocalDateTime.now())) {
+
+                        log.info("User already has a valid session");
                         return session;
                     }
                 }
@@ -70,6 +74,7 @@ public class DefaultSecurityService implements SecurityService {
                         .expirationTime(LocalDateTime.now().plusSeconds(durationInSeconds))
                         .build();
                 sessionList.add(session);
+                log.info("User was logged in. New session was created");
                 return session;
             }
         }

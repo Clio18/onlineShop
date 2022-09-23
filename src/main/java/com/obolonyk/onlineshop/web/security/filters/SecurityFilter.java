@@ -33,17 +33,17 @@ public abstract class SecurityFilter implements Filter {
         String token = getToken(cookies);
 
         Session session = securityService.getSession(token);
-        if(isAuthenticated(session)){
+        if (isAuthenticated(session)) {
             servletRequest.setAttribute("session", session);
             filterChain.doFilter(servletRequest, servletResponse);
-        }else {
+        } else {
             response.sendRedirect("/products");
         }
     }
 
 
-    public boolean isAuthenticated(Session session){
-        if(session==null){
+    public boolean isAuthenticated(Session session) {
+        if (session == null) {
             return false;
         }
         return requiredRole().contains(session.getUser().getRole());

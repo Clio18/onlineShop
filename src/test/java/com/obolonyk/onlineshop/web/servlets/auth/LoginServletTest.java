@@ -1,92 +1,40 @@
 package com.obolonyk.onlineshop.web.servlets.auth;
 
-import com.obolonyk.onlineshop.entity.Credentials;
-import com.obolonyk.onlineshop.entity.Session;
-import com.obolonyk.onlineshop.entity.User;
-import com.obolonyk.onlineshop.web.security.service.DefaultSecurityService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 class LoginServletTest {
+
+    @Mock
+    HttpServletRequest mockReq;
+    @Mock
+    HttpServletResponse mockResp;
+
+    @InjectMocks
+    LoginServlet loginServlet;
 
     @Test
     @DisplayName("test DoGet And Check If Form Is Not Empty")
     void testDoGetAndCheckResultIsNotEmpty() throws IOException {
-        HttpServletRequest mockReq = mock(HttpServletRequest.class);
-        HttpServletResponse mockResp = mock(HttpServletResponse.class);
-
-        LoginServlet loginServlet = new LoginServlet();
         StringWriter stringWriter = new StringWriter();
         PrintWriter writer = new PrintWriter(stringWriter);
         when(mockResp.getWriter()).thenReturn(writer);
-
         loginServlet.doGet(mockReq, mockResp);
         assertNotNull(stringWriter);
         assertTrue(stringWriter.toString().contains("Login"));
-    }
-
-    @Test
-    @DisplayName("test DoPost And Verify Service Work If IsAuth")
-    void testDoPostAndVerifyServiceWorkIfIsAuth() throws IOException {
-        HttpServletRequest mockReq = mock(HttpServletRequest.class);
-        HttpServletResponse mockResp = mock(HttpServletResponse.class);
-
-        when(mockReq.getParameter("login")).thenReturn("admin");
-        when(mockReq.getParameter("password")).thenReturn("admin");
-
-        DefaultSecurityService defaultSecurityService = mock(DefaultSecurityService.class);
-        LoginServlet loginServlet = new LoginServlet();
-        loginServlet.setSecurityService(defaultSecurityService);
-
-        User user = User.builder()
-                .login("admin")
-                .password("admin")
-                .build();
-        Session session = Session.builder()
-                .user(user)
-                .cart(new ArrayList<>())
-                .token("user")
-                .build();
-        when(defaultSecurityService.login(isA(Credentials.class))).thenReturn(session);
-
-        loginServlet.doPost(mockReq, mockResp);
-
-        verify(mockResp, times(1)).addCookie(isA(Cookie.class));
-        verify(mockResp, times(1)).sendRedirect(isA(String.class));
-    }
-
-    @Test
-    @DisplayName("test DoPost And Verify Service Work If Not IsAuth")
-    void testDoPostAndVerifyServiceWorkIfNotIsAuth() throws IOException {
-        HttpServletRequest mockReq = mock(HttpServletRequest.class);
-        HttpServletResponse mockResp = mock(HttpServletResponse.class);
-
-        when(mockReq.getParameter("login")).thenReturn("admin");
-        when(mockReq.getParameter("password")).thenReturn("admin");
-
-        DefaultSecurityService defaultSecurityService = mock(DefaultSecurityService.class);
-        LoginServlet loginServlet = new LoginServlet();
-        loginServlet.setSecurityService(defaultSecurityService);
-
-        when(defaultSecurityService.login(isA(Credentials.class))).thenReturn(null);
-
-        StringWriter stringWriter = new StringWriter();
-        PrintWriter writer = new PrintWriter(stringWriter);
-        when(mockResp.getWriter()).thenReturn(writer);
-
-        loginServlet.doPost(mockReq, mockResp);
-
-        assertTrue(stringWriter.toString().contains("Registration"));
     }
 }

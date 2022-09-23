@@ -8,7 +8,7 @@ import com.obolonyk.onlineshop.services.locator.ServiceLocator;
 import com.obolonyk.onlineshop.utils.PageGenerator;
 import com.obolonyk.onlineshop.web.security.PasswordGenerator;
 import com.obolonyk.onlineshop.web.security.service.SecurityService;
-import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -17,11 +17,11 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.UUID;
 
-@Setter
+@Slf4j
 public class RegistrationServlet extends HttpServlet {
-    private PageGenerator pageGenerator = PageGenerator.instance();
-    private UserService userService = ServiceLocator.getService(UserService.class);
-    private SecurityService securityService = ServiceLocator.getService(SecurityService.class);
+    private static final PageGenerator pageGenerator = PageGenerator.instance();
+    private static final UserService userService = ServiceLocator.getService(UserService.class);
+    private static final SecurityService securityService = ServiceLocator.getService(SecurityService.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -38,6 +38,8 @@ public class RegistrationServlet extends HttpServlet {
                 .password(password)
                 .build();
         Session session = securityService.login(credentials);
+        log.info("Retrieved session during registration {}", session);
+
         if (session == null) {
             String salt = UUID.randomUUID().toString();
             String encrypted = PasswordGenerator.generateEncrypted(password, salt);

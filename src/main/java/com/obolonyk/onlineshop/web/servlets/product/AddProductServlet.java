@@ -4,17 +4,15 @@ import com.obolonyk.onlineshop.entity.Product;
 import com.obolonyk.onlineshop.services.ProductService;
 import com.obolonyk.onlineshop.services.locator.ServiceLocator;
 import com.obolonyk.onlineshop.utils.PageGenerator;
-import lombok.Setter;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@Setter
 public class AddProductServlet extends HttpServlet {
-    private ProductService productService = ServiceLocator.getService(ProductService.class);
-    private PageGenerator pageGenerator = PageGenerator.instance();
+    private static final ProductService productService = ServiceLocator.getService(ProductService.class);
+    private static final PageGenerator pageGenerator = PageGenerator.instance();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -23,20 +21,16 @@ public class AddProductServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
-        try {
-            String name = req.getParameter("name");
-            String description = req.getParameter("description");
-            double price = Double.parseDouble(req.getParameter("price"));
-            Product product = Product.builder()
-                    .name(name)
-                    .price(price)
-                    .description(description)
-                    .build();
-            productService.save(product);
-            resp.sendRedirect("/products");
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        String name = req.getParameter("name");
+        String description = req.getParameter("description");
+        double price = Double.parseDouble(req.getParameter("price"));
+        Product product = Product.builder()
+                .name(name)
+                .price(price)
+                .description(description)
+                .build();
+        productService.save(product);
+        resp.sendRedirect("/products");
     }
 }

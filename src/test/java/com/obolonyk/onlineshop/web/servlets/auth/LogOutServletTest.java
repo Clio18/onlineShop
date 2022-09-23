@@ -1,6 +1,5 @@
 package com.obolonyk.onlineshop.web.servlets.auth;
 
-import com.obolonyk.onlineshop.web.security.service.SecurityService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -22,7 +21,7 @@ class LogOutServletTest {
 
         LogOutServlet logOutServlet = new LogOutServlet();
 
-        Cookie [] cookies = new Cookie[1];
+        Cookie[] cookies = new Cookie[1];
         Cookie cookie = new Cookie("user-token", "user");
         cookies[0] = cookie;
         when(mockReq.getCookies()).thenReturn(cookies);

@@ -7,11 +7,9 @@ import com.obolonyk.onlineshop.services.ProductService;
 import com.obolonyk.onlineshop.web.security.service.DefaultSecurityService;
 import com.obolonyk.onlineshop.services.UserService;
 import com.obolonyk.onlineshop.utils.DataSourceCreator;
-import com.obolonyk.onlineshop.utils.PageGenerator;
 import com.obolonyk.onlineshop.utils.PropertiesReader;
 import com.obolonyk.onlineshop.web.security.service.SecurityService;
 import lombok.extern.slf4j.Slf4j;
-import org.flywaydb.core.Flyway;
 
 import javax.sql.DataSource;
 import java.util.HashMap;
@@ -51,12 +49,12 @@ public class ServiceLocator {
         printSystemVariables();
     }
 
-    public static <T> T getService(Class<T> clazz){
+    public static <T> T getService(Class<T> clazz) {
         return clazz.cast(SERVICES.get(clazz));
     }
 
     //shows all system variables
-    private static void printSystemVariables(){
+    private static void printSystemVariables() {
         log.info("=====SYSTEM VARIABLES START=====");
         Properties properties = System.getProperties();
         Set<Map.Entry<Object, Object>> entries = properties.entrySet();
@@ -67,8 +65,8 @@ public class ServiceLocator {
     }
 
     //shows all environment variables
-    private static void printEnvVariables(){
-       log.info("=====ENV VARIABLES START=====");
+    private static void printEnvVariables() {
+        log.info("=====ENV VARIABLES START=====");
         Map<String, String> getenv = System.getenv();
         Set<Map.Entry<String, String>> entries = getenv.entrySet();
         for (Map.Entry<String, String> entry : entries) {

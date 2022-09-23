@@ -1,6 +1,6 @@
 package com.obolonyk.onlineshop.dao.rowmapper;
 
-import com.obolonyk.onlineshop.dao.rowmapper.UserRowMapper;
+import com.obolonyk.onlineshop.entity.Role;
 import com.obolonyk.onlineshop.entity.User;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,6 +25,7 @@ class UserRowMapperTest {
         when(mockRs.getString("email")).thenReturn("kim@gmail.com");
         when(mockRs.getString("password")).thenReturn("0751c66270213218b65b45152b7349da");
         when(mockRs.getString("salt")).thenReturn("513072e6-c539-45f3-be77-2fbaf003d6c3");
+        when(mockRs.getString("role")).thenReturn("USER");
 
         User user = UserRowMapper.mapRow(mockRs);
         User expectedUser = User.builder()
@@ -35,6 +36,7 @@ class UserRowMapperTest {
                 .email("kim@gmail.com")
                 .password("0751c66270213218b65b45152b7349da")
                 .salt("513072e6-c539-45f3-be77-2fbaf003d6c3")
+                .role(Role.USER)
                 .build();
         assertNotNull(user);
         assertEquals(expectedUser, user);

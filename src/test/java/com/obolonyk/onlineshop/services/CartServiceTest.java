@@ -18,7 +18,7 @@ class CartServiceTest {
 
     @BeforeEach
     void init() {
-       Product product1 = Product.builder()
+        Product product1 = Product.builder()
                 .id(1)
                 .description("Good")
                 .price(10.0)
@@ -85,8 +85,8 @@ class CartServiceTest {
         int sizeAfter = cart.size();
         int totalProductCountAfter = cartService.getTotalProductCount(cart);
 
-        assertEquals(sizeBefore-1, sizeAfter);
-        assertEquals(totalProductCountBefore-1, totalProductCountAfter);
+        assertEquals(sizeBefore - 1, sizeAfter);
+        assertEquals(totalProductCountBefore - 1, totalProductCountAfter);
     }
 
     @Test
@@ -94,7 +94,7 @@ class CartServiceTest {
         int totalProductCountBefore = cartService.getTotalProductCount(cart);
         cartService.update(cart, 1, "plus");
         int totalProductCountAfter = cartService.getTotalProductCount(cart);
-        assertEquals(totalProductCountBefore+1, totalProductCountAfter);
+        assertEquals(totalProductCountBefore + 1, totalProductCountAfter);
     }
 
     @Test
@@ -107,12 +107,12 @@ class CartServiceTest {
         int sizeAfter = cart.size();
         int totalProductCountAfter = cartService.getTotalProductCount(cart);
 
-        assertEquals(sizeBefore-1, sizeAfter);
-        assertEquals(totalProductCountBefore-1, totalProductCountAfter);
+        assertEquals(sizeBefore - 1, sizeAfter);
+        assertEquals(totalProductCountBefore - 1, totalProductCountAfter);
     }
 
     @Test
-    void testAddToCartExistingProduct(){
+    void testAddToCartExistingProduct() {
         int sizeBefore = cart.size();
         int totalProductCountBefore = cartService.getTotalProductCount(cart);
         Product product = Product.builder()
@@ -128,11 +128,11 @@ class CartServiceTest {
         int totalProductCountAfter = cartService.getTotalProductCount(cart);
 
         assertEquals(sizeBefore, sizeAfter);
-        assertEquals(totalProductCountBefore+1, totalProductCountAfter);
+        assertEquals(totalProductCountBefore + 1, totalProductCountAfter);
     }
 
     @Test
-    void testAddToCartNewProduct(){
+    void testAddToCartNewProduct() {
         int sizeBefore = cart.size();
         int totalProductCountBefore = cartService.getTotalProductCount(cart);
         Product product = Product.builder()
@@ -147,8 +147,8 @@ class CartServiceTest {
         int sizeAfter = cart.size();
         int totalProductCountAfter = cartService.getTotalProductCount(cart);
 
-        assertEquals(sizeBefore+1, sizeAfter);
-        assertEquals(totalProductCountBefore+1, totalProductCountAfter);
+        assertEquals(sizeBefore + 1, sizeAfter);
+        assertEquals(totalProductCountBefore + 1, totalProductCountAfter);
     }
 
 }

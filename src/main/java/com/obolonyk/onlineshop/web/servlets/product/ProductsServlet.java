@@ -7,7 +7,6 @@ import com.obolonyk.onlineshop.services.CartService;
 import com.obolonyk.onlineshop.services.ProductService;
 import com.obolonyk.onlineshop.services.locator.ServiceLocator;
 import com.obolonyk.onlineshop.utils.PageGenerator;
-import lombok.Setter;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -17,11 +16,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Setter
 public class ProductsServlet extends HttpServlet {
-    private ProductService productService = ServiceLocator.getService(ProductService.class);
-    private PageGenerator pageGenerator =  PageGenerator.instance();
-    private CartService cartService = ServiceLocator.getService(CartService.class);
+    private static final ProductService productService = ServiceLocator.getService(ProductService.class);
+    private static final PageGenerator pageGenerator = PageGenerator.instance();
+    private static final CartService cartService = ServiceLocator.getService(CartService.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {

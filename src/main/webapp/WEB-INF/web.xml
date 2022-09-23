@@ -29,12 +29,12 @@
 
     <!-- RemoveProductServlet  -->
     <servlet>
-        <servlet-name>RemoveProductServlet </servlet-name>
-        <servlet-class>com.obolonyk.onlineshop.web.servlets.product.RemoveProductServlet </servlet-class>
+        <servlet-name>RemoveProductServlet</servlet-name>
+        <servlet-class>com.obolonyk.onlineshop.web.servlets.product.RemoveProductServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>RemoveProductServlet </servlet-name>
+        <servlet-name>RemoveProductServlet</servlet-name>
         <url-pattern>/products/delete</url-pattern>
     </servlet-mapping>
 

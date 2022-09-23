@@ -5,7 +5,7 @@ import com.obolonyk.onlineshop.entity.Session;
 import com.obolonyk.onlineshop.services.locator.ServiceLocator;
 import com.obolonyk.onlineshop.utils.PageGenerator;
 import com.obolonyk.onlineshop.web.security.service.SecurityService;
-import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
@@ -15,11 +15,11 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Properties;
 
-@Setter
+@Slf4j
 public class LoginServlet extends HttpServlet {
-    private SecurityService securityService = ServiceLocator.getService(SecurityService.class);
-    private PageGenerator pageGenerator = PageGenerator.instance();
-    private Properties props = ServiceLocator.getService(Properties.class);
+    private static final SecurityService securityService = ServiceLocator.getService(SecurityService.class);
+    private static final PageGenerator pageGenerator = PageGenerator.instance();
+    private static final Properties props = ServiceLocator.getService(Properties.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -38,8 +38,9 @@ public class LoginServlet extends HttpServlet {
                 .build();
 
         Session session = securityService.login(credentials);
+        log.info("Retrieved session during logging in {}", session);
 
-        if (session!=null) {
+        if (session != null) {
             int durationInSeconds = Integer.parseInt(props.getProperty("durationInSeconds"));
             String token = session.getToken();
             Cookie cookie = new Cookie("user-token", token);
@@ -48,7 +49,6 @@ public class LoginServlet extends HttpServlet {
             resp.sendRedirect("/products");
         } else {
             String errorMessage = "You are not registered";
-            PageGenerator pageGenerator = PageGenerator.instance();
             Map<String, Object> parameters = Map.of("errorMessage", errorMessage);
             String page = pageGenerator.getPage("templates/registration.html", parameters);
 

@@ -58,7 +58,7 @@ public class JdbcProductDao implements ProductDao {
                 }
             }
         } catch (SQLException e) {
-            new RuntimeException(e);
+            throw new RuntimeException(e);
         }
         return Optional.of(product);
     }

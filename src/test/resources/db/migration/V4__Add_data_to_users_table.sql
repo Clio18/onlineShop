@@ -1,2 +1,2 @@
-INSERT INTO users (name, last_name, login, email, password, salt) VALUES ('A', 'AA', 'AAA', 'AAAA', 'AAAAA', 'AAAAAA');
-INSERT INTO users (name, last_name, login, email, password, salt) VALUES ('B', 'BB', 'BBB', 'BBBB', 'BBBBB', 'BBBBBB');
+INSERT INTO users (name, last_name, login, email, password, salt, role) VALUES ('A', 'AA', 'AAA', 'AAAA', 'AAAAA', 'AAAAAA', 'ADMIN');
+INSERT INTO users (name, last_name, login, email, password, salt, role) VALUES ('B', 'BB', 'BBB', 'BBBB', 'BBBBB', 'BBBBBB', 'USER');
