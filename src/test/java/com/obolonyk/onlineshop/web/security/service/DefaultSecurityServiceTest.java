@@ -1,7 +1,7 @@
 package com.obolonyk.onlineshop.web.security.service;
 
-import com.obolonyk.onlineshop.entity.Credentials;
-import com.obolonyk.onlineshop.entity.Session;
+import com.obolonyk.onlineshop.web.security.entity.Credentials;
+import com.obolonyk.onlineshop.web.security.entity.Session;
 import com.obolonyk.onlineshop.entity.User;
 import com.obolonyk.onlineshop.services.UserService;
 import org.junit.jupiter.api.BeforeEach;

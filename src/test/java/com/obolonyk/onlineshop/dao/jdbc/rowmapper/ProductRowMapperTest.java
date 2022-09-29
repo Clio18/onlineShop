@@ -1,6 +1,5 @@
-package com.obolonyk.onlineshop.dao.rowmapper;
+package com.obolonyk.onlineshop.dao.jdbc.rowmapper;
 
-import com.obolonyk.onlineshop.dao.rowmapper.ProductRowMapper;
 import com.obolonyk.onlineshop.entity.Product;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

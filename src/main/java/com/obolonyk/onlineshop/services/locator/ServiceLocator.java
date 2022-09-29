@@ -6,7 +6,7 @@ import com.obolonyk.onlineshop.services.CartService;
 import com.obolonyk.onlineshop.services.ProductService;
 import com.obolonyk.onlineshop.web.security.service.DefaultSecurityService;
 import com.obolonyk.onlineshop.services.UserService;
-import com.obolonyk.onlineshop.utils.DataSourceCreator;
+import com.obolonyk.onlineshop.utils.DataSourceFactory;
 import com.obolonyk.onlineshop.utils.PropertiesReader;
 import com.obolonyk.onlineshop.web.security.service.SecurityService;
 import lombok.extern.slf4j.Slf4j;
@@ -22,11 +22,13 @@ public class ServiceLocator {
     private static final Map<Class<?>, Object> SERVICES = new HashMap<>();
 
     static {
-        Properties props = PropertiesReader.getProperties();
+        PropertiesReader propertiesReader = new PropertiesReader();
+        Properties props = propertiesReader.getProperties();
         SERVICES.put(Properties.class, props);
 
         //config dao
-        DataSource dataSource = DataSourceCreator.getDataSource(props);
+        DataSourceFactory dataSourceFactory = new DataSourceFactory();
+        DataSource dataSource = dataSourceFactory.getDataSource(props);
         JdbcProductDao jdbcProductDao = new JdbcProductDao(dataSource);
         JdbcUserDao jdbcUserDao = new JdbcUserDao(dataSource);
 

@@ -1,16 +1,16 @@
 package com.obolonyk.onlineshop.web.servlets.auth;
 
-import com.obolonyk.onlineshop.entity.Credentials;
-import com.obolonyk.onlineshop.entity.Session;
+import com.obolonyk.onlineshop.web.security.entity.Credentials;
+import com.obolonyk.onlineshop.web.security.entity.Session;
 import com.obolonyk.onlineshop.services.locator.ServiceLocator;
-import com.obolonyk.onlineshop.utils.PageGenerator;
+import com.obolonyk.onlineshop.web.PageGenerator;
 import com.obolonyk.onlineshop.web.security.service.SecurityService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Properties;

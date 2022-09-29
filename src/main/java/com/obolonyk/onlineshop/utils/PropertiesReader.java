@@ -1,8 +1,8 @@
 package com.obolonyk.onlineshop.utils;
 
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 import java.util.Properties;
@@ -10,11 +10,15 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
 public class PropertiesReader {
-    private static final String PATH_TO_PROPS = "application.properties";
+    private static final String DEFAULT_PATH_TO_PROPS = "application.properties";
 
-    private static final Map<String, Properties> cachedProps = new ConcurrentHashMap<>();
+    private final Map<String, Properties> cachedProps = new ConcurrentHashMap<>();
 
-    public static Properties getProperties() {
+    public Properties getProperties() {
+        return getProperties(DEFAULT_PATH_TO_PROPS);
+    }
+
+    public Properties getProperties(String path) {
         String env = System.getenv("env");
         if ("production".equalsIgnoreCase(env)) {
             Properties properties = new Properties();
@@ -23,7 +27,6 @@ public class PropertiesReader {
             properties.setProperty("jdbc.user", System.getenv("JDBC_DATABASE_USERNAME"));
             properties.setProperty("jdbc.password", System.getenv("JDBC_DATABASE_PASSWORD"));
             properties.setProperty("durationInSeconds", "3600");
-            properties.setProperty("pathToResources", "src/main/resources");
 
             log.info("Properties were read from environment {}", properties);
             return properties;
@@ -34,18 +37,17 @@ public class PropertiesReader {
             log.info("Properties were read from application properties file {}", properties);
             return properties;
         } else {
-            return cachedProps.get(PATH_TO_PROPS);
+            return cachedProps.get(path);
         }
     }
 
-    private static Properties readProperties() {
+    @SneakyThrows
+    private Properties readProperties() {
         Properties properties = new Properties();
         ClassLoader loader = Thread.currentThread().getContextClassLoader();
-        try (InputStream inputStream = loader.getResourceAsStream(PATH_TO_PROPS)) {
+        try (InputStream inputStream = loader.getResourceAsStream(DEFAULT_PATH_TO_PROPS)) {
             properties.load(inputStream);
-            cachedProps.put(PATH_TO_PROPS, properties);
-        } catch (IOException e) {
-            e.printStackTrace();
+            cachedProps.put(DEFAULT_PATH_TO_PROPS, properties);
         }
         return properties;
     }

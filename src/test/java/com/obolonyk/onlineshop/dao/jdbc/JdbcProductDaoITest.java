@@ -1,7 +1,7 @@
 package com.obolonyk.onlineshop.dao.jdbc;
 
 import com.obolonyk.onlineshop.entity.Product;
-import com.obolonyk.onlineshop.utils.DataSourceCreator;
+import com.obolonyk.onlineshop.utils.DataSourceFactory;
 import com.obolonyk.onlineshop.utils.PropertiesReader;
 import org.flywaydb.core.Flyway;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,8 +24,10 @@ class JdbcProductDaoITest {
 
     @BeforeEach
     void init() {
-        Properties props = PropertiesReader.getProperties();
-        dataSource = DataSourceCreator.getDataSource(props);
+        PropertiesReader propertiesReader = new PropertiesReader();
+        Properties props = propertiesReader.getProperties();
+        DataSourceFactory dataSourceFactory = new DataSourceFactory();
+        dataSource = dataSourceFactory.getDataSource(props);
         flyway = Flyway.configure().dataSource(dataSource).load();
         flyway.migrate();
         jdbcProductDao = new JdbcProductDao(dataSource);

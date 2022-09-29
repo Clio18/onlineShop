@@ -1,9 +1,10 @@
 package com.obolonyk.onlineshop.dao.jdbc;
 
 import com.obolonyk.onlineshop.dao.ProductDao;
-import com.obolonyk.onlineshop.dao.rowmapper.ProductRowMapper;
+import com.obolonyk.onlineshop.dao.jdbc.rowmapper.ProductRowMapper;
 import com.obolonyk.onlineshop.entity.Product;
 import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -24,46 +25,39 @@ public class JdbcProductDao implements ProductDao {
     private DataSource dataSource;
 
     @Override
+    @SneakyThrows
     public List<Product> getAll() {
-        List<Product> products = new ArrayList<>();
-        try {
-            try (Connection connection = dataSource.getConnection();
-                 Statement statement = connection.createStatement();
-                 ResultSet resultSet = statement.executeQuery(SELECT_ALL)) {
-
-                while (resultSet.next()) {
-                    products.add(ProductRowMapper.mapRow(resultSet));
-                }
+        try (Connection connection = dataSource.getConnection();
+             Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(SELECT_ALL)) {
+            List<Product> products = new ArrayList<>();
+            while (resultSet.next()) {
+                products.add(ProductRowMapper.mapRow(resultSet));
             }
             return products;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
         }
     }
 
     @Override
+    @SneakyThrows
     public Optional<Product> getById(int id) {
-        Product product = Product.builder().build();
-        try {
-            try (Connection connection = dataSource.getConnection();
-                 PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_ID)) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_ID)) {
 
-                preparedStatement.setLong(1, id);
+            preparedStatement.setLong(1, id);
 
-                try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                    if (!resultSet.next()) {
-                        throw new RuntimeException();
-                    }
-                    product = ProductRowMapper.mapRow(resultSet);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (!resultSet.next()) {
+                    return Optional.empty();
                 }
+                Product product = ProductRowMapper.mapRow(resultSet);
+                return Optional.of(product);
             }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
         }
-        return Optional.of(product);
     }
 
     @Override
+    @SneakyThrows
     public void save(Product product) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SAVE)) {
@@ -75,24 +69,22 @@ public class JdbcProductDao implements ProductDao {
             preparedStatement.setTimestamp(3, timestamp);
             preparedStatement.setString(4, product.getDescription());
             preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
         }
     }
 
     @Override
+    @SneakyThrows
     public void remove(int id) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(DELETE)) {
 
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
         }
     }
 
     @Override
+    @SneakyThrows
     public void update(Product product) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(UPDATE)) {
@@ -102,31 +94,24 @@ public class JdbcProductDao implements ProductDao {
             preparedStatement.setString(3, product.getDescription());
             preparedStatement.setLong(4, product.getId());
             preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
         }
     }
 
     @Override
+    @SneakyThrows
     public List<Product> getBySearch(String pattern) {
-        List<Product> products = new ArrayList<>();
-        try {
-            try (Connection connection = dataSource.getConnection();
-                 PreparedStatement preparedStatement = connection.prepareStatement(SEARCH)) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SEARCH)) {
 
-                preparedStatement.setString(1, "%" + pattern + "%");
-                preparedStatement.setString(2, "%" + pattern + "%");
-
-                try (ResultSet resultSet = preparedStatement.executeQuery()) {
-
-                    while (resultSet.next()) {
-                        products.add(ProductRowMapper.mapRow(resultSet));
-                    }
+            preparedStatement.setString(1, "%" + pattern + "%");
+            preparedStatement.setString(2, "%" + pattern + "%");
+            List<Product> products = new ArrayList<>();
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    products.add(ProductRowMapper.mapRow(resultSet));
                 }
             }
             return products;
-        } catch (SQLException e) {
-            throw new RuntimeException();
         }
     }
 

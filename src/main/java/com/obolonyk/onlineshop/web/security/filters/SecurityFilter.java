@@ -1,15 +1,16 @@
 package com.obolonyk.onlineshop.web.security.filters;
 
 import com.obolonyk.onlineshop.entity.Role;
-import com.obolonyk.onlineshop.entity.Session;
+import com.obolonyk.onlineshop.web.security.entity.Session;
 import com.obolonyk.onlineshop.services.locator.ServiceLocator;
 import com.obolonyk.onlineshop.web.security.service.SecurityService;
+import jakarta.servlet.*;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.Setter;
 
-import javax.servlet.*;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 import java.util.Set;
 
@@ -60,16 +61,5 @@ public abstract class SecurityFilter implements Filter {
         return null;
     }
 
-
     abstract Set<Role> requiredRole();
-
-    @Override
-    public void init(FilterConfig filterConfig) {
-
-    }
-
-    @Override
-    public void destroy() {
-
-    }
 }

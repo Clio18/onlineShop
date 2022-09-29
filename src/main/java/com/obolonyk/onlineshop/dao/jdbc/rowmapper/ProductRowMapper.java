@@ -1,4 +1,4 @@
-package com.obolonyk.onlineshop.dao.rowmapper;
+package com.obolonyk.onlineshop.dao.jdbc.rowmapper;
 
 import com.obolonyk.onlineshop.entity.Product;
 

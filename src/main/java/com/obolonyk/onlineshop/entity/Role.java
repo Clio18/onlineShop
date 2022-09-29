@@ -1,7 +1,7 @@
 package com.obolonyk.onlineshop.entity;
 
 public enum Role {
-    ADMIN("ADMIN"), USER("ADMIN");
+    ADMIN("ADMIN"), USER("USER");
 
     private final String role;
 

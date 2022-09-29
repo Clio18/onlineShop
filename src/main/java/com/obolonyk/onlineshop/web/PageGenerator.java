@@ -1,4 +1,4 @@
-package com.obolonyk.onlineshop.utils;
+package com.obolonyk.onlineshop.web;
 
 import com.obolonyk.onlineshop.services.locator.ServiceLocator;
 import freemarker.template.Configuration;
@@ -28,6 +28,7 @@ public class PageGenerator {
     public String getPage(String filename, Map<String, Object> data) {
         Writer stream = new StringWriter();
         try {
+            //TODO: path to resources
             Template template = cfg.getTemplate(props.getProperty("pathToResources") + File.separator + filename);
             template.process(data, stream);
         } catch (IOException | TemplateException e) {

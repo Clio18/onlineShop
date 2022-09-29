@@ -53,6 +53,7 @@ public class CartService {
         }
     }
 
+    //TODO: synchronization!
     public void addToCart(Product product, List<Order> cart) {
         for (Order order : cart) {
             if (order.getProduct().getName().equals(product.getName())) {
