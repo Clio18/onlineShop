@@ -1,13 +1,14 @@
 package com.obolonyk.onlineshop.web.servlets.auth;
 
+import com.obolonyk.ioc.context.ApplicationContext;
 import com.obolonyk.onlineshop.web.security.entity.Credentials;
 import com.obolonyk.onlineshop.web.security.entity.Session;
 import com.obolonyk.onlineshop.entity.User;
 import com.obolonyk.onlineshop.services.UserService;
-import com.obolonyk.onlineshop.services.locator.ServiceLocator;
+import com.obolonyk.onlineshop.services.context.Context;
 import com.obolonyk.onlineshop.web.PageGenerator;
 import com.obolonyk.onlineshop.web.security.PasswordGenerator;
-import com.obolonyk.onlineshop.web.security.service.SecurityService;
+import com.obolonyk.onlineshop.web.security.service.DefaultSecurityService;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -20,8 +21,7 @@ import java.util.UUID;
 @Slf4j
 public class RegistrationServlet extends HttpServlet {
     private static final PageGenerator pageGenerator = PageGenerator.instance();
-    private static final UserService userService = ServiceLocator.getService(UserService.class);
-    private static final SecurityService securityService = ServiceLocator.getService(SecurityService.class);
+    private ApplicationContext applicationContext = Context.getContext();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -37,6 +37,7 @@ public class RegistrationServlet extends HttpServlet {
                 .login(login)
                 .password(password)
                 .build();
+        DefaultSecurityService securityService = (DefaultSecurityService)applicationContext.getBean("securityService");
         Session session = securityService.login(credentials);
         log.info("Retrieved session during registration {}", session);
 
@@ -51,6 +52,7 @@ public class RegistrationServlet extends HttpServlet {
                     .password(encrypted)
                     .salt(salt)
                     .build();
+            UserService userService = (UserService)applicationContext.getBean("userService");
             userService.save(user);
             resp.sendRedirect("/login");
         } else {

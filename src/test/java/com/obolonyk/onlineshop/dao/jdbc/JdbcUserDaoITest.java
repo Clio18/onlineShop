@@ -27,7 +27,9 @@ class JdbcUserDaoITest {
         dataSource = dataSourceFactory.getDataSource(props);;
         flyway = Flyway.configure().dataSource(dataSource).load();
         flyway.migrate();
-        jdbcUserDao = new JdbcUserDao(dataSource);
+        DataSource dataSource = dataSourceFactory.getDataSource(props);
+        jdbcUserDao = new JdbcUserDao();
+        jdbcUserDao.setDataSource(dataSource);
     }
 
     @Test

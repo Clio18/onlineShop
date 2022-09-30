@@ -1,9 +1,10 @@
 package com.obolonyk.onlineshop.web.servlets.cart;
 
+import com.obolonyk.ioc.context.ApplicationContext;
 import com.obolonyk.onlineshop.entity.Order;
 import com.obolonyk.onlineshop.web.security.entity.Session;
 import com.obolonyk.onlineshop.services.CartService;
-import com.obolonyk.onlineshop.services.locator.ServiceLocator;
+import com.obolonyk.onlineshop.services.context.Context;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -12,7 +13,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class UpdateMinusCartServlet extends HttpServlet {
-    private static final CartService cartService = ServiceLocator.getService(CartService.class);
+    private ApplicationContext applicationContext = Context.getContext();
     private static final String MINUS = "minus";
 
     @Override
@@ -20,6 +21,7 @@ public class UpdateMinusCartServlet extends HttpServlet {
         long id = Long.parseLong(req.getParameter("id"));
         Session session = (Session) req.getAttribute("session");
         List<Order> cart = session.getCart();
+        CartService cartService = (CartService) applicationContext.getBean("cartService");
         cartService.update(cart, id, MINUS);
         resp.sendRedirect("/products/cart");
     }

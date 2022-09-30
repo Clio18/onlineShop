@@ -1,22 +1,22 @@
 package com.obolonyk.onlineshop.web.security.service;
 
+import com.obolonyk.onlineshop.utils.PropertiesReader;
 import com.obolonyk.onlineshop.web.security.entity.Credentials;
 import com.obolonyk.onlineshop.web.security.entity.Session;
 import com.obolonyk.onlineshop.entity.User;
 import com.obolonyk.onlineshop.services.UserService;
-import com.obolonyk.onlineshop.services.locator.ServiceLocator;
 import com.obolonyk.onlineshop.web.security.PasswordGenerator;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDateTime;
 import java.util.*;
 
 @Slf4j
+@Setter
 public class DefaultSecurityService implements SecurityService {
     private List<Session> sessionList = Collections.synchronizedList(new ArrayList<>());
-    private UserService userService = ServiceLocator.getService(UserService.class);
-    private Properties props = ServiceLocator.getService(Properties.class);
-
+    private UserService userService;
 
     @Override
     public Session login(Credentials credentials) {
@@ -66,6 +66,8 @@ public class DefaultSecurityService implements SecurityService {
                 }
 
                 String token = UUID.randomUUID().toString();
+                PropertiesReader propertiesReader = new PropertiesReader();
+                Properties props = propertiesReader.getProperties();
                 int durationInSeconds = Integer.parseInt(props.getProperty("durationInSeconds"));
                 Session session = Session.builder()
                         .user(user)

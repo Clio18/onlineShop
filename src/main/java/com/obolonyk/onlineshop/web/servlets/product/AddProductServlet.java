@@ -1,8 +1,9 @@
 package com.obolonyk.onlineshop.web.servlets.product;
 
+import com.obolonyk.ioc.context.ApplicationContext;
 import com.obolonyk.onlineshop.entity.Product;
 import com.obolonyk.onlineshop.services.ProductService;
-import com.obolonyk.onlineshop.services.locator.ServiceLocator;
+import com.obolonyk.onlineshop.services.context.Context;
 import com.obolonyk.onlineshop.web.PageGenerator;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,7 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class AddProductServlet extends HttpServlet {
-    private static final ProductService productService = ServiceLocator.getService(ProductService.class);
+    private ApplicationContext applicationContext = Context.getContext();
     private static final PageGenerator pageGenerator = PageGenerator.instance();
 
     @Override
@@ -30,6 +31,7 @@ public class AddProductServlet extends HttpServlet {
                 .price(price)
                 .description(description)
                 .build();
+        ProductService productService = (ProductService) applicationContext.getBean("productService");
         productService.save(product);
         resp.sendRedirect("/products");
     }

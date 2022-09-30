@@ -1,8 +1,9 @@
 package com.obolonyk.onlineshop.web.servlets.product;
 
+import com.obolonyk.ioc.context.ApplicationContext;
 import com.obolonyk.onlineshop.entity.Product;
 import com.obolonyk.onlineshop.services.ProductService;
-import com.obolonyk.onlineshop.services.locator.ServiceLocator;
+import com.obolonyk.onlineshop.services.context.Context;
 import com.obolonyk.onlineshop.web.PageGenerator;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,12 +15,13 @@ import java.util.Map;
 import java.util.Optional;
 
 public class UpdateProductServlet extends HttpServlet {
-    private static final ProductService productService = ServiceLocator.getService(ProductService.class);
+    private ApplicationContext applicationContext = Context.getContext();
     private static final PageGenerator pageGenerator = PageGenerator.instance();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         int id = Integer.parseInt(req.getParameter("id"));
+        ProductService productService = (ProductService) applicationContext.getBean("productService");
         Optional<Product> productOptional = productService.getProductById(id);
         if (productOptional.isPresent()) {
             Product product = productOptional.get();
@@ -44,6 +46,7 @@ public class UpdateProductServlet extends HttpServlet {
                 .description(description)
                 .name(name)
                 .build();
+        ProductService productService = (ProductService) applicationContext.getBean("productService");
         productService.update(product);
         resp.sendRedirect("/products");
     }

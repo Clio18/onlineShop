@@ -1,10 +1,12 @@
 package com.obolonyk.onlineshop.web.servlets.auth;
 
+import com.obolonyk.ioc.context.ApplicationContext;
+import com.obolonyk.onlineshop.utils.PropertiesReader;
 import com.obolonyk.onlineshop.web.security.entity.Credentials;
 import com.obolonyk.onlineshop.web.security.entity.Session;
-import com.obolonyk.onlineshop.services.locator.ServiceLocator;
+import com.obolonyk.onlineshop.services.context.Context;
 import com.obolonyk.onlineshop.web.PageGenerator;
-import com.obolonyk.onlineshop.web.security.service.SecurityService;
+import com.obolonyk.onlineshop.web.security.service.DefaultSecurityService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,9 +19,8 @@ import java.util.Properties;
 
 @Slf4j
 public class LoginServlet extends HttpServlet {
-    private static final SecurityService securityService = ServiceLocator.getService(SecurityService.class);
     private static final PageGenerator pageGenerator = PageGenerator.instance();
-    private static final Properties props = ServiceLocator.getService(Properties.class);
+    private ApplicationContext applicationContext = Context.getContext();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -37,10 +38,13 @@ public class LoginServlet extends HttpServlet {
                 .password(password)
                 .build();
 
+        DefaultSecurityService securityService = (DefaultSecurityService)applicationContext.getBean("securityService");
         Session session = securityService.login(credentials);
         log.info("Retrieved session during logging in {}", session);
 
         if (session != null) {
+            PropertiesReader propertiesReader = new PropertiesReader();
+            Properties props = propertiesReader.getProperties();
             int durationInSeconds = Integer.parseInt(props.getProperty("durationInSeconds"));
             String token = session.getToken();
             Cookie cookie = new Cookie("user-token", token);

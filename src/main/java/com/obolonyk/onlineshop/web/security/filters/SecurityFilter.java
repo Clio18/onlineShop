@@ -1,9 +1,10 @@
 package com.obolonyk.onlineshop.web.security.filters;
 
+import com.obolonyk.ioc.context.ApplicationContext;
 import com.obolonyk.onlineshop.entity.Role;
 import com.obolonyk.onlineshop.web.security.entity.Session;
-import com.obolonyk.onlineshop.services.locator.ServiceLocator;
-import com.obolonyk.onlineshop.web.security.service.SecurityService;
+import com.obolonyk.onlineshop.services.context.Context;
+import com.obolonyk.onlineshop.web.security.service.DefaultSecurityService;
 import jakarta.servlet.*;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,7 +18,7 @@ import java.util.Set;
 @Setter
 public abstract class SecurityFilter implements Filter {
     private static final String USER_TOKEN = "user-token";
-    private SecurityService securityService = ServiceLocator.getService(SecurityService.class);
+    private ApplicationContext applicationContext = Context.getContext();
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
@@ -33,6 +34,7 @@ public abstract class SecurityFilter implements Filter {
         Cookie[] cookies = request.getCookies();
         String token = getToken(cookies);
 
+        DefaultSecurityService securityService = (DefaultSecurityService) applicationContext.getBean("securityService");
         Session session = securityService.getSession(token);
         if (isAuthenticated(session)) {
             servletRequest.setAttribute("session", session);

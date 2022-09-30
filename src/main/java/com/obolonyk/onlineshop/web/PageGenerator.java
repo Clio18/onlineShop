@@ -1,6 +1,6 @@
 package com.obolonyk.onlineshop.web;
 
-import com.obolonyk.onlineshop.services.locator.ServiceLocator;
+import com.obolonyk.onlineshop.utils.PropertiesReader;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -14,8 +14,6 @@ import java.util.Properties;
 
 
 public class PageGenerator {
-    private Properties props = ServiceLocator.getService(Properties.class);
-
     private static PageGenerator pageGenerator;
     private final Configuration cfg;
 
@@ -29,6 +27,8 @@ public class PageGenerator {
         Writer stream = new StringWriter();
         try {
             //TODO: path to resources
+            PropertiesReader propertiesReader = new PropertiesReader();
+            Properties props = propertiesReader.getProperties();
             Template template = cfg.getTemplate(props.getProperty("pathToResources") + File.separator + filename);
             template.process(data, stream);
         } catch (IOException | TemplateException e) {
