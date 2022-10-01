@@ -20,7 +20,7 @@ import java.util.Properties;
 @Slf4j
 public class LoginServlet extends HttpServlet {
     private static final PageGenerator pageGenerator = PageGenerator.instance();
-    private ApplicationContext applicationContext = Context.getContext();
+    private static final ApplicationContext applicationContext = Context.getContext();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -38,13 +38,14 @@ public class LoginServlet extends HttpServlet {
                 .password(password)
                 .build();
 
-        DefaultSecurityService securityService = (DefaultSecurityService)applicationContext.getBean("securityService");
+        DefaultSecurityService securityService = applicationContext.getBean(DefaultSecurityService.class);
         Session session = securityService.login(credentials);
         log.info("Retrieved session during logging in {}", session);
 
         if (session != null) {
             PropertiesReader propertiesReader = new PropertiesReader();
             Properties props = propertiesReader.getProperties();
+
             int durationInSeconds = Integer.parseInt(props.getProperty("durationInSeconds"));
             String token = session.getToken();
             Cookie cookie = new Cookie("user-token", token);

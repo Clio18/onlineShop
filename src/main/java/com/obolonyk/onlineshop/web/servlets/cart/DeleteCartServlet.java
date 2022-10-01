@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class DeleteCartServlet extends HttpServlet {
-    private ApplicationContext applicationContext = Context.getContext();
+    private static final ApplicationContext applicationContext = Context.getContext();
     private static final String DELETE = "delete";
 
     @Override
@@ -21,7 +21,7 @@ public class DeleteCartServlet extends HttpServlet {
         long id = Long.parseLong(req.getParameter("id"));
         Session session = (Session) req.getAttribute("session");
         List<Order> cart = session.getCart();
-        CartService cartService = (CartService) applicationContext.getBean("cartService");
+        CartService cartService = applicationContext.getBean(CartService.class);
         cartService.update(cart, id, DELETE);
         resp.sendRedirect("/products/cart");
     }

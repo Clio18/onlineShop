@@ -21,7 +21,7 @@ import java.util.UUID;
 @Slf4j
 public class RegistrationServlet extends HttpServlet {
     private static final PageGenerator pageGenerator = PageGenerator.instance();
-    private ApplicationContext applicationContext = Context.getContext();
+    private static final ApplicationContext applicationContext = Context.getContext();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -33,11 +33,13 @@ public class RegistrationServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String login = req.getParameter("login");
         String password = req.getParameter("password");
+
         Credentials credentials = Credentials.builder()
                 .login(login)
                 .password(password)
                 .build();
-        DefaultSecurityService securityService = (DefaultSecurityService)applicationContext.getBean("securityService");
+
+        DefaultSecurityService securityService = applicationContext.getBean(DefaultSecurityService.class);
         Session session = securityService.login(credentials);
         log.info("Retrieved session during registration {}", session);
 
@@ -52,7 +54,7 @@ public class RegistrationServlet extends HttpServlet {
                     .password(encrypted)
                     .salt(salt)
                     .build();
-            UserService userService = (UserService)applicationContext.getBean("userService");
+            UserService userService = applicationContext.getBean(UserService.class);
             userService.save(user);
             resp.sendRedirect("/login");
         } else {

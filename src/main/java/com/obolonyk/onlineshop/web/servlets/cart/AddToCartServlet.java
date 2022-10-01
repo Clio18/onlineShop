@@ -16,18 +16,19 @@ import java.util.List;
 import java.util.Optional;
 
 public class AddToCartServlet extends HttpServlet {
-    private ApplicationContext applicationContext = Context.getContext();
+    private static final ApplicationContext applicationContext = Context.getContext();
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         int id = Integer.parseInt(req.getParameter("id"));
-        ProductService productService = (ProductService) applicationContext.getBean("productService");
+        ProductService productService = applicationContext.getBean(ProductService.class);
         Optional<Product> optionalProduct = productService.getProductById(id);
+
         if (optionalProduct.isPresent()) {
             Session session = (Session) req.getAttribute("session");
             List<Order> cart = session.getCart();
             Product product = optionalProduct.get();
-            CartService cartService = (CartService) applicationContext.getBean("cartService");
+            CartService cartService = applicationContext.getBean(CartService.class);
             cartService.addToCart(product, cart);
         }
         resp.sendRedirect("/products");

@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ProductsServlet extends HttpServlet {
-    private ApplicationContext applicationContext = Context.getContext();
+    private static final ApplicationContext applicationContext = Context.getContext();
     private static final PageGenerator pageGenerator = PageGenerator.instance();
 
 
@@ -27,13 +27,15 @@ public class ProductsServlet extends HttpServlet {
         Map<String, Object> paramMap = new HashMap<>();
         Session session = (Session) req.getAttribute("session");
         List<Order> cart = session.getCart();
-        CartService cartService = (CartService) applicationContext.getBean("cartService");
+        CartService cartService = applicationContext.getBean(CartService.class);
         int count = cartService.getTotalProductCount(cart);
         paramMap.put("count", count);
-        ProductService productService = (ProductService) applicationContext.getBean("productService");
+
+        ProductService productService = applicationContext.getBean(ProductService.class);
         List<Product> products = productService.getAllProducts();
         paramMap.put("products", products);
         String page = pageGenerator.getPage("templates/products.html", paramMap);
+
         resp.getWriter().write(page);
     }
 }

@@ -12,7 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class AddProductServlet extends HttpServlet {
-    private ApplicationContext applicationContext = Context.getContext();
+    private static final ApplicationContext applicationContext = Context.getContext();
     private static final PageGenerator pageGenerator = PageGenerator.instance();
 
     @Override
@@ -31,7 +31,7 @@ public class AddProductServlet extends HttpServlet {
                 .price(price)
                 .description(description)
                 .build();
-        ProductService productService = (ProductService) applicationContext.getBean("productService");
+        ProductService productService = applicationContext.getBean(ProductService.class);
         productService.save(product);
         resp.sendRedirect("/products");
     }

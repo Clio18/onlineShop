@@ -15,13 +15,13 @@ import java.util.Map;
 import java.util.Optional;
 
 public class UpdateProductServlet extends HttpServlet {
-    private ApplicationContext applicationContext = Context.getContext();
+    private static final ApplicationContext applicationContext = Context.getContext();
     private static final PageGenerator pageGenerator = PageGenerator.instance();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         int id = Integer.parseInt(req.getParameter("id"));
-        ProductService productService = (ProductService) applicationContext.getBean("productService");
+        ProductService productService = applicationContext.getBean(ProductService.class);
         Optional<Product> productOptional = productService.getProductById(id);
         if (productOptional.isPresent()) {
             Product product = productOptional.get();
@@ -46,7 +46,7 @@ public class UpdateProductServlet extends HttpServlet {
                 .description(description)
                 .name(name)
                 .build();
-        ProductService productService = (ProductService) applicationContext.getBean("productService");
+        ProductService productService = applicationContext.getBean(ProductService.class);
         productService.update(product);
         resp.sendRedirect("/products");
     }

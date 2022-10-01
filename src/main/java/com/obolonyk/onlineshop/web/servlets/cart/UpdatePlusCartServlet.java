@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class UpdatePlusCartServlet extends HttpServlet {
-    private ApplicationContext applicationContext = Context.getContext();
+    private static final ApplicationContext applicationContext = Context.getContext();
     private static final String PLUS = "plus";
 
     @Override
@@ -21,7 +21,7 @@ public class UpdatePlusCartServlet extends HttpServlet {
         long id = Long.parseLong(req.getParameter("id"));
         Session session = (Session) req.getAttribute("session");
         List<Order> cart = session.getCart();
-        CartService cartService = (CartService) applicationContext.getBean("cartService");
+        CartService cartService = applicationContext.getBean(CartService.class);
         cartService.update(cart, id, PLUS);
         resp.sendRedirect("/products/cart");
     }

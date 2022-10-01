@@ -10,11 +10,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class RemoveProductServlet extends HttpServlet {
-    private ApplicationContext applicationContext = Context.getContext();
+    private static final ApplicationContext applicationContext = Context.getContext();
 
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         int id = Integer.parseInt(req.getParameter("id"));
-        ProductService productService = (ProductService) applicationContext.getBean("productService");
+        ProductService productService = applicationContext.getBean(ProductService.class);
         productService.remove(id);
         resp.sendRedirect("/products");
     }
