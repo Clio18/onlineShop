@@ -4,7 +4,7 @@ import com.obolonyk.ioc.context.ApplicationContext;
 import com.obolonyk.onlineshop.utils.PropertiesReader;
 import com.obolonyk.onlineshop.web.security.entity.Credentials;
 import com.obolonyk.onlineshop.web.security.entity.Session;
-import com.obolonyk.onlineshop.services.context.Context;
+import com.obolonyk.onlineshop.context.Context;
 import com.obolonyk.onlineshop.web.PageGenerator;
 import com.obolonyk.onlineshop.web.security.service.DefaultSecurityService;
 import jakarta.servlet.http.Cookie;

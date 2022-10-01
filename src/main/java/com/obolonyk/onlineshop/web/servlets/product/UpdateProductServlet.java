@@ -3,7 +3,7 @@ package com.obolonyk.onlineshop.web.servlets.product;
 import com.obolonyk.ioc.context.ApplicationContext;
 import com.obolonyk.onlineshop.entity.Product;
 import com.obolonyk.onlineshop.services.ProductService;
-import com.obolonyk.onlineshop.services.context.Context;
+import com.obolonyk.onlineshop.context.Context;
 import com.obolonyk.onlineshop.web.PageGenerator;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;

@@ -8,8 +8,10 @@ import java.util.List;
 public class CartService {
     public int getTotalProductCount(List<Order> cart) {
         int count = 0;
-        for (Order order : cart) {
-            count = count + order.getQuantity();
+        if (cart != null) {
+            for (Order order : cart) {
+                count = count + order.getQuantity();
+            }
         }
         return count;
     }

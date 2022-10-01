@@ -1,4 +1,4 @@
-package com.obolonyk.onlineshop.services.context;
+package com.obolonyk.onlineshop.context;
 
 import com.obolonyk.ioc.context.impl.GenericApplicationContext;
 import jakarta.servlet.ServletContextListener;

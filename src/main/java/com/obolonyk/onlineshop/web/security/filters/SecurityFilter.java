@@ -3,7 +3,7 @@ package com.obolonyk.onlineshop.web.security.filters;
 import com.obolonyk.ioc.context.ApplicationContext;
 import com.obolonyk.onlineshop.entity.Role;
 import com.obolonyk.onlineshop.web.security.entity.Session;
-import com.obolonyk.onlineshop.services.context.Context;
+import com.obolonyk.onlineshop.context.Context;
 import com.obolonyk.onlineshop.web.security.service.DefaultSecurityService;
 import jakarta.servlet.*;
 import jakarta.servlet.http.Cookie;

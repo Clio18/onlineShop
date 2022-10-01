@@ -5,7 +5,7 @@ import com.obolonyk.onlineshop.web.security.entity.Credentials;
 import com.obolonyk.onlineshop.web.security.entity.Session;
 import com.obolonyk.onlineshop.entity.User;
 import com.obolonyk.onlineshop.services.UserService;
-import com.obolonyk.onlineshop.services.context.Context;
+import com.obolonyk.onlineshop.context.Context;
 import com.obolonyk.onlineshop.web.PageGenerator;
 import com.obolonyk.onlineshop.web.security.PasswordGenerator;
 import com.obolonyk.onlineshop.web.security.service.DefaultSecurityService;

@@ -6,7 +6,7 @@ import com.obolonyk.onlineshop.entity.Product;
 import com.obolonyk.onlineshop.web.security.entity.Session;
 import com.obolonyk.onlineshop.services.CartService;
 import com.obolonyk.onlineshop.services.ProductService;
-import com.obolonyk.onlineshop.services.context.Context;
+import com.obolonyk.onlineshop.context.Context;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class AddToCartServlet extends HttpServlet {
     private static final ApplicationContext applicationContext = Context.getContext();
@@ -27,6 +28,10 @@ public class AddToCartServlet extends HttpServlet {
         if (optionalProduct.isPresent()) {
             Session session = (Session) req.getAttribute("session");
             List<Order> cart = session.getCart();
+            if (cart==null){
+                cart = new CopyOnWriteArrayList<>();
+                session.setCart(cart);
+            }
             Product product = optionalProduct.get();
             CartService cartService = applicationContext.getBean(CartService.class);
             cartService.addToCart(product, cart);
