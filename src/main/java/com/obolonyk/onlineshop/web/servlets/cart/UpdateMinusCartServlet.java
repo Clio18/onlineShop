@@ -4,7 +4,7 @@ import com.obolonyk.ioc.context.ApplicationContext;
 import com.obolonyk.onlineshop.entity.Order;
 import com.obolonyk.onlineshop.web.security.entity.Session;
 import com.obolonyk.onlineshop.services.CartService;
-import com.obolonyk.onlineshop.context.Context;
+import com.obolonyk.onlineshop.web.context.SingletonContextWrapper;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class UpdateMinusCartServlet extends HttpServlet {
-    private static final ApplicationContext applicationContext = Context.getContext();
+    private static final ApplicationContext applicationContext = SingletonContextWrapper.getContext();
     private static final String MINUS = "minus";
 
     @Override

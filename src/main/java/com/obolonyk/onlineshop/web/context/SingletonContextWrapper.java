@@ -1,4 +1,4 @@
-package com.obolonyk.onlineshop.context;
+package com.obolonyk.onlineshop.web.context;
 
 import com.obolonyk.ioc.context.ApplicationContext;
 import lombok.extern.slf4j.Slf4j;
@@ -7,20 +7,17 @@ import java.util.Properties;
 import java.util.Set;
 
 @Slf4j
-public class Context {
+public class SingletonContextWrapper {
   private static ApplicationContext context;
 
-    public Context(ApplicationContext context) {
+    public SingletonContextWrapper(ApplicationContext context) {
+        printEnvVariables();
+        printSystemVariables();
         this.context = context;
     }
 
     public static ApplicationContext getContext() {
         return context;
-    }
-
-    static {
-        printEnvVariables();
-        printSystemVariables();
     }
 
     //shows all system variables

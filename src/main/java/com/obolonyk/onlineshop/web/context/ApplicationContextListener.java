@@ -1,11 +1,11 @@
-package com.obolonyk.onlineshop.context;
+package com.obolonyk.onlineshop.web.context;
 
 import com.obolonyk.ioc.context.impl.GenericApplicationContext;
 import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;
 
 @WebListener
-public class Application implements ServletContextListener {
+public class ApplicationContextListener implements ServletContextListener {
     GenericApplicationContext genericApplicationContext = new GenericApplicationContext("context.xml");
-    Context context = new Context(genericApplicationContext);
+    SingletonContextWrapper singletonContextWrapper = new SingletonContextWrapper(genericApplicationContext);
 }

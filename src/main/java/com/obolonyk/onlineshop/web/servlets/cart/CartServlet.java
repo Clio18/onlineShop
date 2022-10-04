@@ -4,7 +4,7 @@ import com.obolonyk.ioc.context.ApplicationContext;
 import com.obolonyk.onlineshop.entity.Order;
 import com.obolonyk.onlineshop.web.security.entity.Session;
 import com.obolonyk.onlineshop.services.CartService;
-import com.obolonyk.onlineshop.context.Context;
+import com.obolonyk.onlineshop.web.context.SingletonContextWrapper;
 import com.obolonyk.onlineshop.web.PageGenerator;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,7 +17,7 @@ import java.util.Map;
 
 public class CartServlet extends HttpServlet {
     private static final PageGenerator pageGenerator = PageGenerator.instance();
-    private static final ApplicationContext applicationContext = Context.getContext();
+    private static final ApplicationContext applicationContext = SingletonContextWrapper.getContext();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {

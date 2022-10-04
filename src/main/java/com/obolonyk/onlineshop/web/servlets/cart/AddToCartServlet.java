@@ -6,7 +6,7 @@ import com.obolonyk.onlineshop.entity.Product;
 import com.obolonyk.onlineshop.web.security.entity.Session;
 import com.obolonyk.onlineshop.services.CartService;
 import com.obolonyk.onlineshop.services.ProductService;
-import com.obolonyk.onlineshop.context.Context;
+import com.obolonyk.onlineshop.web.context.SingletonContextWrapper;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -17,7 +17,7 @@ import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class AddToCartServlet extends HttpServlet {
-    private static final ApplicationContext applicationContext = Context.getContext();
+    private static final ApplicationContext applicationContext = SingletonContextWrapper.getContext();
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {

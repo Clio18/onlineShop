@@ -5,7 +5,7 @@ import com.obolonyk.onlineshop.web.security.entity.Credentials;
 import com.obolonyk.onlineshop.web.security.entity.Session;
 import com.obolonyk.onlineshop.entity.User;
 import com.obolonyk.onlineshop.services.UserService;
-import com.obolonyk.onlineshop.context.Context;
+import com.obolonyk.onlineshop.web.context.SingletonContextWrapper;
 import com.obolonyk.onlineshop.web.PageGenerator;
 import com.obolonyk.onlineshop.web.security.PasswordGenerator;
 import com.obolonyk.onlineshop.web.security.service.DefaultSecurityService;
@@ -21,7 +21,7 @@ import java.util.UUID;
 @Slf4j
 public class RegistrationServlet extends HttpServlet {
     private static final PageGenerator pageGenerator = PageGenerator.instance();
-    private static final ApplicationContext applicationContext = Context.getContext();
+    private static final ApplicationContext applicationContext = SingletonContextWrapper.getContext();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {

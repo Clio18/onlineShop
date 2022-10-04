@@ -6,7 +6,7 @@ import com.obolonyk.onlineshop.entity.Product;
 import com.obolonyk.onlineshop.web.security.entity.Session;
 import com.obolonyk.onlineshop.services.CartService;
 import com.obolonyk.onlineshop.services.ProductService;
-import com.obolonyk.onlineshop.context.Context;
+import com.obolonyk.onlineshop.web.context.SingletonContextWrapper;
 import com.obolonyk.onlineshop.web.PageGenerator;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 public class SearchProductsServlet extends HttpServlet {
-    private static final ApplicationContext applicationContext = Context.getContext();
+    private static final ApplicationContext applicationContext = SingletonContextWrapper.getContext();
     private static final PageGenerator pageGenerator = PageGenerator.instance();
 
     @Override

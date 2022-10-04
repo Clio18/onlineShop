@@ -4,7 +4,7 @@ import com.obolonyk.ioc.context.ApplicationContext;
 import com.obolonyk.onlineshop.utils.PropertiesReader;
 import com.obolonyk.onlineshop.web.security.entity.Credentials;
 import com.obolonyk.onlineshop.web.security.entity.Session;
-import com.obolonyk.onlineshop.context.Context;
+import com.obolonyk.onlineshop.web.context.SingletonContextWrapper;
 import com.obolonyk.onlineshop.web.PageGenerator;
 import com.obolonyk.onlineshop.web.security.service.DefaultSecurityService;
 import jakarta.servlet.http.Cookie;
@@ -20,7 +20,7 @@ import java.util.Properties;
 @Slf4j
 public class LoginServlet extends HttpServlet {
     private static final PageGenerator pageGenerator = PageGenerator.instance();
-    private static final ApplicationContext applicationContext = Context.getContext();
+    private static final ApplicationContext applicationContext = SingletonContextWrapper.getContext();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
