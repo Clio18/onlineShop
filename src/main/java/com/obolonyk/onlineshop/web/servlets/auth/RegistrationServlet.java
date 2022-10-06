@@ -9,6 +9,7 @@ import com.obolonyk.onlineshop.web.context.SingletonContextWrapper;
 import com.obolonyk.onlineshop.web.PageGenerator;
 import com.obolonyk.onlineshop.web.security.PasswordGenerator;
 import com.obolonyk.onlineshop.web.security.service.DefaultSecurityService;
+import com.obolonyk.templator.TemplateFactory;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -20,12 +21,12 @@ import java.util.UUID;
 
 @Slf4j
 public class RegistrationServlet extends HttpServlet {
-    private static final PageGenerator pageGenerator = PageGenerator.instance();
+    private static final TemplateFactory pageGenerator = PageGenerator.instance();
     private static final ApplicationContext applicationContext = SingletonContextWrapper.getContext();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String page = pageGenerator.getPage("templates/registration.html", null);
+        String page = pageGenerator.getPage("registration.html");
         resp.getWriter().write(page);
     }
 
@@ -60,7 +61,7 @@ public class RegistrationServlet extends HttpServlet {
         } else {
             String errorMessage = "This login is already exists";
             Map<String, Object> parameters = Map.of("errorMessage", errorMessage);
-            String page = pageGenerator.getPage("templates/registration.html", parameters);
+            String page = pageGenerator.getPage("registration.html", parameters);
             resp.getWriter().write(page);
         }
     }

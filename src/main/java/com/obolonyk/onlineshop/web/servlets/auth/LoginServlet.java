@@ -7,6 +7,8 @@ import com.obolonyk.onlineshop.web.security.entity.Session;
 import com.obolonyk.onlineshop.web.context.SingletonContextWrapper;
 import com.obolonyk.onlineshop.web.PageGenerator;
 import com.obolonyk.onlineshop.web.security.service.DefaultSecurityService;
+import com.obolonyk.templator.ClassPathTemplateFactory;
+import com.obolonyk.templator.TemplateFactory;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,12 +21,12 @@ import java.util.Properties;
 
 @Slf4j
 public class LoginServlet extends HttpServlet {
-    private static final PageGenerator pageGenerator = PageGenerator.instance();
+    private static final TemplateFactory pageGenerator = PageGenerator.instance();
     private static final ApplicationContext applicationContext = SingletonContextWrapper.getContext();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String page = pageGenerator.getPage("templates/login.html", null);
+        String page = pageGenerator.getPage("login.html");
         resp.getWriter().write(page);
     }
 
@@ -55,7 +57,7 @@ public class LoginServlet extends HttpServlet {
         } else {
             String errorMessage = "You are not registered";
             Map<String, Object> parameters = Map.of("errorMessage", errorMessage);
-            String page = pageGenerator.getPage("templates/registration.html", parameters);
+            String page = pageGenerator.getPage("registration.html", parameters);
 
             resp.getWriter().write(page);
         }

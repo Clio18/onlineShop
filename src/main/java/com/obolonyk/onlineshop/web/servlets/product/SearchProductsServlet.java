@@ -8,6 +8,7 @@ import com.obolonyk.onlineshop.services.CartService;
 import com.obolonyk.onlineshop.services.ProductService;
 import com.obolonyk.onlineshop.web.context.SingletonContextWrapper;
 import com.obolonyk.onlineshop.web.PageGenerator;
+import com.obolonyk.templator.TemplateFactory;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,7 +21,7 @@ import java.util.Map;
 
 public class SearchProductsServlet extends HttpServlet {
     private static final ApplicationContext applicationContext = SingletonContextWrapper.getContext();
-    private static final PageGenerator pageGenerator = PageGenerator.instance();
+    private static final TemplateFactory pageGenerator = PageGenerator.instance();
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -35,7 +36,7 @@ public class SearchProductsServlet extends HttpServlet {
         int count = cartService.getTotalProductCount(cart);
         paramMap.put("count", count);
         paramMap.put("products", bySearch);
-        String page = pageGenerator.getPage("templates/products.html", paramMap);
+        String page = pageGenerator.getPage("products.html", paramMap);
 
         resp.getWriter().write(page);
     }

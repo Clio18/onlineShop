@@ -6,6 +6,7 @@ import com.obolonyk.onlineshop.web.security.entity.Session;
 import com.obolonyk.onlineshop.services.CartService;
 import com.obolonyk.onlineshop.web.context.SingletonContextWrapper;
 import com.obolonyk.onlineshop.web.PageGenerator;
+import com.obolonyk.templator.TemplateFactory;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -16,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 public class CartServlet extends HttpServlet {
-    private static final PageGenerator pageGenerator = PageGenerator.instance();
+    private static final TemplateFactory pageGenerator = PageGenerator.instance();
     private static final ApplicationContext applicationContext = SingletonContextWrapper.getContext();
 
     @Override
@@ -28,7 +29,7 @@ public class CartServlet extends HttpServlet {
         double totalPrice = cartService.getTotalPrice(orders);
         paramMap.put("orders", orders);
         paramMap.put("totalPrice", totalPrice);
-        String page = pageGenerator.getPage("templates/cart.html", paramMap);
+        String page = pageGenerator.getPage("cart.html", paramMap);
         resp.getWriter().write(page);
     }
 }
