@@ -3,8 +3,10 @@ package com.obolonyk.onlineshop.web.servlets.product;
 import com.obolonyk.ioc.context.ApplicationContext;
 import com.obolonyk.onlineshop.entity.Product;
 import com.obolonyk.onlineshop.services.ProductService;
-import com.obolonyk.onlineshop.web.context.SingletonContextWrapper;
 import com.obolonyk.onlineshop.web.PageGenerator;
+import jakarta.servlet.ServletConfig;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -12,8 +14,16 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class AddProductServlet extends HttpServlet {
-    private static final ApplicationContext applicationContext = SingletonContextWrapper.getContext();
     private static final PageGenerator pageGenerator = PageGenerator.instance();
+    private ApplicationContext applicationContext;
+
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config);
+        ServletContext servletContext = config.getServletContext();
+        applicationContext = (ApplicationContext) servletContext.getAttribute("applicationContext");
+    }
+
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {

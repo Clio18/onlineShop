@@ -6,8 +6,9 @@ import com.obolonyk.onlineshop.entity.Product;
 import com.obolonyk.onlineshop.web.security.entity.Session;
 import com.obolonyk.onlineshop.services.CartService;
 import com.obolonyk.onlineshop.services.ProductService;
-import com.obolonyk.onlineshop.web.context.SingletonContextWrapper;
 import com.obolonyk.onlineshop.web.PageGenerator;
+import jakarta.servlet.ServletConfig;
+import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,8 +20,16 @@ import java.util.List;
 import java.util.Map;
 
 public class SearchProductsServlet extends HttpServlet {
-    private static final ApplicationContext applicationContext = SingletonContextWrapper.getContext();
     private static final PageGenerator pageGenerator = PageGenerator.instance();
+    private ApplicationContext applicationContext;
+
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config);
+        ServletContext servletContext = config.getServletContext();
+        applicationContext = (ApplicationContext) servletContext.getAttribute("applicationContext");
+    }
+
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

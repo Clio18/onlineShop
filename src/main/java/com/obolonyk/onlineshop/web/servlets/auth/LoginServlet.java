@@ -4,9 +4,11 @@ import com.obolonyk.ioc.context.ApplicationContext;
 import com.obolonyk.onlineshop.utils.PropertiesReader;
 import com.obolonyk.onlineshop.web.security.entity.Credentials;
 import com.obolonyk.onlineshop.web.security.entity.Session;
-import com.obolonyk.onlineshop.web.context.SingletonContextWrapper;
 import com.obolonyk.onlineshop.web.PageGenerator;
 import com.obolonyk.onlineshop.web.security.service.DefaultSecurityService;
+import jakarta.servlet.ServletConfig;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,7 +22,14 @@ import java.util.Properties;
 @Slf4j
 public class LoginServlet extends HttpServlet {
     private static final PageGenerator pageGenerator = PageGenerator.instance();
-    private static final ApplicationContext applicationContext = SingletonContextWrapper.getContext();
+    private ApplicationContext applicationContext;
+
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config);
+        ServletContext servletContext = config.getServletContext();
+        applicationContext = (ApplicationContext) servletContext.getAttribute("applicationContext");
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
