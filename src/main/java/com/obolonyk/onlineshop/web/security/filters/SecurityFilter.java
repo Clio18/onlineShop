@@ -3,7 +3,6 @@ package com.obolonyk.onlineshop.web.security.filters;
 import com.obolonyk.ioc.context.ApplicationContext;
 import com.obolonyk.onlineshop.entity.Role;
 import com.obolonyk.onlineshop.web.security.entity.Session;
-import com.obolonyk.onlineshop.web.context.SingletonContextWrapper;
 import com.obolonyk.onlineshop.web.security.service.DefaultSecurityService;
 import jakarta.servlet.*;
 import jakarta.servlet.http.Cookie;
@@ -18,7 +17,13 @@ import java.util.Set;
 @Setter
 public abstract class SecurityFilter implements Filter {
     private static final String USER_TOKEN = "user-token";
-    private ApplicationContext applicationContext = SingletonContextWrapper.getContext();
+    private ApplicationContext applicationContext;
+
+    @Override
+    public void init(FilterConfig filterConfig) {
+        ServletContext servletContext = filterConfig.getServletContext();
+        applicationContext = (ApplicationContext) servletContext.getAttribute("applicationContext");
+    }
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
