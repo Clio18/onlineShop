@@ -7,7 +7,6 @@ import com.obolonyk.onlineshop.web.security.entity.Session;
 import com.obolonyk.onlineshop.web.context.SingletonContextWrapper;
 import com.obolonyk.onlineshop.web.PageGenerator;
 import com.obolonyk.onlineshop.web.security.service.DefaultSecurityService;
-import com.obolonyk.templator.ClassPathTemplateFactory;
 import com.obolonyk.templator.TemplateFactory;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
