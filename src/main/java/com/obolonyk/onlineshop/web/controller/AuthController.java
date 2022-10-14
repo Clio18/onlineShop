@@ -31,19 +31,22 @@ public class AuthController {
 
     @Autowired
     private SecurityService securityService;
+
     @Autowired
     private UserService userService;
 
 
     @RequestMapping(path = "/login", method = RequestMethod.GET)
-    protected @ResponseBody String loginGet() {
+    protected @ResponseBody
+    String loginGet() {
         return pageGenerator.getPage("login.html");
     }
 
 
     @RequestMapping(path = "/login", method = RequestMethod.POST)
-    protected void loginPost(@RequestParam String password,
-                          @RequestParam String login, HttpServletResponse resp) throws IOException {
+    protected String loginPost(@RequestParam String password,
+                               @RequestParam String login,
+                               HttpServletResponse resp) {
 
         Credentials credentials = Credentials.builder()
                 .login(login)
@@ -61,31 +64,37 @@ public class AuthController {
             Cookie cookie = new Cookie("user-token", token);
             cookie.setMaxAge(durationInSeconds);
             resp.addCookie(cookie);
-            resp.sendRedirect("/products");
+            return "redirect:/products";
         }
+        return "redirect:/registration";
     }
 
     @RequestMapping(path = "/logout", method = RequestMethod.POST)
-    protected void logoutPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    protected String logoutPost(HttpServletRequest req,
+                                HttpServletResponse resp) {
+
         Cookie[] cookies = req.getCookies();
         for (Cookie cookie : cookies) {
             if (cookie.getName().equals("user-token")) {
                 resp.addCookie(new Cookie("user-token", null));
-                resp.sendRedirect("/login");
             }
         }
+        return "redirect:/login";
     }
 
     @RequestMapping(path = "/registration", method = RequestMethod.GET)
-    protected void registrationGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    protected void registrationGet(HttpServletResponse resp) throws IOException {
+
         String page = pageGenerator.getPage("registration.html");
         resp.getWriter().write(page);
     }
 
     @RequestMapping(path = "/registration", method = RequestMethod.POST)
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String login = req.getParameter("login");
-        String password = req.getParameter("password");
+    protected String registrationPost(@RequestParam String password,
+                                      @RequestParam String login,
+                                      @RequestParam String name,
+                                      @RequestParam String email,
+                                      @RequestParam String last_name) {
 
         Credentials credentials = Credentials.builder()
                 .login(login)
@@ -99,15 +108,16 @@ public class AuthController {
             String salt = UUID.randomUUID().toString();
             String encrypted = PasswordGenerator.generateEncrypted(password, salt);
             User user = User.builder()
-                    .name(req.getParameter("name"))
-                    .email(req.getParameter("email"))
-                    .lastName(req.getParameter("last_name"))
+                    .name(name)
+                    .email(email)
+                    .lastName(last_name)
                     .login(login)
                     .password(encrypted)
                     .salt(salt)
                     .build();
             userService.save(user);
-            resp.sendRedirect("/login");
+            return "redirect:/login";
         }
+        return "/registration";
     }
 }

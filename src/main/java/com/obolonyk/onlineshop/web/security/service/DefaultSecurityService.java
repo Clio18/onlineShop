@@ -16,6 +16,7 @@ import java.util.*;
 @Setter
 public class DefaultSecurityService implements SecurityService {
     private List<Session> sessionList = Collections.synchronizedList(new ArrayList<>());
+
     private UserService userService;
 
     @Override

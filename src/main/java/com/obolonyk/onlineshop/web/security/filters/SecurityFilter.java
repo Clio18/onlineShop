@@ -4,10 +4,8 @@ import com.obolonyk.onlineshop.entity.Role;
 import com.obolonyk.onlineshop.web.security.entity.Session;
 import com.obolonyk.onlineshop.web.security.service.SecurityService;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
-
 
 import javax.servlet.*;
 import javax.servlet.http.Cookie;
@@ -20,7 +18,7 @@ import java.util.Set;
 public abstract class SecurityFilter implements Filter {
     private static final String USER_TOKEN = "user-token";
 
-    @Autowired
+    //we cannot use Autowired here because SecurityFilter is not a bean
     private SecurityService securityService;
 
     @Override

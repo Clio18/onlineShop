@@ -18,6 +18,9 @@ public class CartService {
 
     public double getTotalPrice(List<Order> orders) {
         double totalPrice = 0;
+        if (orders==null){
+            return totalPrice;
+        }
         for (Order order : orders) {
             totalPrice = totalPrice + (order.getQuantity() * order.getProduct().getPrice());
         }
