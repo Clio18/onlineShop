@@ -5,7 +5,6 @@ import com.obolonyk.onlineshop.dao.jdbc.rowmapper.UserRowMapper;
 import com.obolonyk.onlineshop.entity.User;
 import com.obolonyk.onlineshop.utils.DataSourceFactory;
 import com.obolonyk.onlineshop.utils.PropertiesReader;
-import lombok.Setter;
 import lombok.SneakyThrows;
 
 import javax.sql.DataSource;
@@ -13,7 +12,6 @@ import java.sql.*;
 import java.util.Optional;
 import java.util.Properties;
 
-@Setter
 public class JdbcUserDao implements UserDao {
     private static final String SELECT_BY_LOGIN = "SELECT id, name, last_name, login, email, password, salt, role FROM users WHERE login = ?;";
     private static final String SAVE = "INSERT INTO users (name, last_name, login, email, password, salt, role) VALUES (?, ?, ?, ?, ?, ?, 'USER');";
