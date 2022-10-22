@@ -4,6 +4,7 @@ import com.obolonyk.templator.ClassPathTemplateFactory;
 import com.obolonyk.templator.TemplateFactory;
 
 public class PageGenerator {
+
     private static TemplateFactory pageGenerator;
 
     public static TemplateFactory instance() {

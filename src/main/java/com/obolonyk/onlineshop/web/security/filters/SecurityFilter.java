@@ -51,7 +51,6 @@ public abstract class SecurityFilter implements Filter {
         }
     }
 
-
     public boolean isAuthenticated(Session session) {
         if (session == null) {
             return false;

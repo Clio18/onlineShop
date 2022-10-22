@@ -30,9 +30,8 @@ class JdbcProductDaoITest {
         dataSource = dataSourceFactory.getDataSource(props);
         flyway = Flyway.configure().dataSource(dataSource).load();
         flyway.migrate();
-        DataSource dataSource = dataSourceFactory.getDataSource(props);
+        dataSource = dataSourceFactory.getDataSource(props);
         jdbcProductDao = new JdbcProductDao();
-        jdbcProductDao.setDataSource(dataSource);
     }
 
     @Test
