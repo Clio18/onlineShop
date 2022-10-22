@@ -4,24 +4,20 @@ import com.obolonyk.onlineshop.entity.Order;
 import com.obolonyk.onlineshop.entity.Product;
 import com.obolonyk.onlineshop.services.CartService;
 import com.obolonyk.onlineshop.services.ProductService;
-import com.obolonyk.onlineshop.web.PageGenerator;
 import com.obolonyk.onlineshop.web.security.entity.Session;
-import com.obolonyk.templator.TemplateFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @Controller
 public class CartController {
-    private static final TemplateFactory pageGenerator = PageGenerator.instance();
     private static final String DELETE = "delete";
     private static final String MINUS = "minus";
     private static final String PLUS = "plus";
@@ -40,7 +36,7 @@ public class CartController {
         if (optionalProduct.isPresent()) {
             Session session = (Session) req.getAttribute("session");
             List<Order> cart = session.getCart();
-            if (cart==null){
+            if (cart == null) {
                 cart = new CopyOnWriteArrayList<>();
                 session.setCart(cart);
             }
@@ -51,29 +47,26 @@ public class CartController {
     }
 
     @RequestMapping(path = "/products/cart", method = RequestMethod.GET)
-    protected void getCartGet(HttpServletRequest req,
-                              HttpServletResponse resp) throws IOException {
+    protected String getCartGet(HttpServletRequest req, ModelMap model) {
 
-        Map<String, Object> paramMap = new HashMap<>();
         Session session = (Session) req.getAttribute("session");
         List<Order> orders = session.getCart();
 
         //we need this check if we want to see our cart just after login in
         // because the orders will be formed after add to cart
-        if (orders==null){
+        if (orders == null) {
             orders = new ArrayList<>(1);
         }
 
         double totalPrice = cartService.getTotalPrice(orders);
-        paramMap.put("orders", orders);
-        paramMap.put("totalPrice", totalPrice);
-        String page = pageGenerator.getPage("cart.html", paramMap);
-        resp.getWriter().write(page);
+        model.addAttribute("orders", orders);
+        model.addAttribute("totalPrice", totalPrice);
+        return "cart";
     }
 
     @RequestMapping(path = "/products/cart/delete", method = RequestMethod.POST)
     protected String deleteFromCartPost(@RequestParam Long id,
-                                        HttpServletRequest req){
+                                        HttpServletRequest req) {
 
         Session session = (Session) req.getAttribute("session");
         List<Order> cart = session.getCart();

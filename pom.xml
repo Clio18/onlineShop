@@ -77,6 +77,12 @@
             <artifactId>spring-web</artifactId>
             <version>5.3.23</version>
         </dependency>
+        <!-- it was added to help spring find  FreeMarkerConfigurationFactory -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+            <version>5.3.23</version>
+        </dependency>
 
         <!-- DATABASE -->
         <dependency>
@@ -101,11 +107,6 @@
 
         <!-- WEB -->
         <dependency>
-            <groupId>org.freemarker</groupId>
-            <artifactId>freemarker</artifactId>
-            <version>2.3.20</version>
-        </dependency>
-        <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
             <version>4.0.1</version>
@@ -121,11 +122,10 @@
 
         <!-- TEMPLATE_FACTORY -->
         <dependency>
-            <groupId>com.obolonyk</groupId>
-            <artifactId>templator</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <groupId>org.freemarker</groupId>
+            <artifactId>freemarker</artifactId>
+            <version>2.3.31</version>
         </dependency>
-
 
         <!-- TEST -->
         <dependency>
