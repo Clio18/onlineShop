@@ -10,8 +10,8 @@
     <packaging>war</packaging>
 
     <properties>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -30,7 +30,7 @@
             <plugin>
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>
-                <version>11.0.12</version>
+                <version>9.4.44.v20210927</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -66,6 +66,24 @@
             <scope>provided</scope>
         </dependency>
 
+        <!-- SPRING -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>5.3.23</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>5.3.23</version>
+        </dependency>
+        <!-- it was added to help spring find  FreeMarkerConfigurationFactory -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+            <version>5.3.23</version>
+        </dependency>
+
         <!-- DATABASE -->
         <dependency>
             <groupId>org.postgresql</groupId>
@@ -89,15 +107,9 @@
 
         <!-- WEB -->
         <dependency>
-            <groupId>org.freemarker</groupId>
-            <artifactId>freemarker</artifactId>
-            <version>2.3.20</version>
-        </dependency>
-        <dependency>
-            <groupId>jakarta.servlet</groupId>
-            <artifactId>jakarta.servlet-api</artifactId>
-            <version>6.0.0</version>
-            <scope>provided</scope>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>4.0.1</version>
         </dependency>
 
         <!-- ENCRYPTION -->
@@ -107,13 +119,12 @@
             <version>1.15</version>
         </dependency>
 
-        <!-- IOC -->
+        <!-- TEMPLATE_FACTORY -->
         <dependency>
-            <groupId>com.obolonyk</groupId>
-            <artifactId>ioc</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <groupId>org.freemarker</groupId>
+            <artifactId>freemarker</artifactId>
+            <version>2.3.31</version>
         </dependency>
-
 
         <!-- TEST -->
         <dependency>
@@ -146,6 +157,13 @@
             <version>9.2.0</version>
             <scope>test</scope>
         </dependency>
-    </dependencies>
+        <!-- https://mvnrepository.com/artifact/org.springframework/spring-test -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>5.3.23</version>
+            <scope>test</scope>
+        </dependency>
 
+    </dependencies>
 </project>

@@ -1,28 +1,31 @@
 package com.obolonyk.onlineshop.web.security.filters;
 
-import com.obolonyk.ioc.context.ApplicationContext;
 import com.obolonyk.onlineshop.entity.Role;
 import com.obolonyk.onlineshop.web.security.entity.Session;
-import com.obolonyk.onlineshop.web.security.service.DefaultSecurityService;
-import jakarta.servlet.*;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import com.obolonyk.onlineshop.web.security.service.SecurityService;
 import lombok.Setter;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
-
+import javax.servlet.*;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Set;
 
 @Setter
 public abstract class SecurityFilter implements Filter {
     private static final String USER_TOKEN = "user-token";
-    private ApplicationContext applicationContext;
+
+    //we cannot use Autowired here because SecurityFilter is not a bean
+    private SecurityService securityService;
 
     @Override
     public void init(FilterConfig filterConfig) {
-        ServletContext servletContext = filterConfig.getServletContext();
-        applicationContext = (ApplicationContext) servletContext.getAttribute("applicationContext");
+        WebApplicationContext applicationContext = WebApplicationContextUtils
+                .getRequiredWebApplicationContext(filterConfig.getServletContext());
+        this.securityService = applicationContext.getBean(SecurityService.class);
     }
 
     @Override
@@ -39,7 +42,6 @@ public abstract class SecurityFilter implements Filter {
         Cookie[] cookies = request.getCookies();
         String token = getToken(cookies);
 
-        DefaultSecurityService securityService = (DefaultSecurityService) applicationContext.getBean("securityService");
         Session session = securityService.getSession(token);
         if (isAuthenticated(session)) {
             servletRequest.setAttribute("session", session);
@@ -48,7 +50,6 @@ public abstract class SecurityFilter implements Filter {
             response.sendRedirect("/products");
         }
     }
-
 
     public boolean isAuthenticated(Session session) {
         if (session == null) {

@@ -3,8 +3,8 @@ package com.obolonyk.onlineshop.dao.jdbc;
 import com.obolonyk.onlineshop.dao.UserDao;
 import com.obolonyk.onlineshop.dao.jdbc.rowmapper.UserRowMapper;
 import com.obolonyk.onlineshop.entity.User;
-import com.obolonyk.onlineshop.utils.DataSourceFactory;
-import com.obolonyk.onlineshop.utils.PropertiesReader;
+//import com.obolonyk.onlineshop.utils.DataSourceFactory;
+//import com.obolonyk.onlineshop.utils.PropertiesReader;
 import lombok.Setter;
 import lombok.SneakyThrows;
 
@@ -20,12 +20,12 @@ public class JdbcUserDao implements UserDao {
 
     private DataSource dataSource;
 
-    public JdbcUserDao() {
-        PropertiesReader propertiesReader = new PropertiesReader();
-        Properties props = propertiesReader.getProperties();
-        DataSourceFactory dataSourceFactory = new DataSourceFactory();
-        dataSource = dataSourceFactory.getDataSource(props);
-    }
+//    public JdbcUserDao() {
+//        PropertiesReader propertiesReader = new PropertiesReader();
+//        Properties props = propertiesReader.getProperties();
+//        DataSourceFactory dataSourceFactory = new DataSourceFactory();
+//        dataSource = dataSourceFactory.getDataSource(props);
+//    }
 
     @Override
     @SneakyThrows

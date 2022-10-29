@@ -6,7 +6,6 @@
 <h1>Product in cart:</h1>
 
 <div style="width: 1000px">
-    <#setting locale="en_US">
     <div style="margin-bottom: 5px">
         <div style="margin-bottom: 20px">
             <div style="margin-bottom: 20px" class="btn-group" role="group" aria-label="Basic example">
@@ -26,7 +25,7 @@
         </div>
         <div>
             <h1>
-                Total price: ${totalPrice?string.currency}
+                Total price: ${totalPrice}
             </h1>
         </div>
         <table class="table table-striped">
@@ -40,7 +39,7 @@
             <tr>
                 <td>${order.product.name}</td>
                 <td>${order.quantity}</td>
-                <td>${order.total?string.currency}</td>
+                <td>${order.total}</td>
                 <td>
                     <div class="btn-group" role="group" aria-label="Basic example">
                         <div style="margin-right: 20px">

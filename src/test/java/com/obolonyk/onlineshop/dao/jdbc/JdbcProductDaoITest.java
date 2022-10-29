@@ -1,38 +1,36 @@
 package com.obolonyk.onlineshop.dao.jdbc;
 
 import com.obolonyk.onlineshop.entity.Product;
-import com.obolonyk.onlineshop.utils.DataSourceFactory;
-import com.obolonyk.onlineshop.utils.PropertiesReader;
 import org.flywaydb.core.Flyway;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import javax.sql.DataSource;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.Properties;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@ExtendWith(SpringExtension.class)
+@ContextConfiguration({"/applicationContext-test.xml"})
 class JdbcProductDaoITest {
 
+    @Autowired
     private DataSource dataSource;
+    @Autowired
     private JdbcProductDao jdbcProductDao;
     private Flyway flyway;
 
     @BeforeEach
     void init() {
-        PropertiesReader propertiesReader = new PropertiesReader();
-        Properties props = propertiesReader.getProperties();
-        DataSourceFactory dataSourceFactory = new DataSourceFactory();
-        dataSource = dataSourceFactory.getDataSource(props);
         flyway = Flyway.configure().dataSource(dataSource).load();
         flyway.migrate();
-        DataSource dataSource = dataSourceFactory.getDataSource(props);
-        jdbcProductDao = new JdbcProductDao();
-        jdbcProductDao.setDataSource(dataSource);
     }
 
     @Test

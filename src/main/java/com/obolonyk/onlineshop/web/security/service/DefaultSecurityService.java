@@ -1,6 +1,5 @@
 package com.obolonyk.onlineshop.web.security.service;
 
-import com.obolonyk.onlineshop.utils.PropertiesReader;
 import com.obolonyk.onlineshop.web.security.entity.Credentials;
 import com.obolonyk.onlineshop.web.security.entity.Session;
 import com.obolonyk.onlineshop.entity.User;
@@ -15,7 +14,10 @@ import java.util.*;
 @Slf4j
 @Setter
 public class DefaultSecurityService implements SecurityService {
+    private String duration;
+
     private List<Session> sessionList = Collections.synchronizedList(new ArrayList<>());
+
     private UserService userService;
 
     @Override
@@ -66,9 +68,9 @@ public class DefaultSecurityService implements SecurityService {
                 }
 
                 String token = UUID.randomUUID().toString();
-                PropertiesReader propertiesReader = new PropertiesReader();
-                Properties props = propertiesReader.getProperties();
-                int durationInSeconds = Integer.parseInt(props.getProperty("durationInSeconds"));
+
+                int durationInSeconds = Integer.parseInt(duration);
+
                 Session session = Session.builder()
                         .user(user)
                         .token(token)

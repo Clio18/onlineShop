@@ -57,8 +57,7 @@
             <#foreach product in products>
             <tr>
                 <td>${product.name}</td>
-                <#setting locale="en_US">
-                <td>${product.price?string.currency}</td>
+                <td>${product.price}</td>
                 <td>${product.creationDate}</td>
                 <td>${product.description}</td>
                 <td>
