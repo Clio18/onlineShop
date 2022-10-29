@@ -3,8 +3,8 @@ package com.obolonyk.onlineshop.dao.jdbc;
 import com.obolonyk.onlineshop.dao.ProductDao;
 import com.obolonyk.onlineshop.dao.jdbc.rowmapper.ProductRowMapper;
 import com.obolonyk.onlineshop.entity.Product;
-import com.obolonyk.onlineshop.utils.DataSourceFactory;
-import com.obolonyk.onlineshop.utils.PropertiesReader;
+//import com.obolonyk.onlineshop.utils.DataSourceFactory;
+//import com.obolonyk.onlineshop.utils.PropertiesReader;
 import lombok.Setter;
 import lombok.SneakyThrows;
 

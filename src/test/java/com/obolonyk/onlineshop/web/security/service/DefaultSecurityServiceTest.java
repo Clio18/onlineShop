@@ -59,6 +59,7 @@ class DefaultSecurityServiceTest {
         when(userService.getByLogin("admin")).thenReturn(Optional.of(user));
 
         DefaultSecurityService securityService = new DefaultSecurityService();
+        securityService.setDuration("3600");
         Session session = securityService.login(credentials, userService);
         assertNotNull(session);
     }
@@ -70,6 +71,7 @@ class DefaultSecurityServiceTest {
         when(userService.getByLogin("admin")).thenReturn(Optional.empty());
 
         DefaultSecurityService securityService = new DefaultSecurityService();
+        securityService.setDuration("3600");
         Session session = securityService.login(credentials, userService);
         assertNull(session);
     }
