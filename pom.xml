@@ -112,7 +112,6 @@
             <version>4.0.1</version>
         </dependency>
 
-
         <!-- ENCRYPTION -->
         <dependency>
             <groupId>commons-codec</groupId>
@@ -158,5 +157,13 @@
             <version>9.2.0</version>
             <scope>test</scope>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.springframework/spring-test -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>5.3.23</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 </project>

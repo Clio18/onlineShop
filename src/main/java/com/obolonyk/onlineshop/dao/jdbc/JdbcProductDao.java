@@ -5,6 +5,7 @@ import com.obolonyk.onlineshop.dao.jdbc.rowmapper.ProductRowMapper;
 import com.obolonyk.onlineshop.entity.Product;
 import com.obolonyk.onlineshop.utils.DataSourceFactory;
 import com.obolonyk.onlineshop.utils.PropertiesReader;
+import lombok.Setter;
 import lombok.SneakyThrows;
 
 import javax.sql.DataSource;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
 
+@Setter
 public class JdbcProductDao implements ProductDao {
     private static final String SELECT_ALL = "SELECT id, name, price, creation_date, description FROM products;";
     private static final String SELECT_BY_ID = "SELECT id, name, price, creation_date, description FROM products WHERE id = ?;";
@@ -25,12 +27,12 @@ public class JdbcProductDao implements ProductDao {
 
     private DataSource dataSource;
 
-    public JdbcProductDao() {
-        DataSourceFactory dataSourceFactory = new DataSourceFactory();
-        PropertiesReader propertiesReader = new PropertiesReader();
-        Properties props = propertiesReader.getProperties();
-        dataSource = dataSourceFactory.getDataSource(props);
-    }
+//    public JdbcProductDao() {
+//        DataSourceFactory dataSourceFactory = new DataSourceFactory();
+//        PropertiesReader propertiesReader = new PropertiesReader();
+//        Properties props = propertiesReader.getProperties();
+//        dataSource = dataSourceFactory.getDataSource(props);
+//    }
 
     @Override
     @SneakyThrows
