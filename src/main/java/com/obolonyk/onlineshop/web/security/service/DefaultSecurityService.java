@@ -10,13 +10,14 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 @Slf4j
 @Setter
 public class DefaultSecurityService implements SecurityService {
     private String duration;
 
-    private List<Session> sessionList = Collections.synchronizedList(new ArrayList<>());
+    private List<Session> sessionList = new CopyOnWriteArrayList<>();
 
     private UserService userService;
 

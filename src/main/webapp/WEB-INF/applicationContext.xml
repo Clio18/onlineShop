@@ -6,16 +6,10 @@
         http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/context
-        http://www.springframework.org/schema/context/spring-context.xsd"
-       profile="dev">
+        http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <context:property-placeholder location="classpath:application.properties" />
-
-    <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
-        <property name="url" value="${jdbc.url}" />
-        <property name="username" value="${jdbc.user}" />
-        <property name="password" value="${jdbc.password}" />
-    </bean>
+    <context:property-placeholder location="classpath:application.properties"/>
+    <import resource="persistence-${spring.profiles.active}.xml"/>
 
     <bean id="jdbcProductDao" class="com.obolonyk.onlineshop.dao.jdbc.JdbcProductDao">
         <property name="dataSource" ref="dataSource"/>
@@ -35,7 +29,7 @@
 
     <bean id="securityService" class="com.obolonyk.onlineshop.web.security.service.DefaultSecurityService">
         <property name="userService" ref="userService"/>
-        <property name="duration" value="${durationInSeconds}" />
+        <property name="duration" value="${durationInSeconds}"/>
     </bean>
 
     <bean id="cartService" class="com.obolonyk.onlineshop.services.CartService"/>
