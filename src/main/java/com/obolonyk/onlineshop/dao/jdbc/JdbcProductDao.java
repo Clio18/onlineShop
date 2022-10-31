@@ -3,8 +3,6 @@ package com.obolonyk.onlineshop.dao.jdbc;
 import com.obolonyk.onlineshop.dao.ProductDao;
 import com.obolonyk.onlineshop.dao.jdbc.rowmapper.ProductRowMapper;
 import com.obolonyk.onlineshop.entity.Product;
-//import com.obolonyk.onlineshop.utils.DataSourceFactory;
-//import com.obolonyk.onlineshop.utils.PropertiesReader;
 import lombok.Setter;
 import lombok.SneakyThrows;
 
@@ -14,7 +12,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Properties;
 
 @Setter
 public class JdbcProductDao implements ProductDao {
@@ -26,13 +23,6 @@ public class JdbcProductDao implements ProductDao {
     private static final String SEARCH = "SELECT id, name, price, creation_date, description FROM products WHERE name ilike ? OR description ilike ?;";
 
     private DataSource dataSource;
-
-//    public JdbcProductDao() {
-//        DataSourceFactory dataSourceFactory = new DataSourceFactory();
-//        PropertiesReader propertiesReader = new PropertiesReader();
-//        Properties props = propertiesReader.getProperties();
-//        dataSource = dataSourceFactory.getDataSource(props);
-//    }
 
     @Override
     @SneakyThrows
