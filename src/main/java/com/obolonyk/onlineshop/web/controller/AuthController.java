@@ -10,9 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -33,13 +31,13 @@ public class AuthController {
     private UserService userService;
 
 
-    @RequestMapping(path = "/login", method = RequestMethod.GET)
+    @GetMapping(path = "/login")
     protected String loginGet() {
         return "login";
     }
 
 
-    @RequestMapping(path = "/login", method = RequestMethod.POST)
+    @PostMapping(path = "/login")
     protected String loginPost(@RequestParam String password,
                                @RequestParam String login,
                                HttpServletResponse resp) {
@@ -64,7 +62,7 @@ public class AuthController {
         return "redirect:/registration";
     }
 
-    @RequestMapping(path = "/logout", method = RequestMethod.POST)
+    @PostMapping (path = "/logout")
     protected String logoutPost(HttpServletRequest req,
                                 HttpServletResponse resp) {
 
@@ -77,12 +75,12 @@ public class AuthController {
         return "redirect:/login";
     }
 
-    @RequestMapping(path = "/registration", method = RequestMethod.GET)
+    @GetMapping(path = "/registration")
     protected String registrationGet() {
         return "registration";
     }
 
-    @RequestMapping(path = "/registration", method = RequestMethod.POST)
+    @PostMapping(path = "/registration")
     protected String registrationPost(@RequestParam String password,
                                       @RequestParam String login,
                                       @RequestParam String name,

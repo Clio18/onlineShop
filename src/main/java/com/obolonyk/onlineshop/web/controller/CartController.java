@@ -8,9 +8,7 @@ import com.obolonyk.onlineshop.web.security.entity.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
@@ -27,7 +25,7 @@ public class CartController {
     @Autowired
     private CartService cartService;
 
-    @RequestMapping(path = "/product/cart", method = RequestMethod.POST)
+    @PostMapping(path = "/product/cart")
     protected String addToCartPost(@RequestParam Integer id,
                                    HttpServletRequest req) {
 
@@ -46,7 +44,7 @@ public class CartController {
         return "redirect:/products";
     }
 
-    @RequestMapping(path = "/products/cart", method = RequestMethod.GET)
+    @GetMapping(path = "/products/cart")
     protected String getCartGet(HttpServletRequest req, ModelMap model) {
 
         Session session = (Session) req.getAttribute("session");
@@ -64,7 +62,7 @@ public class CartController {
         return "cart";
     }
 
-    @RequestMapping(path = "/products/cart/delete", method = RequestMethod.POST)
+    @PostMapping(path = "/products/cart/delete")
     protected String deleteFromCartPost(@RequestParam Long id,
                                         HttpServletRequest req) {
 
@@ -74,7 +72,7 @@ public class CartController {
         return "redirect:/products/cart";
     }
 
-    @RequestMapping(path = "/products/cart/update/minus", method = RequestMethod.POST)
+    @PostMapping(path = "/products/cart/update/minus")
     protected String updateCartMinusPost(@RequestParam Long id,
                                          HttpServletRequest req) {
 
@@ -84,7 +82,7 @@ public class CartController {
         return "redirect:/products/cart";
     }
 
-    @RequestMapping(path = "/products/cart/update/plus", method = RequestMethod.POST)
+    @PostMapping(path = "/products/cart/update/plus")
     protected String updateCartPlusPost(@RequestParam Long id,
                                         HttpServletRequest req) {
 

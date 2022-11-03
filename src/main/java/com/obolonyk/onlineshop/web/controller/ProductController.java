@@ -8,9 +8,7 @@ import com.obolonyk.onlineshop.web.security.entity.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -25,7 +23,7 @@ public class ProductController {
     private CartService cartService;
 
 
-    @RequestMapping(path = "/products", method = RequestMethod.GET)
+    @GetMapping(path = "/products")
     protected String getProduct(HttpServletRequest req, ModelMap model) {
 
         Session session = (Session) req.getAttribute("session");
@@ -38,12 +36,12 @@ public class ProductController {
         return "products";
     }
 
-    @RequestMapping(path = "/products/add", method = RequestMethod.GET)
+    @GetMapping(path = "/products/add")
     protected String addProductGet() {
         return "addProduct";
     }
 
-    @RequestMapping(path = "/products/add", method = RequestMethod.POST)
+    @PostMapping(path = "/products/add")
     protected String addProductPost(@RequestParam String name,
                                     @RequestParam String description,
                                     @RequestParam Double price) {
@@ -57,7 +55,7 @@ public class ProductController {
         return "redirect:/products";
     }
 
-    @RequestMapping(path = "/products/update", method = RequestMethod.GET)
+    @GetMapping(path = "/products/update")
     protected String updateProductGet(@RequestParam Integer id, ModelMap model) {
 
         Optional<Product> productOptional = productService.getProductById(id);
@@ -70,7 +68,7 @@ public class ProductController {
         }
     }
 
-    @RequestMapping(path = "/products/update", method = RequestMethod.POST)
+    @PostMapping(path = "/products/update")
     protected String updateProductPost(@RequestParam Integer id,
                                        @RequestParam String name,
                                        @RequestParam String description,
@@ -86,7 +84,7 @@ public class ProductController {
         return "redirect:/products";
     }
 
-    @RequestMapping(path = "/products/search", method = RequestMethod.POST)
+    @PostMapping(path = "/products/search")
     protected String searchProductPost(@RequestParam String search,
                                        HttpServletRequest req,
                                        ModelMap model) {
@@ -100,7 +98,7 @@ public class ProductController {
         return "products";
     }
 
-    @RequestMapping(path = "/products/delete", method = RequestMethod.POST)
+    @PostMapping(path = "/products/delete")
     protected String deleteProductPost(@RequestParam Integer id) {
 
         productService.remove(id);
