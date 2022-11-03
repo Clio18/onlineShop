@@ -25,11 +25,10 @@ class JdbcProductDaoITest {
     private DataSource dataSource;
     @Autowired
     private JdbcProductDao jdbcProductDao;
-    private Flyway flyway;
 
     @BeforeEach
     void init() {
-        flyway = Flyway.configure().dataSource(dataSource).load();
+        Flyway flyway = Flyway.configure().dataSource(dataSource).load();
         flyway.migrate();
     }
 

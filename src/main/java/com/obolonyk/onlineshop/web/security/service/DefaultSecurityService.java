@@ -5,6 +5,7 @@ import com.obolonyk.onlineshop.web.security.entity.Session;
 import com.obolonyk.onlineshop.entity.User;
 import com.obolonyk.onlineshop.services.UserService;
 import com.obolonyk.onlineshop.web.security.PasswordGenerator;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -14,22 +15,21 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 @Slf4j
 @Setter
+@RequiredArgsConstructor
 public class DefaultSecurityService implements SecurityService {
+    private final UserService userService;
+
     private String duration;
 
     private List<Session> sessionList = new CopyOnWriteArrayList<>();
 
-    private UserService userService;
-
-    @Override
-    public Session login(Credentials credentials) {
-        return login(credentials, userService);
-    }
-
-
     @Override
     public Session getSession(String token) {
-        return getSession(token, sessionList);
+        Optional<Session> optional = getSession(token, sessionList);
+        if (optional.isPresent()){
+            return optional.get();
+        }
+        throw new RuntimeException("No Session for token");
     }
 
     @Override
@@ -37,34 +37,22 @@ public class DefaultSecurityService implements SecurityService {
         //TODO: remove all expired sessions
     }
 
-    Session getSession(String token, List<Session> sessionList) {
-        for (Session session : sessionList) {
-            if (session.getToken().equals(token)) {
-                if (session.getExpirationTime().isBefore(LocalDateTime.now())) {
-                    sessionList.remove(session);
-                    return null;
-                }
-                return session;
-            }
-        }
-        return null;
-    }
-
-    Session login(Credentials credentials, UserService userService) {
+    public Optional<Session> login(Credentials credentials) {
         Optional<User> userByLogin = userService.getByLogin(credentials.getLogin());
         if (userByLogin.isPresent()) {
             User user = userByLogin.get();
             String salt = user.getSalt();
             String password = user.getPassword();
             String hashedPass = PasswordGenerator.generateEncrypted(credentials.getPassword(), salt);
-            if (hashedPass.equals(password)) {
 
+            if (hashedPass.equals(password)) {
+                //TODO: method
                 for (Session session : sessionList) {
                     if (session.getUser().getLogin().equals(user.getLogin())
                             && session.getExpirationTime().isAfter(LocalDateTime.now())) {
 
                         log.info("User already has a valid session");
-                        return session;
+                        return Optional.of(session);
                     }
                 }
 
@@ -79,10 +67,22 @@ public class DefaultSecurityService implements SecurityService {
                         .build();
                 sessionList.add(session);
                 log.info("User was logged in. New session was created");
-                return session;
+                return Optional.of(session);
             }
         }
-        return null;
+        return Optional.empty();
     }
 
+    Optional<Session> getSession(String token, List<Session> sessionList) {
+        for (Session session : sessionList) {
+            if (session.getToken().equals(token)) {
+                if (session.getExpirationTime().isBefore(LocalDateTime.now())) {
+                    sessionList.remove(session);
+                    return Optional.empty();
+                }
+                return Optional.of(session);
+            }
+        }
+        return Optional.empty();
+    }
 }

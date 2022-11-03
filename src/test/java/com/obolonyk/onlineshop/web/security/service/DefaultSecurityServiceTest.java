@@ -58,9 +58,11 @@ class DefaultSecurityServiceTest {
         UserService userService = mock(UserService.class);
         when(userService.getByLogin("admin")).thenReturn(Optional.of(user));
 
-        DefaultSecurityService securityService = new DefaultSecurityService();
+        DefaultSecurityService securityService = new DefaultSecurityService(userService);
         securityService.setDuration("3600");
-        Session session = securityService.login(credentials, userService);
+        Optional<Session> optional = securityService.login(credentials);
+        assertFalse(optional.isEmpty());
+        Session session = optional.get();
         assertNotNull(session);
     }
 
@@ -70,10 +72,10 @@ class DefaultSecurityServiceTest {
         UserService userService = mock(UserService.class);
         when(userService.getByLogin("admin")).thenReturn(Optional.empty());
 
-        DefaultSecurityService securityService = new DefaultSecurityService();
+        DefaultSecurityService securityService = new DefaultSecurityService(userService);
         securityService.setDuration("3600");
-        Session session = securityService.login(credentials, userService);
-        assertNull(session);
+        Optional<Session> optional = securityService.login(credentials);
+        assertTrue(optional.isEmpty());
     }
 
     @Test
@@ -87,27 +89,31 @@ class DefaultSecurityServiceTest {
         UserService userService = mock(UserService.class);
         when(userService.getByLogin("admin")).thenReturn(Optional.of(user));
 
-        DefaultSecurityService securityService = new DefaultSecurityService();
-        Session session = securityService.login(credentials, userService);
-        assertNull(session);
+        DefaultSecurityService securityService = new DefaultSecurityService(userService);
+        Optional<Session> optional = securityService.login(credentials);
+        assertTrue(optional.isEmpty());
     }
 
     @Test
     @DisplayName("test Get Session With Valid Token")
     void testGetSessionWithValidToken() {
-        DefaultSecurityService securityService = new DefaultSecurityService();
-        Session serviceSession = securityService.getSession(token, sessionList);
-        assertNotNull(serviceSession);
-        assertTrue(session.equals(serviceSession));
+        UserService userService = mock(UserService.class);
+        DefaultSecurityService securityService = new DefaultSecurityService(userService);
+        Optional<Session> optional = securityService.getSession(token, sessionList);
+        assertFalse(optional.isEmpty());
+        Session session = optional.get();
+        assertNotNull(session);
+        assertEquals(session, this.session);
     }
 
     @Test
     @DisplayName("test Get Session With Invalid Token")
     void testGetSessionWithInvalidToken() {
+        UserService userService = mock(UserService.class);
         String newToken = UUID.randomUUID().toString();
-        DefaultSecurityService securityService = new DefaultSecurityService();
-        Session serviceSession = securityService.getSession(newToken, sessionList);
-        assertNull(serviceSession);
+        DefaultSecurityService securityService = new DefaultSecurityService(userService);
+        Optional<Session> optional = securityService.getSession(newToken, sessionList);
+        assertTrue(optional.isEmpty());
     }
 
 }

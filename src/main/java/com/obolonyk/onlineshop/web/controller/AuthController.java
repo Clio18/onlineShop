@@ -15,13 +15,14 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Optional;
 import java.util.UUID;
 
 @Controller
 @Slf4j
 public class AuthController {
 
-    @Value("${durationInSeconds}")
+    @Value("${web.session.time-to-live}")
     private String duration;
 
     @Autowired
@@ -47,12 +48,11 @@ public class AuthController {
                 .password(password)
                 .build();
 
-        Session session = securityService.login(credentials);
+        Optional<Session> optional = securityService.login(credentials);
 
-        if (session != null) {
-
+        if (optional.isPresent()) {
             int durationInSeconds = Integer.parseInt(duration);
-
+            Session session = optional.get();
             String token = session.getToken();
             Cookie cookie = new Cookie("user-token", token);
             cookie.setMaxAge(durationInSeconds);
@@ -92,10 +92,8 @@ public class AuthController {
                 .password(password)
                 .build();
 
-        Session session = securityService.login(credentials);
-        log.info("Retrieved session during registration {}", session);
-
-        if (session == null) {
+        Optional<Session> optional = securityService.login(credentials);
+        if (optional.isEmpty()) {
             String salt = UUID.randomUUID().toString();
             String encrypted = PasswordGenerator.generateEncrypted(password, salt);
             User user = User.builder()
@@ -109,6 +107,8 @@ public class AuthController {
             userService.save(user);
             return "redirect:/login";
         }
+        Session session = optional.get();
+        log.info("Retrieved session during registration {}", session);
         return "/registration";
     }
 }

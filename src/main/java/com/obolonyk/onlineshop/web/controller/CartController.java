@@ -29,7 +29,7 @@ public class CartController {
     protected String addToCartPost(@RequestParam Integer id,
                                    HttpServletRequest req) {
 
-        Optional<Product> optionalProduct = productService.getProductById(id);
+        Optional<Product> optionalProduct = productService.getById(id);
 
         if (optionalProduct.isPresent()) {
             Session session = (Session) req.getAttribute("session");

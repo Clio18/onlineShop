@@ -22,11 +22,10 @@ class JdbcUserDaoITest {
     private DataSource dataSource;
     @Autowired
     private JdbcUserDao jdbcUserDao;
-    private Flyway flyway;
 
     @BeforeEach
     void init() {
-        flyway = Flyway.configure().dataSource(dataSource).load();
+        Flyway flyway = Flyway.configure().dataSource(dataSource).load();
         flyway.migrate();
     }
 

@@ -12,11 +12,11 @@ import java.util.Optional;
 public class ProductService {
     private ProductDao jdbcProductDao;
 
-    public List<Product> getAllProducts() {
+    public List<Product> getAll() {
         return jdbcProductDao.getAll();
     }
 
-    public Optional<Product> getProductById(int id) {
+    public Optional<Product> getById(int id) {
         return jdbcProductDao.getById(id);
     }
 

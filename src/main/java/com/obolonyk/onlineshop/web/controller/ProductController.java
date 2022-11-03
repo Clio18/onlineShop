@@ -31,7 +31,7 @@ public class ProductController {
         int count = cartService.getTotalProductCount(cart);
         model.addAttribute("count", count);
 
-        List<Product> products = productService.getAllProducts();
+        List<Product> products = productService.getAll();
         model.addAttribute("products", products);
         return "products";
     }
@@ -58,7 +58,7 @@ public class ProductController {
     @GetMapping(path = "/products/update")
     protected String updateProductGet(@RequestParam Integer id, ModelMap model) {
 
-        Optional<Product> productOptional = productService.getProductById(id);
+        Optional<Product> productOptional = productService.getById(id);
         if (productOptional.isPresent()) {
             Product product = productOptional.get();
             model.addAttribute("product", product);

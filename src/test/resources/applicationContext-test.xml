@@ -33,7 +33,10 @@
     </bean>
 
     <bean id="securityService" class="com.obolonyk.onlineshop.web.security.service.DefaultSecurityService">
-        <property name="userService" ref="userService"/>
+        <property name="duration" value="${web.session.time-to-live}"/>
+        <constructor-arg>
+            <ref bean="userService"/>
+        </constructor-arg>
     </bean>
 
     <bean id="cartService" class="com.obolonyk.onlineshop.services.CartService"/>
