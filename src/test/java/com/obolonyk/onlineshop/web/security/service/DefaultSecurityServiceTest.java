@@ -59,7 +59,7 @@ class DefaultSecurityServiceTest {
         when(userService.getByLogin("admin")).thenReturn(Optional.of(user));
 
         DefaultSecurityService securityService = new DefaultSecurityService(userService);
-        securityService.setDuration("3600");
+        securityService.setDuration(3600);
         Optional<Session> optional = securityService.login(credentials);
         assertFalse(optional.isEmpty());
         Session session = optional.get();
@@ -73,7 +73,7 @@ class DefaultSecurityServiceTest {
         when(userService.getByLogin("admin")).thenReturn(Optional.empty());
 
         DefaultSecurityService securityService = new DefaultSecurityService(userService);
-        securityService.setDuration("3600");
+        securityService.setDuration(3600);
         Optional<Session> optional = securityService.login(credentials);
         assertTrue(optional.isEmpty());
     }

@@ -19,7 +19,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class DefaultSecurityService implements SecurityService {
     private final UserService userService;
 
-    private String duration;
+    private int duration;
 
     private List<Session> sessionList = new CopyOnWriteArrayList<>();
 
@@ -58,12 +58,10 @@ public class DefaultSecurityService implements SecurityService {
 
                 String token = UUID.randomUUID().toString();
 
-                int durationInSeconds = Integer.parseInt(duration);
-
                 Session session = Session.builder()
                         .user(user)
                         .token(token)
-                        .expirationTime(LocalDateTime.now().plusSeconds(durationInSeconds))
+                        .expirationTime(LocalDateTime.now().plusSeconds(duration))
                         .build();
                 sessionList.add(session);
                 log.info("User was logged in. New session was created");
