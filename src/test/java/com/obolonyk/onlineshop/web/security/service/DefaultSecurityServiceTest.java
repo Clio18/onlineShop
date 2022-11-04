@@ -116,4 +116,53 @@ class DefaultSecurityServiceTest {
         assertTrue(optional.isEmpty());
     }
 
+    @Test
+    @DisplayName("GetSessionIfExists Method With Valid User")
+    void testGetSessionIfExists() {
+        UserService userService = mock(UserService.class);
+        DefaultSecurityService securityService = new DefaultSecurityService(userService);
+        Optional<Session> optional = securityService.getSessionIfExists(user, sessionList);
+        assertTrue(optional.isPresent());
+        Session sessionUser = optional.get();
+        assertEquals(session, sessionUser);
+    }
+
+    @Test
+    @DisplayName("GetSessionIfExists Method With Invalid User")
+    void testGetSessionIfNotExists() {
+        UserService userService = mock(UserService.class);
+        DefaultSecurityService securityService = new DefaultSecurityService(userService);
+        User user = User.builder().build();
+        Optional<Session> optional = securityService.getSessionIfExists(user, sessionList);
+        assertTrue(optional.isEmpty());
+    }
+
+    @Test
+    @DisplayName("GetSessionIfExists Method With User With Valid And Invalid Login")
+    void testGetSessionIfExistsUserWithInvalidLogin() {
+        UserService userService = mock(UserService.class);
+        DefaultSecurityService securityService = new DefaultSecurityService(userService);
+
+        User userSame = User.builder()
+                .login("admin")
+                .password("998c9d0f24add08a1a50e631802eb015")
+                .lastName("C")
+                .email("D")
+                .salt("c8b82aa5-88dc-45c3-96a0-05234da8b0d2")
+                .build();
+        Optional<Session> optionalValid = securityService.getSessionIfExists(userSame, sessionList);
+        assertTrue(optionalValid.isPresent());
+        assertEquals(session, optionalValid.get());
+
+        User userChanged = User.builder()
+                .login("xxx")
+                .password("998c9d0f24add08a1a50e631802eb015")
+                .lastName("C")
+                .email("D")
+                .salt("c8b82aa5-88dc-45c3-96a0-05234da8b0d2")
+                .build();
+
+        Optional<Session> optionalInvalid = securityService.getSessionIfExists(userChanged, sessionList);
+        assertFalse(optionalInvalid.isPresent());
+    }
 }

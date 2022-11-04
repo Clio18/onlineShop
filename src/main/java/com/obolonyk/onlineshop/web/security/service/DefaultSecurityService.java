@@ -41,30 +41,39 @@ public class DefaultSecurityService implements SecurityService {
         Optional<User> userByLogin = userService.getByLogin(credentials.getLogin());
         if (userByLogin.isPresent()) {
             User user = userByLogin.get();
+
             String salt = user.getSalt();
             String password = user.getPassword();
             String hashedPass = PasswordGenerator.generateEncrypted(credentials.getPassword(), salt);
 
             if (hashedPass.equals(password)) {
-                //TODO: method
-                for (Session session : sessionList) {
-                    if (session.getUser().getLogin().equals(user.getLogin())
-                            && session.getExpirationTime().isAfter(LocalDateTime.now())) {
 
-                        log.info("User already has a valid session");
-                        return Optional.of(session);
-                    }
-                }
+                //check if the session for this user is already exist
+                Optional<Session> optionalSession = getSessionIfExists(user, sessionList);
+                if (optionalSession.isPresent()) return optionalSession;
 
+                //create new session and save it
                 String token = UUID.randomUUID().toString();
-
                 Session session = Session.builder()
                         .user(user)
                         .token(token)
                         .expirationTime(LocalDateTime.now().plusSeconds(duration))
                         .build();
+
                 sessionList.add(session);
                 log.info("User was logged in. New session was created");
+                return Optional.of(session);
+            }
+        }
+        return Optional.empty();
+    }
+
+    Optional<Session> getSessionIfExists(User user, List<Session> sessionList) {
+        for (Session session : sessionList) {
+            if (session.getUser().getLogin().equals(user.getLogin())
+                    && session.getExpirationTime().isAfter(LocalDateTime.now())) {
+
+                log.info("User already has a valid session");
                 return Optional.of(session);
             }
         }
