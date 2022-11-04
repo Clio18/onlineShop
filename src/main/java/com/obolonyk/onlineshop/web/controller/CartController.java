@@ -39,7 +39,7 @@ public class CartController {
                 session.setCart(cart);
             }
             Product product = optionalProduct.get();
-            cartService.addToCart(product, cart);
+            cartService.addChosenProductToCart(product, cart);
         }
         return "redirect:/products";
     }
@@ -56,7 +56,7 @@ public class CartController {
             orders = new ArrayList<>(1);
         }
 
-        double totalPrice = cartService.getTotalPrice(orders);
+        double totalPrice = cartService.getTotalProductsPrice(orders);
         model.addAttribute("orders", orders);
         model.addAttribute("totalPrice", totalPrice);
         return "cart";
@@ -68,7 +68,7 @@ public class CartController {
 
         Session session = (Session) req.getAttribute("session");
         List<Order> cart = session.getCart();
-        cartService.update(cart, id, DELETE);
+        cartService.deleteChosenProductFromCart(cart, id);
         return "redirect:/products/cart";
     }
 
@@ -78,7 +78,7 @@ public class CartController {
 
         Session session = (Session) req.getAttribute("session");
         List<Order> cart = session.getCart();
-        cartService.update(cart, id, MINUS);
+        cartService.decreasingByOneCart(cart, id);
         return "redirect:/products/cart";
     }
 
@@ -88,7 +88,7 @@ public class CartController {
 
         Session session = (Session) req.getAttribute("session");
         List<Order> cart = session.getCart();
-        cartService.update(cart, id, PLUS);
+        cartService.increasingByOneInCart(cart, id);
         return "redirect:/products/cart";
     }
 }

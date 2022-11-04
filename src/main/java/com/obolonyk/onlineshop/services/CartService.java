@@ -6,7 +6,7 @@ import com.obolonyk.onlineshop.entity.Product;
 import java.util.List;
 
 public class CartService {
-    public int getTotalProductCount(List<Order> cart) {
+    public int getTotalProductsCount(List<Order> cart) {
         int count = 0;
         if (cart != null) {
             for (Order order : cart) {
@@ -16,7 +16,7 @@ public class CartService {
         return count;
     }
 
-    public double getTotalPrice(List<Order> orders) {
+    public double getTotalProductsPrice(List<Order> orders) {
         double totalPrice = 0;
         if (orders==null){
             return totalPrice;
@@ -27,39 +27,7 @@ public class CartService {
         return totalPrice;
     }
 
-    public void update(List<Order> cart, long id, String action) {
-        for (Order order : cart) {
-            if (order.getProduct().getId() == id) {
-                int quantity = order.getQuantity();
-                double total = order.getTotal();
-                int newQuantity = 0;
-                double newTotal = 0;
-
-                if (action.equals("minus")) {
-                    newQuantity = quantity - 1;
-                    if (newQuantity == 0) {
-                        cart.remove(order);
-                        return;
-                    }
-                    newTotal = total - order.getProduct().getPrice();
-                } else if (action.equals("plus")) {
-                    newQuantity = quantity + 1;
-                    newTotal = total + order.getProduct().getPrice();
-                }
-
-                order.setQuantity(newQuantity);
-                order.setTotal(newTotal);
-
-                if (action.equals("delete")) {
-                    cart.remove(order);
-                }
-                break;
-            }
-        }
-    }
-
-    //TODO: synchronization!
-    public void addToCart(Product product, List<Order> cart) {
+    public void addChosenProductToCart(Product product, List<Order> cart) {
         for (Order order : cart) {
             if (order.getProduct().getName().equals(product.getName())) {
                 int quantity = order.getQuantity() + 1;
@@ -75,5 +43,17 @@ public class CartService {
                 .total(product.getPrice())
                 .build();
         cart.add(order);
+    }
+
+    public void decreasingByOneCart(List<Order> cart, Long id) {
+        CartAction.REMOVE_FROM_CART.perform(cart, id);
+    }
+
+    public void increasingByOneInCart(List<Order> cart, Long id) {
+        CartAction.ADD_TO_CART.perform(cart, id);
+    }
+
+    public void deleteChosenProductFromCart(List<Order> cart, Long id) {
+        CartAction.DELETE.perform(cart, id);
     }
 }

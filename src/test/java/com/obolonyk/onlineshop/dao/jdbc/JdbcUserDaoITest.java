@@ -30,7 +30,7 @@ class JdbcUserDaoITest {
     }
 
     @Test
-    @DisplayName("getByLogin Test And Return The User")
+    @DisplayName("GetByLogin Test And Return The User")
     void getByLoginTestAndReturnTheUserAndCheckNotNullAndNotNullFields() {
         Optional<User> optionalUser = jdbcUserDao.getByLogin("AAA");
         User user = optionalUser.get();
@@ -43,14 +43,14 @@ class JdbcUserDaoITest {
     }
 
     @Test
-    @DisplayName("getByLogin Test And Return Empty Optional")
+    @DisplayName("GetByLogin Test And Return Empty Optional")
     void getByLoginTestAndReturnEmptyOptional() {
         Optional<User> optionalUser = jdbcUserDao.getByLogin("vvv");
         assertTrue(optionalUser.isEmpty());
     }
 
     @Test
-    @DisplayName("save Test And Check Quantity Of Products Before And After ")
+    @DisplayName("Save Test And Check Quantity Of Products Before And After ")
     void saveTestAndCheckQuantityOfProductsBeforeAndAfter() {
         User user = User.builder()
                 .name("c")

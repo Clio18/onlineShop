@@ -28,7 +28,7 @@ public class ProductController {
 
         Session session = (Session) req.getAttribute("session");
         List<Order> cart = session.getCart();
-        int count = cartService.getTotalProductCount(cart);
+        int count = cartService.getTotalProductsCount(cart);
         model.addAttribute("count", count);
 
         List<Product> products = productService.getAll();
@@ -92,7 +92,7 @@ public class ProductController {
         List<Product> bySearch = productService.getBySearch(search);
         Session session = (Session) req.getAttribute("session");
         List<Order> cart = session.getCart();
-        int count = cartService.getTotalProductCount(cart);
+        int count = cartService.getTotalProductsCount(cart);
         model.addAttribute("count", count);
         model.addAttribute("products", bySearch);
         return "products";

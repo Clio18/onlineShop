@@ -15,7 +15,7 @@ import static org.mockito.Mockito.when;
 class UserRowMapperTest {
 
     @Test
-    @DisplayName("user rowMapper Test And Check NotNull And Equals")
+    @DisplayName("User RowMapper Test And Check NotNull And Equals")
     void userRowMapperTestAndCheckNotNullAndEquals() throws SQLException {
         ResultSet mockRs = mock(ResultSet.class);
         when(mockRs.getLong("id")).thenReturn(1L);

@@ -33,7 +33,7 @@ class JdbcProductDaoITest {
     }
 
     @Test
-    @DisplayName("getAll Test And Return The List And NotNull And NotNull Fields")
+    @DisplayName("GetAll Test And Return The List And NotNull And NotNull Fields")
     void getAllTestAndReturnTheListAndCheckSizeAndNotNullAndNotNullFields() {
         List<Product> products = jdbcProductDao.getAll();
         assertNotNull(products);
@@ -46,7 +46,7 @@ class JdbcProductDaoITest {
     }
 
     @Test
-    @DisplayName("getById Test And Return The Product")
+    @DisplayName("GetById Test And Return The Product")
     void getByIdTestAndReturnTheProductAndCheckNotNullAndNotNullFields() {
         Optional<Product> optionalProduct = jdbcProductDao.getById(2);
         Product product = optionalProduct.get();
@@ -58,7 +58,7 @@ class JdbcProductDaoITest {
     }
 
     @Test
-    @DisplayName("save Test And Check Quantity Of Products Before And After ")
+    @DisplayName("Save Test And Check Quantity Of Products Before And After ")
     void saveTestAndCheckQuantityOfProductsBeforeAndAfter() {
         List<Product> before = jdbcProductDao.getAll();
         Product product = Product.builder()
@@ -72,7 +72,7 @@ class JdbcProductDaoITest {
     }
 
     @Test
-    @DisplayName("remove Test And Check Quantity Of Products Before And After")
+    @DisplayName("Remove Test And Check Quantity Of Products Before And After")
     void removeTestAndCheckQuantityOfProductsBeforeAndAfter() {
         List<Product> before = jdbcProductDao.getAll();
         jdbcProductDao.remove(1);
@@ -81,7 +81,7 @@ class JdbcProductDaoITest {
     }
 
     @Test
-    @DisplayName("update Test And Check Fields And Equals And All Size Before And After")
+    @DisplayName("Update Test And Check Fields And Equals And All Size Before And After")
     void updateTestAndCheckFieldsAndEqualsAndAllSizeBeforeAndAfter() {
         Optional<Product> optionalProduct = jdbcProductDao.getById(3);
         Product productBefore = optionalProduct.get();
@@ -103,7 +103,7 @@ class JdbcProductDaoITest {
     }
 
     @Test
-    @DisplayName("getBySearch Test And Return The List And NotNull And NotNull Fields")
+    @DisplayName("GetBySearch Test And Return The List And NotNull And NotNull Fields")
     void getBySearchTestAndReturnTheListAndCheckSizeAndNotNullAndNotNullFields() {
         String pattern = "DD";
         List<Product> products = jdbcProductDao.getBySearch(pattern);

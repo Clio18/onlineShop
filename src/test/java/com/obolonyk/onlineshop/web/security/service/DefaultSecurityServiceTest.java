@@ -53,7 +53,7 @@ class DefaultSecurityServiceTest {
     }
 
     @Test
-    @DisplayName("test Login With Valid Credentials")
+    @DisplayName("Login Method With Valid Credentials")
     void testLoginWithValidCredentials() {
         UserService userService = mock(UserService.class);
         when(userService.getByLogin("admin")).thenReturn(Optional.of(user));
@@ -67,7 +67,7 @@ class DefaultSecurityServiceTest {
     }
 
     @Test
-    @DisplayName("test Login With Invalid Login")
+    @DisplayName("Login Method With Invalid Login")
     void testLoginWithInvalidLogin() {
         UserService userService = mock(UserService.class);
         when(userService.getByLogin("admin")).thenReturn(Optional.empty());
@@ -79,7 +79,7 @@ class DefaultSecurityServiceTest {
     }
 
     @Test
-    @DisplayName("test Login With Invalid Password")
+    @DisplayName("Login Method With Invalid Password")
     void testLoginWithInvalidPassword() {
         Credentials credentials = Credentials.builder()
                 .login("admin")
@@ -95,7 +95,7 @@ class DefaultSecurityServiceTest {
     }
 
     @Test
-    @DisplayName("test Get Session With Valid Token")
+    @DisplayName("GetSession Method With Valid Token")
     void testGetSessionWithValidToken() {
         UserService userService = mock(UserService.class);
         DefaultSecurityService securityService = new DefaultSecurityService(userService);
@@ -107,7 +107,7 @@ class DefaultSecurityServiceTest {
     }
 
     @Test
-    @DisplayName("test Get Session With Invalid Token")
+    @DisplayName("GetSession Method With Invalid Token")
     void testGetSessionWithInvalidToken() {
         UserService userService = mock(UserService.class);
         String newToken = UUID.randomUUID().toString();
