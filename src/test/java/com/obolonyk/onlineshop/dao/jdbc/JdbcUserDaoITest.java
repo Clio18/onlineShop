@@ -60,7 +60,9 @@ class JdbcUserDaoITest {
                 .password("ccccc")
                 .salt("cccccc")
                 .build();
+
         jdbcUserDao.save(user);
+
         Optional<User> optionalUser = jdbcUserDao.getByLogin("cccc");
         User userFromDB = optionalUser.get();
         assertNotNull(userFromDB);

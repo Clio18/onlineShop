@@ -27,7 +27,8 @@ class UserRowMapperTest {
         when(mockRs.getString("salt")).thenReturn("513072e6-c539-45f3-be77-2fbaf003d6c3");
         when(mockRs.getString("role")).thenReturn("USER");
 
-        User user = UserRowMapper.mapRow(mockRs);
+        UserRowMapper userRowMapper = new UserRowMapper();
+        User user = userRowMapper.mapRow(mockRs);
         User expectedUser = User.builder()
                 .id(1L)
                 .name("Kim")

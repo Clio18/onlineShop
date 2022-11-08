@@ -1,13 +1,14 @@
 package com.obolonyk.onlineshop.dao.jdbc.rowmapper;
 
+import com.obolonyk.jdbctemplate.RowMapper;
 import com.obolonyk.onlineshop.entity.Role;
 import com.obolonyk.onlineshop.entity.User;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class UserRowMapper {
-    public static User mapRow(ResultSet resultSet) throws SQLException {
+public class UserRowMapper implements RowMapper<User> {
+    public User mapRow(ResultSet resultSet) throws SQLException {
         return User.builder()
                 .id(resultSet.getLong("id"))
                 .name(resultSet.getString("name"))

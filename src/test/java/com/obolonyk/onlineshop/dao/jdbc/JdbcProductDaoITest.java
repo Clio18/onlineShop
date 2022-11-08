@@ -65,6 +65,7 @@ class JdbcProductDaoITest {
                 .name("Superman 2")
                 .price(25.00)
                 .creationDate(LocalDateTime.now())
+                .description("Best toy")
                 .build();
         jdbcProductDao.save(product);
         List<Product> after = jdbcProductDao.getAll();
@@ -90,6 +91,7 @@ class JdbcProductDaoITest {
                 .id(3)
                 .name("Mario")
                 .price(10.00)
+                .description("Best game")
                 .build();
         jdbcProductDao.update(newProduct);
         Optional<Product> optionalProductAfter = jdbcProductDao.getById(3);

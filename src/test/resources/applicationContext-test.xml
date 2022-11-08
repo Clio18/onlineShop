@@ -16,12 +16,23 @@
         <property name="password" value="${jdbc.password}" />
     </bean>
 
+    <bean id="productRowMapper" class="com.obolonyk.onlineshop.dao.jdbc.rowmapper.ProductRowMapper"/>
+    <bean id="userRowMapper" class="com.obolonyk.onlineshop.dao.jdbc.rowmapper.UserRowMapper"/>
+
+    <bean id="jdbcTemplate" class="com.obolonyk.jdbctemplate.JDBCTemplate">
+        <constructor-arg>
+            <ref bean="dataSource"/>
+        </constructor-arg>
+    </bean>
+
     <bean id="jdbcProductDao" class="com.obolonyk.onlineshop.dao.jdbc.JdbcProductDao">
-        <property name="dataSource" ref="dataSource"/>
+        <property name="productRowMapper" ref="productRowMapper"/>
+        <property name="jdbcTemplate" ref="jdbcTemplate"/>
     </bean>
 
     <bean id="jdbcUserDao" class="com.obolonyk.onlineshop.dao.jdbc.JdbcUserDao">
-        <property name="dataSource" ref="dataSource"/>
+        <property name="userRowMapper" ref="userRowMapper"/>
+        <property name="jdbcTemplate" ref="jdbcTemplate"/>
     </bean>
 
     <bean id="productService" class="com.obolonyk.onlineshop.services.ProductService">

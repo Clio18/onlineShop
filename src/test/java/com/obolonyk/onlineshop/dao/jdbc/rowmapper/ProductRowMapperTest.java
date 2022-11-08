@@ -23,7 +23,8 @@ class ProductRowMapperTest {
         when(mockRs.getDouble("price")).thenReturn(10.99);
         LocalDateTime localDateTime = LocalDateTime.now();
         when(mockRs.getObject("creation_date", LocalDateTime.class)).thenReturn(localDateTime);
-        Product product = ProductRowMapper.mapRow(mockRs);
+        ProductRowMapper productRowMapper = new ProductRowMapper();
+        Product product = productRowMapper.mapRow(mockRs);
         Product expectedProduct = Product.builder()
                 .id(1L)
                 .name("Teddy Bear")
