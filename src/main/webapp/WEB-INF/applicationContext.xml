@@ -8,6 +8,8 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd">
 
+    <context:component-scan base-package="com.obolonyk.onlineshop"/>
+
     <context:property-placeholder location="classpath:application.properties"/>
     <import resource="persistence-${spring.profiles.active}.xml"/>
 
@@ -18,22 +20,5 @@
     <bean id="jdbcUserDao" class="com.obolonyk.onlineshop.dao.jdbc.JdbcUserDao">
         <property name="dataSource" ref="dataSource"/>
     </bean>
-
-    <bean id="productService" class="com.obolonyk.onlineshop.services.ProductService">
-        <property name="jdbcProductDao" ref="jdbcProductDao"/>
-    </bean>
-
-    <bean id="userService" class="com.obolonyk.onlineshop.services.UserService">
-        <property name="jdbcUserDao" ref="jdbcUserDao"/>
-    </bean>
-
-    <bean id="securityService" class="com.obolonyk.onlineshop.web.security.service.DefaultSecurityService">
-        <property name="duration" value="${web.session.time-to-live}"/>
-        <constructor-arg>
-            <ref bean="userService"/>
-        </constructor-arg>
-    </bean>
-
-    <bean id="cartService" class="com.obolonyk.onlineshop.services.CartService"/>
 
 </beans>

@@ -2,9 +2,11 @@ package com.obolonyk.onlineshop.services;
 
 import com.obolonyk.onlineshop.entity.Order;
 import com.obolonyk.onlineshop.entity.Product;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class CartService {
     public int getTotalProductsCount(List<Order> cart) {
         int count = 0;

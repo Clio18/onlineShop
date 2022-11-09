@@ -8,17 +8,22 @@ import com.obolonyk.onlineshop.web.security.PasswordGenerator;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @Slf4j
-@Setter
-@RequiredArgsConstructor
+@Service
 public class DefaultSecurityService implements SecurityService {
-    private final UserService userService;
 
+    @Autowired
+    private UserService userService;
+
+    @Value("${web.session.time-to-live}")
     private int duration;
 
     private List<Session> sessionList = new CopyOnWriteArrayList<>();
