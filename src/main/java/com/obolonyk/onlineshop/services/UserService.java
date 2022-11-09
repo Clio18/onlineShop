@@ -14,7 +14,11 @@ public class UserService {
     private UserDao jdbcUserDao;
 
     public Optional<User> getByLogin(String login) {
-        return jdbcUserDao.getByLogin(login);
+        User user = jdbcUserDao.getByLogin(login);
+        if(user==null){
+            return Optional.empty();
+        }
+        return Optional.of(user);
     }
 
     public void save(User user) {

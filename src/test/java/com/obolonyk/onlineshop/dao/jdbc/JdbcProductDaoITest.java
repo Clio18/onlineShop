@@ -13,7 +13,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import javax.sql.DataSource;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -48,8 +47,7 @@ class JdbcProductDaoITest {
     @Test
     @DisplayName("GetById Test And Return The Product")
     void getByIdTestAndReturnTheProductAndCheckNotNullAndNotNullFields() {
-        Optional<Product> optionalProduct = jdbcProductDao.getById(2);
-        Product product = optionalProduct.get();
+        Product product = jdbcProductDao.getById(2);
         assertNotNull(product);
         assertNotNull(product.getName());
         assertNotNull(product.getCreationDate());
@@ -83,8 +81,7 @@ class JdbcProductDaoITest {
     @Test
     @DisplayName("Update Test And Check Fields And Equals And All Size Before And After")
     void updateTestAndCheckFieldsAndEqualsAndAllSizeBeforeAndAfter() {
-        Optional<Product> optionalProduct = jdbcProductDao.getById(3);
-        Product productBefore = optionalProduct.get();
+        Product productBefore = jdbcProductDao.getById(3);
         List<Product> allBefore = jdbcProductDao.getAll();
         Product newProduct = Product.builder()
                 .id(3)
@@ -92,8 +89,7 @@ class JdbcProductDaoITest {
                 .price(10.00)
                 .build();
         jdbcProductDao.update(newProduct);
-        Optional<Product> optionalProductAfter = jdbcProductDao.getById(3);
-        Product productAfter = optionalProductAfter.get();
+        Product productAfter = jdbcProductDao.getById(3);
         List<Product> allAfter = jdbcProductDao.getAll();
         assertNotEquals(productBefore, productAfter);
         assertEquals(newProduct.getName(), productAfter.getName());

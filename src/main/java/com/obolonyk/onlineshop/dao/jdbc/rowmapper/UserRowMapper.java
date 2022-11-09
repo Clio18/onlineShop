@@ -2,12 +2,15 @@ package com.obolonyk.onlineshop.dao.jdbc.rowmapper;
 
 import com.obolonyk.onlineshop.entity.Role;
 import com.obolonyk.onlineshop.entity.User;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class UserRowMapper {
-    public static User mapRow(ResultSet resultSet) throws SQLException {
+@Component
+public class UserRowMapper implements RowMapper<User> {
+    public User mapRow(ResultSet resultSet, int rowNum) throws SQLException {
         return User.builder()
                 .id(resultSet.getLong("id"))
                 .name(resultSet.getString("name"))

@@ -7,11 +7,11 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import javax.sql.DataSource;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -32,8 +32,7 @@ class JdbcUserDaoITest {
     @Test
     @DisplayName("GetByLogin Test And Return The User")
     void getByLoginTestAndReturnTheUserAndCheckNotNullAndNotNullFields() {
-        Optional<User> optionalUser = jdbcUserDao.getByLogin("AAA");
-        User user = optionalUser.get();
+        User user = jdbcUserDao.getByLogin("AAA");
         assertNotNull(user);
         assertNotNull(user.getName());
         assertNotNull(user.getLastName());
@@ -45,8 +44,9 @@ class JdbcUserDaoITest {
     @Test
     @DisplayName("GetByLogin Test And Return Empty Optional")
     void getByLoginTestAndReturnEmptyOptional() {
-        Optional<User> optionalUser = jdbcUserDao.getByLogin("vvv");
-        assertTrue(optionalUser.isEmpty());
+        assertThrows(EmptyResultDataAccessException.class, ()->{
+            User user = jdbcUserDao.getByLogin("vvv");
+        });
     }
 
     @Test
@@ -61,8 +61,7 @@ class JdbcUserDaoITest {
                 .salt("cccccc")
                 .build();
         jdbcUserDao.save(user);
-        Optional<User> optionalUser = jdbcUserDao.getByLogin("cccc");
-        User userFromDB = optionalUser.get();
+        User userFromDB = jdbcUserDao.getByLogin("cccc");
         assertNotNull(userFromDB);
         assertNotNull(userFromDB.getName());
         assertNotNull(userFromDB.getLastName());

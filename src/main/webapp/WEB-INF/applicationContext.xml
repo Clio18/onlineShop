@@ -13,12 +13,7 @@
     <context:property-placeholder location="classpath:application.properties"/>
     <import resource="persistence-${spring.profiles.active}.xml"/>
 
-    <bean id="jdbcProductDao" class="com.obolonyk.onlineshop.dao.jdbc.JdbcProductDao">
-        <property name="dataSource" ref="dataSource"/>
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <constructor-arg ref="dataSource"/>
     </bean>
-
-    <bean id="jdbcUserDao" class="com.obolonyk.onlineshop.dao.jdbc.JdbcUserDao">
-        <property name="dataSource" ref="dataSource"/>
-    </bean>
-
 </beans>

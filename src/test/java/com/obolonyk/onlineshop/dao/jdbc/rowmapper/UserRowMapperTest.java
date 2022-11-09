@@ -17,6 +17,7 @@ class UserRowMapperTest {
     @Test
     @DisplayName("User RowMapper Test And Check NotNull And Equals")
     void userRowMapperTestAndCheckNotNullAndEquals() throws SQLException {
+        UserRowMapper userRowMapper = new UserRowMapper();
         ResultSet mockRs = mock(ResultSet.class);
         when(mockRs.getLong("id")).thenReturn(1L);
         when(mockRs.getString("name")).thenReturn("Kim");
@@ -27,7 +28,7 @@ class UserRowMapperTest {
         when(mockRs.getString("salt")).thenReturn("513072e6-c539-45f3-be77-2fbaf003d6c3");
         when(mockRs.getString("role")).thenReturn("USER");
 
-        User user = UserRowMapper.mapRow(mockRs);
+        User user = userRowMapper.mapRow(mockRs, 1);
         User expectedUser = User.builder()
                 .id(1L)
                 .name("Kim")

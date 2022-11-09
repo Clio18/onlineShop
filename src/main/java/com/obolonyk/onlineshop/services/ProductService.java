@@ -11,6 +11,7 @@ import java.util.Optional;
 
 @Service
 public class ProductService {
+
     @Autowired
     private ProductDao jdbcProductDao;
 
@@ -19,7 +20,11 @@ public class ProductService {
     }
 
     public Optional<Product> getById(int id) {
-        return jdbcProductDao.getById(id);
+        Product product = jdbcProductDao.getById(id);
+        if(product==null){
+            return Optional.empty();
+        }
+        return Optional.of(product);
     }
 
     public void save(Product product) {

@@ -7,6 +7,10 @@ import com.obolonyk.onlineshop.services.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -15,10 +19,15 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 class DefaultSecurityServiceTest {
+    @InjectMocks
+    private DefaultSecurityService securityService;
+    @Mock
+    private UserService userService;
+
     private User user;
     private Credentials credentials;
     private Session session;
@@ -55,11 +64,7 @@ class DefaultSecurityServiceTest {
     @Test
     @DisplayName("Login Method With Valid Credentials")
     void testLoginWithValidCredentials() {
-        UserService userService = mock(UserService.class);
         when(userService.getByLogin("admin")).thenReturn(Optional.of(user));
-
-        DefaultSecurityService securityService = new DefaultSecurityService(userService);
-        securityService.setDuration(3600);
         Optional<Session> optional = securityService.login(credentials);
         assertFalse(optional.isEmpty());
         Session session = optional.get();
@@ -69,11 +74,7 @@ class DefaultSecurityServiceTest {
     @Test
     @DisplayName("Login Method With Invalid Login")
     void testLoginWithInvalidLogin() {
-        UserService userService = mock(UserService.class);
         when(userService.getByLogin("admin")).thenReturn(Optional.empty());
-
-        DefaultSecurityService securityService = new DefaultSecurityService(userService);
-        securityService.setDuration(3600);
         Optional<Session> optional = securityService.login(credentials);
         assertTrue(optional.isEmpty());
     }
@@ -86,10 +87,7 @@ class DefaultSecurityServiceTest {
                 .password("xxxxx")
                 .build();
 
-        UserService userService = mock(UserService.class);
         when(userService.getByLogin("admin")).thenReturn(Optional.of(user));
-
-        DefaultSecurityService securityService = new DefaultSecurityService(userService);
         Optional<Session> optional = securityService.login(credentials);
         assertTrue(optional.isEmpty());
     }
@@ -97,8 +95,6 @@ class DefaultSecurityServiceTest {
     @Test
     @DisplayName("GetSession Method With Valid Token")
     void testGetSessionWithValidToken() {
-        UserService userService = mock(UserService.class);
-        DefaultSecurityService securityService = new DefaultSecurityService(userService);
         Optional<Session> optional = securityService.getSession(token, sessionList);
         assertFalse(optional.isEmpty());
         Session session = optional.get();
@@ -109,9 +105,7 @@ class DefaultSecurityServiceTest {
     @Test
     @DisplayName("GetSession Method With Invalid Token")
     void testGetSessionWithInvalidToken() {
-        UserService userService = mock(UserService.class);
         String newToken = UUID.randomUUID().toString();
-        DefaultSecurityService securityService = new DefaultSecurityService(userService);
         Optional<Session> optional = securityService.getSession(newToken, sessionList);
         assertTrue(optional.isEmpty());
     }
@@ -119,8 +113,6 @@ class DefaultSecurityServiceTest {
     @Test
     @DisplayName("GetSessionIfExists Method With Valid User")
     void testGetSessionIfExists() {
-        UserService userService = mock(UserService.class);
-        DefaultSecurityService securityService = new DefaultSecurityService(userService);
         Optional<Session> optional = securityService.getSessionIfExists(user, sessionList);
         assertTrue(optional.isPresent());
         Session sessionUser = optional.get();
@@ -130,8 +122,6 @@ class DefaultSecurityServiceTest {
     @Test
     @DisplayName("GetSessionIfExists Method With Invalid User")
     void testGetSessionIfNotExists() {
-        UserService userService = mock(UserService.class);
-        DefaultSecurityService securityService = new DefaultSecurityService(userService);
         User user = User.builder().build();
         Optional<Session> optional = securityService.getSessionIfExists(user, sessionList);
         assertTrue(optional.isEmpty());
@@ -140,9 +130,6 @@ class DefaultSecurityServiceTest {
     @Test
     @DisplayName("GetSessionIfExists Method With User With Valid And Invalid Login")
     void testGetSessionIfExistsUserWithInvalidLogin() {
-        UserService userService = mock(UserService.class);
-        DefaultSecurityService securityService = new DefaultSecurityService(userService);
-
         User userSame = User.builder()
                 .login("admin")
                 .password("998c9d0f24add08a1a50e631802eb015")

@@ -17,13 +17,14 @@ class ProductRowMapperTest {
     @Test
     @DisplayName("Product RowMapper Test And Check NotNull And Equals")
     void productRowMapperTestAndCheckNotNullAndEquals() throws SQLException {
+        ProductRowMapper productRowMapper = new ProductRowMapper();
         ResultSet mockRs = mock(ResultSet.class);
         when(mockRs.getLong("id")).thenReturn(1L);
         when(mockRs.getString("name")).thenReturn("Teddy Bear");
         when(mockRs.getDouble("price")).thenReturn(10.99);
         LocalDateTime localDateTime = LocalDateTime.now();
         when(mockRs.getObject("creation_date", LocalDateTime.class)).thenReturn(localDateTime);
-        Product product = ProductRowMapper.mapRow(mockRs);
+        Product product = productRowMapper.mapRow(mockRs, 1);
         Product expectedProduct = Product.builder()
                 .id(1L)
                 .name("Teddy Bear")
