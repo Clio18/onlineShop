@@ -3,7 +3,6 @@ package com.obolonyk.onlineshop.dao.jdbc;
 import com.obolonyk.onlineshop.dao.ProductDao;
 import com.obolonyk.onlineshop.dao.jdbc.rowmapper.ProductRowMapper;
 import com.obolonyk.onlineshop.entity.Product;
-import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -26,19 +25,16 @@ public class JdbcProductDao implements ProductDao {
     private ProductRowMapper productRowMapper;
 
     @Override
-    @SneakyThrows
     public List<Product> getAll() {
       return jdbcTemplate.query(SELECT_ALL, productRowMapper);
     }
 
     @Override
-    @SneakyThrows
     public Product getById(int id) {
         return jdbcTemplate.queryForObject(SELECT_BY_ID, productRowMapper, id);
     }
 
     @Override
-    @SneakyThrows
     public void save(Product product) {
        jdbcTemplate.update(SAVE,
                product.getName(),
@@ -48,13 +44,11 @@ public class JdbcProductDao implements ProductDao {
     }
 
     @Override
-    @SneakyThrows
     public void remove(int id) {
      jdbcTemplate.update(DELETE, id);
     }
 
     @Override
-    @SneakyThrows
     public void update(Product product) {
         jdbcTemplate.update(UPDATE,
                 product.getName(),
@@ -64,7 +58,6 @@ public class JdbcProductDao implements ProductDao {
     }
 
     @Override
-    @SneakyThrows
     public List<Product> getBySearch(String pattern) {
         return jdbcTemplate.query(SEARCH, productRowMapper, pattern, pattern);
     }

@@ -3,7 +3,6 @@ package com.obolonyk.onlineshop.dao.jdbc;
 import com.obolonyk.onlineshop.dao.UserDao;
 import com.obolonyk.onlineshop.dao.jdbc.rowmapper.UserRowMapper;
 import com.obolonyk.onlineshop.entity.User;
-import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -19,13 +18,11 @@ public class JdbcUserDao implements UserDao {
     private UserRowMapper userRowMapper;
 
     @Override
-    @SneakyThrows
     public User getByLogin(String login) {
         return jdbcTemplate.queryForObject(SELECT_BY_LOGIN, userRowMapper, login);
     }
 
     @Override
-    @SneakyThrows
     public void save(User user) {
         jdbcTemplate.update(SAVE,
                 user.getName(),
