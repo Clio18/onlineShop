@@ -17,7 +17,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration({"/applicationContext-test.xml"})
+@ContextConfiguration({"classpath:applicationContext-test.xml"})
 class JdbcProductDaoITest {
 
     @Autowired

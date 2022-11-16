@@ -1,4 +1,4 @@
-package com.obolonyk.onlineshop.web.security.entity;
+package com.obolonyk.onlineshop.security.entity;
 
 import lombok.Builder;
 import lombok.Data;

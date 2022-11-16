@@ -1,8 +1,8 @@
-package com.obolonyk.onlineshop.web.security.filters;
+package com.obolonyk.onlineshop.web.filter;
 
 import com.obolonyk.onlineshop.entity.Role;
-import com.obolonyk.onlineshop.web.security.entity.Session;
-import com.obolonyk.onlineshop.web.security.service.SecurityService;
+import com.obolonyk.onlineshop.security.entity.Session;
+import com.obolonyk.onlineshop.security.service.SecurityService;
 import lombok.Setter;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;

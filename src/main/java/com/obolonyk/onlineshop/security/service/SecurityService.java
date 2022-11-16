@@ -1,7 +1,7 @@
-package com.obolonyk.onlineshop.web.security.service;
+package com.obolonyk.onlineshop.security.service;
 
-import com.obolonyk.onlineshop.web.security.entity.Credentials;
-import com.obolonyk.onlineshop.web.security.entity.Session;
+import com.obolonyk.onlineshop.security.entity.Credentials;
+import com.obolonyk.onlineshop.security.entity.Session;
 
 import java.util.List;
 import java.util.Optional;

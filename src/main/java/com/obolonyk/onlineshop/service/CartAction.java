@@ -1,4 +1,4 @@
-package com.obolonyk.onlineshop.services;
+package com.obolonyk.onlineshop.service;
 
 import com.obolonyk.onlineshop.entity.Order;
 

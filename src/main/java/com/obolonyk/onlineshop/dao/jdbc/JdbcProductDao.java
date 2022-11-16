@@ -5,6 +5,7 @@ import com.obolonyk.onlineshop.dao.jdbc.rowmapper.ProductRowMapper;
 import com.obolonyk.onlineshop.entity.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -18,20 +19,19 @@ public class JdbcProductDao implements ProductDao {
     private static final String UPDATE = "UPDATE products SET name = ?, price = ?, description = ? where id = ?;";
     private static final String SEARCH = "SELECT id, name, price, creation_date, description FROM products WHERE name ilike ? OR description ilike ?;";
 
+    private final RowMapper<Product> rowMapper = new ProductRowMapper();
+
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    @Autowired
-    private ProductRowMapper productRowMapper;
-
     @Override
     public List<Product> getAll() {
-      return jdbcTemplate.query(SELECT_ALL, productRowMapper);
+      return jdbcTemplate.query(SELECT_ALL, rowMapper);
     }
 
     @Override
     public Product getById(int id) {
-        return jdbcTemplate.queryForObject(SELECT_BY_ID, productRowMapper, id);
+        return jdbcTemplate.queryForObject(SELECT_BY_ID, rowMapper, id);
     }
 
     @Override
@@ -59,7 +59,7 @@ public class JdbcProductDao implements ProductDao {
 
     @Override
     public List<Product> getBySearch(String pattern) {
-        return jdbcTemplate.query(SEARCH, productRowMapper, pattern, pattern);
+        return jdbcTemplate.query(SEARCH, rowMapper, pattern, pattern);
     }
 
 }

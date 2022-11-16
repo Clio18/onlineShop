@@ -1,9 +1,9 @@
-package com.obolonyk.onlineshop.web.security.service;
+package com.obolonyk.onlineshop.security.service;
 
-import com.obolonyk.onlineshop.web.security.entity.Credentials;
-import com.obolonyk.onlineshop.web.security.entity.Session;
+import com.obolonyk.onlineshop.security.entity.Credentials;
+import com.obolonyk.onlineshop.security.entity.Session;
 import com.obolonyk.onlineshop.entity.User;
-import com.obolonyk.onlineshop.services.UserService;
+import com.obolonyk.onlineshop.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

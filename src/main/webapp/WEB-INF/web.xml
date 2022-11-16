@@ -23,7 +23,7 @@
     <!-- UserFilter -->
     <filter>
         <filter-name>UserFilter</filter-name>
-        <filter-class>com.obolonyk.onlineshop.web.security.filters.UserFilter</filter-class>
+        <filter-class>com.obolonyk.onlineshop.web.filter.UserFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>UserFilter</filter-name>
@@ -37,7 +37,7 @@
     <!-- AdminFilter -->
     <filter>
         <filter-name>AdminFilter</filter-name>
-        <filter-class>com.obolonyk.onlineshop.web.security.filters.AdminFilter</filter-class>
+        <filter-class>com.obolonyk.onlineshop.web.filter.AdminFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>AdminFilter</filter-name>

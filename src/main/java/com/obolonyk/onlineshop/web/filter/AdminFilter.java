@@ -1,4 +1,4 @@
-package com.obolonyk.onlineshop.web.security.filters;
+package com.obolonyk.onlineshop.web.filter;
 
 import com.obolonyk.onlineshop.entity.Role;
 

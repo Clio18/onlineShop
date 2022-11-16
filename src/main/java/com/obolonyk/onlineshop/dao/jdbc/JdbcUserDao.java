@@ -5,6 +5,7 @@ import com.obolonyk.onlineshop.dao.jdbc.rowmapper.UserRowMapper;
 import com.obolonyk.onlineshop.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -12,14 +13,15 @@ public class JdbcUserDao implements UserDao {
     private static final String SELECT_BY_LOGIN = "SELECT id, name, last_name, login, email, password, salt, role FROM users WHERE login = ?;";
     private static final String SAVE = "INSERT INTO users (name, last_name, login, email, password, salt, role) VALUES (?, ?, ?, ?, ?, ?, 'USER');";
 
+    private final RowMapper<User> rowMapper = new UserRowMapper();
+
     @Autowired
     private JdbcTemplate jdbcTemplate;
-    @Autowired
-    private UserRowMapper userRowMapper;
+
 
     @Override
     public User getByLogin(String login) {
-        return jdbcTemplate.queryForObject(SELECT_BY_LOGIN, userRowMapper, login);
+        return jdbcTemplate.queryForObject(SELECT_BY_LOGIN, rowMapper, login);
     }
 
     @Override

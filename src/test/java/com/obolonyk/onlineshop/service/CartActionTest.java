@@ -1,7 +1,8 @@
-package com.obolonyk.onlineshop.services;
+package com.obolonyk.onlineshop.service;
 
 import com.obolonyk.onlineshop.entity.Order;
 import com.obolonyk.onlineshop.entity.Product;
+import com.obolonyk.onlineshop.service.CartAction;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,6 +11,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.obolonyk.onlineshop.service.CartAction.findOrderInCartById;
 import static org.junit.jupiter.api.Assertions.*;
 
 class CartActionTest {
@@ -237,7 +239,7 @@ class CartActionTest {
     @Test
     @DisplayName("FindOrderInCartById Method With Valid Id")
     void testFindOrderInCartByIdWithValidId(){
-        Order orderInCartById = CartAction.findOrderInCartById(cart, 1);
+        Order orderInCartById = findOrderInCartById(cart, 1);
         assertEquals(order1, orderInCartById);
     }
 
@@ -246,7 +248,7 @@ class CartActionTest {
     void testFindOrderInCartByIdWithInValidId(){
         int invalidId = 100;
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
-            CartAction.findOrderInCartById(cart, invalidId);
+            findOrderInCartById(cart, invalidId);
         });
         assertEquals("No order found by provided id " + invalidId, exception.getMessage());
     }

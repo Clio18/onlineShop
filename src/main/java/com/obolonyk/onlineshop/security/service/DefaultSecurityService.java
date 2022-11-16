@@ -1,10 +1,10 @@
-package com.obolonyk.onlineshop.web.security.service;
+package com.obolonyk.onlineshop.security.service;
 
-import com.obolonyk.onlineshop.web.security.entity.Credentials;
-import com.obolonyk.onlineshop.web.security.entity.Session;
+import com.obolonyk.onlineshop.security.entity.Credentials;
+import com.obolonyk.onlineshop.security.entity.Session;
 import com.obolonyk.onlineshop.entity.User;
-import com.obolonyk.onlineshop.services.UserService;
-import com.obolonyk.onlineshop.web.security.PasswordGenerator;
+import com.obolonyk.onlineshop.service.UserService;
+import com.obolonyk.onlineshop.security.PasswordGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

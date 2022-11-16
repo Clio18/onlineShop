@@ -1,4 +1,4 @@
-package com.obolonyk.onlineshop.web.security;
+package com.obolonyk.onlineshop.security;
 
 import org.apache.commons.codec.digest.DigestUtils;
 

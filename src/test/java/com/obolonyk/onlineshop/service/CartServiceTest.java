@@ -1,7 +1,8 @@
-package com.obolonyk.onlineshop.services;
+package com.obolonyk.onlineshop.service;
 
 import com.obolonyk.onlineshop.entity.Order;
 import com.obolonyk.onlineshop.entity.Product;
+import com.obolonyk.onlineshop.service.CartService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
