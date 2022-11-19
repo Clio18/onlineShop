@@ -21,7 +21,7 @@ public class ProductService {
 
     public Optional<Product> getById(int id) {
         Product product = jdbcProductDao.getById(id);
-        if(product==null){
+        if (product == null) {
             return Optional.empty();
         }
         return Optional.of(product);

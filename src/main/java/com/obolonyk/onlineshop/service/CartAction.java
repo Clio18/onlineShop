@@ -54,11 +54,11 @@ public enum CartAction {
 
     public abstract void perform(List<Order> cart, long id);
 
-   static Order findOrderInCartById(List<Order> cart, long id) {
-       return cart.stream()
-               .filter(order -> order.getProduct().getId()==id)
-               .findFirst()
-               .orElseThrow(()-> new RuntimeException("No order found by provided id " + id));
+    static Order findOrderInCartById(List<Order> cart, long id) {
+        return cart.stream()
+                .filter(order -> order.getProduct().getId() == id)
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("No order found by provided id " + id));
     }
 
 }

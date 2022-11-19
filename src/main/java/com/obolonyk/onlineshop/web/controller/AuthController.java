@@ -62,7 +62,7 @@ public class AuthController {
         return "redirect:/registration";
     }
 
-    @PostMapping (path = "/logout")
+    @PostMapping(path = "/logout")
     protected String logoutPost(HttpServletRequest req,
                                 HttpServletResponse resp) {
 

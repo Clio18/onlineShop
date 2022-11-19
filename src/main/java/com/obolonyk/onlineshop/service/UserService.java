@@ -15,7 +15,7 @@ public class UserService {
 
     public Optional<User> getByLogin(String login) {
         User user = jdbcUserDao.getByLogin(login);
-        if(user==null){
+        if (user == null) {
             return Optional.empty();
         }
         return Optional.of(user);

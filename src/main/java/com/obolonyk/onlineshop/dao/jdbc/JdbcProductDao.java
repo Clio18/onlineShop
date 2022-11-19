@@ -26,7 +26,7 @@ public class JdbcProductDao implements ProductDao {
 
     @Override
     public List<Product> getAll() {
-      return jdbcTemplate.query(SELECT_ALL, rowMapper);
+        return jdbcTemplate.query(SELECT_ALL, rowMapper);
     }
 
     @Override
@@ -36,16 +36,16 @@ public class JdbcProductDao implements ProductDao {
 
     @Override
     public void save(Product product) {
-       jdbcTemplate.update(SAVE,
-               product.getName(),
-               product.getPrice(),
-               product.getCreationDate(),
-               product.getDescription());
+        jdbcTemplate.update(SAVE,
+                product.getName(),
+                product.getPrice(),
+                product.getCreationDate(),
+                product.getDescription());
     }
 
     @Override
     public void remove(int id) {
-     jdbcTemplate.update(DELETE, id);
+        jdbcTemplate.update(DELETE, id);
     }
 
     @Override

@@ -29,7 +29,7 @@ public class DefaultSecurityService implements SecurityService {
     @Override
     public Session getSession(String token) {
         Optional<Session> optional = getSession(token, sessionList);
-        if (optional.isPresent()){
+        if (optional.isPresent()) {
             return optional.get();
         }
         throw new RuntimeException("No Session for token");

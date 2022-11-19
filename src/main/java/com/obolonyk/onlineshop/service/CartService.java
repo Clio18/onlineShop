@@ -20,7 +20,7 @@ public class CartService {
 
     public double getTotalProductsPrice(List<Order> orders) {
         double totalPrice = 0;
-        if (orders==null){
+        if (orders == null) {
             return totalPrice;
         }
         for (Order order : orders) {

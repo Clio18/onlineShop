@@ -1,6 +1,6 @@
 package com.obolonyk.onlineshop.security.entity;
 
-import  com.obolonyk.onlineshop.entity.Order;
+import com.obolonyk.onlineshop.entity.Order;
 import com.obolonyk.onlineshop.entity.User;
 import lombok.Builder;
 import lombok.Data;
