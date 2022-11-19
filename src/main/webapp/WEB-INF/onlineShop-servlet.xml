@@ -18,7 +18,7 @@
 
     <!-- freemarker config -->
     <bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
-        <property name="templateLoaderPath" value="classpath:templates/"/>
+        <property name="templateLoaderPath" value="classpath:template/"/>
     </bean>
     <!--
 	  View resolvers can also be configured with ResourceBundles or XML files. If you need
