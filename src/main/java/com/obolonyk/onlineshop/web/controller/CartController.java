@@ -16,10 +16,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 @Controller
 public class CartController {
-    private static final String DELETE = "delete";
-    private static final String MINUS = "minus";
-    private static final String PLUS = "plus";
-
     @Autowired
     private ProductService productService;
     @Autowired
