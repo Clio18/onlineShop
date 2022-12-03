@@ -19,10 +19,14 @@ public class JdbcProductDao implements ProductDao {
     private static final String UPDATE = "UPDATE products SET name = ?, price = ?, description = ? where id = ?;";
     private static final String SEARCH = "SELECT id, name, price, creation_date, description FROM products WHERE name ilike ? OR description ilike ?;";
 
-    private final RowMapper<Product> rowMapper = new ProductRowMapper();
+    private static final RowMapper<Product> rowMapper = new ProductRowMapper();
+
+    private JdbcTemplate jdbcTemplate;
 
     @Autowired
-    private JdbcTemplate jdbcTemplate;
+    public JdbcProductDao(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     @Override
     public List<Product> getAll() {

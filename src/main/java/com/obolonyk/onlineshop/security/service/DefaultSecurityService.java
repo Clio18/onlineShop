@@ -1,6 +1,5 @@
 package com.obolonyk.onlineshop.security.service;
 
-import com.obolonyk.onlineshop.security.entity.Credentials;
 import com.obolonyk.onlineshop.security.entity.Session;
 import com.obolonyk.onlineshop.entity.User;
 import com.obolonyk.onlineshop.service.UserService;
@@ -18,8 +17,12 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @Service
 public class DefaultSecurityService implements SecurityService {
 
-    @Autowired
     private UserService userService;
+
+    @Autowired
+    public DefaultSecurityService(UserService userService) {
+        this.userService = userService;
+    }
 
     @Value("${web.session.time-to-live}")
     private int duration;
@@ -36,18 +39,33 @@ public class DefaultSecurityService implements SecurityService {
     }
 
     @Override
+    public void saveUser(String password, String login, String name, String email, String lastName) {
+        String salt = UUID.randomUUID().toString();
+        String encrypted = PasswordGenerator.generateEncrypted(password, salt);
+        User user = User.builder()
+                .name(name)
+                .email(email)
+                .lastName(lastName)
+                .login(login)
+                .password(encrypted)
+                .salt(salt)
+                .build();
+        userService.save(user);
+    }
+
+    @Override
     public void logOut(List<Session> sessionList) {
         //TODO: remove all expired sessions
     }
 
-    public Optional<Session> login(Credentials credentials) {
-        Optional<User> userByLogin = userService.getByLogin(credentials.getLogin());
+    public Optional<Session> login(String passwordEntered, String login) {
+        Optional<User> userByLogin = userService.getByLogin(login);
         if (userByLogin.isPresent()) {
             User user = userByLogin.get();
 
             String salt = user.getSalt();
             String password = user.getPassword();
-            String hashedPass = PasswordGenerator.generateEncrypted(credentials.getPassword(), salt);
+            String hashedPass = PasswordGenerator.generateEncrypted(passwordEntered, salt);
 
             if (hashedPass.equals(password)) {
 

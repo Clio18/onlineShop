@@ -1,9 +1,7 @@
 package com.obolonyk.onlineshop.web.controller;
 
 import com.obolonyk.onlineshop.entity.Order;
-import com.obolonyk.onlineshop.entity.Product;
 import com.obolonyk.onlineshop.service.CartService;
-import com.obolonyk.onlineshop.service.ProductService;
 import com.obolonyk.onlineshop.security.entity.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,31 +10,25 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 @Controller
 public class CartController {
-    @Autowired
-    private ProductService productService;
-    @Autowired
+
     private CartService cartService;
 
+    @Autowired
+    public CartController(CartService cartService) {
+        this.cartService = cartService;
+    }
+
     @PostMapping(path = "/product/cart")
-    protected String addToCartPost(@RequestParam Integer id,
+    protected String addToCartPost(@RequestParam Integer productId,
                                    HttpServletRequest req) {
 
-        Optional<Product> optionalProduct = productService.getById(id);
 
-        if (optionalProduct.isPresent()) {
-            Session session = (Session) req.getAttribute("session");
-            List<Order> cart = session.getCart();
-            if (cart == null) {
-                cart = new CopyOnWriteArrayList<>();
-                session.setCart(cart);
-            }
-            Product product = optionalProduct.get();
-            cartService.addChosenProductToCart(product, cart);
-        }
+        Session session = (Session) req.getAttribute("session");
+        List<Order> cart = cartService.addChosenProductToCart(productId, session.getCart());
+        session.setCart(cart);
         return "redirect:/products";
     }
 
@@ -49,6 +41,7 @@ public class CartController {
         //we need this check if we want to see our cart just after login in
         // because the orders will be formed after add to cart
         if (orders == null) {
+            //TODO: ??
             orders = new ArrayList<>(1);
         }
 

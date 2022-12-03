@@ -12,8 +12,12 @@ import java.util.Optional;
 @Service
 public class ProductService {
 
-    @Autowired
     private ProductDao jdbcProductDao;
+
+    @Autowired
+    public ProductService(ProductDao jdbcProductDao) {
+        this.jdbcProductDao = jdbcProductDao;
+    }
 
     public List<Product> getAll() {
         return jdbcProductDao.getAll();

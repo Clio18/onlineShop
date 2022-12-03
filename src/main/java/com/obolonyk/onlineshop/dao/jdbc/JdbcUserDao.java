@@ -13,17 +13,21 @@ public class JdbcUserDao implements UserDao {
     private static final String SELECT_BY_LOGIN = "SELECT id, name, last_name, login, email, password, salt, role FROM users WHERE login = ?;";
     private static final String SAVE = "INSERT INTO users (name, last_name, login, email, password, salt, role) VALUES (?, ?, ?, ?, ?, ?, 'USER');";
 
-    private final RowMapper<User> rowMapper = new UserRowMapper();
+    private static final RowMapper<User> rowMapper = new UserRowMapper();
 
-    @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    @Autowired
+    public JdbcUserDao(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     @Override
     public User getByLogin(String login) {
         return jdbcTemplate.queryForObject(SELECT_BY_LOGIN, rowMapper, login);
     }
 
+    //TODO: Named parameters
     @Override
     public void save(User user) {
         jdbcTemplate.update(SAVE,

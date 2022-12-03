@@ -2,21 +2,24 @@ package com.obolonyk.onlineshop.service;
 
 import com.obolonyk.onlineshop.entity.Order;
 import com.obolonyk.onlineshop.entity.Product;
-import com.obolonyk.onlineshop.service.CartService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class CartServiceTest {
     private List<Order> cart;
 
-    private CartService cartService = new CartService();
+    private ProductService productService = Mockito.mock(ProductService.class);
+
+    private CartService cartService = new CartService(productService);
 
     @BeforeEach
     void init() {
@@ -129,7 +132,8 @@ class CartServiceTest {
                 .name("Bear")
                 .creationDate(LocalDateTime.now())
                 .build();
-        cartService.addChosenProductToCart(product, cart);
+        Mockito.when(productService.getById(1)).thenReturn(Optional.of(product));
+        cartService.addChosenProductToCart(1, cart);
 
         int sizeAfter = cart.size();
         int totalProductCountAfter = cartService.getTotalProductsCount(cart);
@@ -150,7 +154,8 @@ class CartServiceTest {
                 .name("Bear 3")
                 .creationDate(LocalDateTime.now())
                 .build();
-        cartService.addChosenProductToCart(product, cart);
+        Mockito.when(productService.getById(1)).thenReturn(Optional.of(product));
+        cartService.addChosenProductToCart(1, cart);
 
         int sizeAfter = cart.size();
         int totalProductCountAfter = cartService.getTotalProductsCount(cart);

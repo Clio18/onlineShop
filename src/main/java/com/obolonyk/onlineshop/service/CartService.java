@@ -2,12 +2,22 @@ package com.obolonyk.onlineshop.service;
 
 import com.obolonyk.onlineshop.entity.Order;
 import com.obolonyk.onlineshop.entity.Product;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 @Service
 public class CartService {
+    private ProductService productService;
+
+    @Autowired
+    public CartService(ProductService productService) {
+        this.productService = productService;
+    }
+
     public int getTotalProductsCount(List<Order> cart) {
         int count = 0;
         if (cart != null) {
@@ -29,22 +39,31 @@ public class CartService {
         return totalPrice;
     }
 
-    public void addChosenProductToCart(Product product, List<Order> cart) {
-        for (Order order : cart) {
-            if (order.getProduct().getName().equals(product.getName())) {
-                int quantity = order.getQuantity() + 1;
-                double total = quantity * product.getPrice();
-                order.setQuantity(quantity);
-                order.setTotal(total);
-                return;
-            }
-        }
+    public List<Order> addChosenProductToCart(Integer productId, List<Order> cart) {
+        Optional<Product> optionalProduct = productService.getById(productId);
+        Product product = optionalProduct.orElseThrow(() -> new RuntimeException("Producr not found"));
         Order order = Order.builder()
                 .product(product)
                 .quantity(1)
                 .total(product.getPrice())
                 .build();
+
+        if (cart == null) {
+            cart = new CopyOnWriteArrayList<>();
+            cart.add(order);
+        } else {
+            for (Order ord : cart) {
+                if (ord.getProduct().getName().equals(product.getName())) {
+                    int quantity = ord.getQuantity() + 1;
+                    double total = quantity * product.getPrice();
+                    ord.setQuantity(quantity);
+                    ord.setTotal(total);
+                    return cart;
+                }
+            }
+        }
         cart.add(order);
+        return cart;
     }
 
     public void decreasingByOneCart(List<Order> cart, Long id) {

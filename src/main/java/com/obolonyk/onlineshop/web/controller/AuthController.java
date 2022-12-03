@@ -23,14 +23,14 @@ import java.util.UUID;
 public class AuthController {
 
     @Value("${web.session.time-to-live}")
-    private String duration;
+    private Integer duration;
 
-    @Autowired
     private SecurityService securityService;
 
     @Autowired
-    private UserService userService;
-
+    public AuthController(SecurityService securityService) {
+        this.securityService = securityService;
+    }
 
     @GetMapping(path = "/login")
     protected String loginGet() {
@@ -43,19 +43,13 @@ public class AuthController {
                                @RequestParam String login,
                                HttpServletResponse resp) {
 
-        Credentials credentials = Credentials.builder()
-                .login(login)
-                .password(password)
-                .build();
-
-        Optional<Session> optional = securityService.login(credentials);
+        Optional<Session> optional = securityService.login(password, login);
 
         if (optional.isPresent()) {
-            int durationInSeconds = Integer.parseInt(duration);
             Session session = optional.get();
             String token = session.getToken();
             Cookie cookie = new Cookie("user-token", token);
-            cookie.setMaxAge(durationInSeconds);
+            cookie.setMaxAge(duration);
             resp.addCookie(cookie);
             return "redirect:/products";
         }
@@ -80,32 +74,18 @@ public class AuthController {
         return "registration";
     }
 
+    //TODO: @ModelAttribute User
     @PostMapping(path = "/registration")
     protected String registrationPost(@RequestParam String password,
                                       @RequestParam String login,
                                       @RequestParam String name,
                                       @RequestParam String email,
-                                      @RequestParam String last_name) {
+                                      @RequestParam String lastName) {
 
-        Credentials credentials = Credentials.builder()
-                .login(login)
-                .password(password)
-                .build();
-
-        Optional<Session> optional = securityService.login(credentials);
+        Optional<Session> optional = securityService.login(password, login);
         if (optional.isEmpty()) {
-            String salt = UUID.randomUUID().toString();
-            String encrypted = PasswordGenerator.generateEncrypted(password, salt);
-            User user = User.builder()
-                    .name(name)
-                    .email(email)
-                    .lastName(last_name)
-                    .login(login)
-                    .password(encrypted)
-                    .salt(salt)
-                    .build();
-            userService.save(user);
-            return "redirect:/login";
+            securityService.saveUser(password, login, name, email, lastName);
+            return "redirect:/products";
         }
         Session session = optional.get();
         log.info("Retrieved session during registration {}", session);

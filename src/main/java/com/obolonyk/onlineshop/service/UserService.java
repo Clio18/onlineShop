@@ -10,8 +10,12 @@ import java.util.Optional;
 @Service
 public class UserService {
 
-    @Autowired
     private UserDao jdbcUserDao;
+
+    @Autowired
+    public UserService(UserDao jdbcUserDao) {
+        this.jdbcUserDao = jdbcUserDao;
+    }
 
     public Optional<User> getByLogin(String login) {
         User user = jdbcUserDao.getByLogin(login);

@@ -17,11 +17,14 @@ import java.util.Optional;
 @Controller
 public class ProductController {
 
-    @Autowired
     private ProductService productService;
-    @Autowired
     private CartService cartService;
 
+    @Autowired
+    public ProductController(ProductService productService, CartService cartService) {
+        this.productService = productService;
+        this.cartService = cartService;
+    }
 
     @GetMapping(path = "/products")
     protected String getProduct(HttpServletRequest req, ModelMap model) {
