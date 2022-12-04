@@ -1,9 +1,5 @@
 package com.obolonyk.onlineshop.web.controller;
 
-import com.obolonyk.onlineshop.entity.User;
-import com.obolonyk.onlineshop.service.UserService;
-import com.obolonyk.onlineshop.security.PasswordGenerator;
-import com.obolonyk.onlineshop.security.entity.Credentials;
 import com.obolonyk.onlineshop.security.entity.Session;
 import com.obolonyk.onlineshop.security.service.SecurityService;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +12,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
-import java.util.UUID;
 
 @Controller
 @Slf4j
@@ -85,7 +80,8 @@ public class AuthController {
         Optional<Session> optional = securityService.login(password, login);
         if (optional.isEmpty()) {
             securityService.saveUser(password, login, name, email, lastName);
-            return "redirect:/products";
+            //we return user to login page where he can get his auth token
+            return "redirect:/login";
         }
         Session session = optional.get();
         log.info("Retrieved session during registration {}", session);
